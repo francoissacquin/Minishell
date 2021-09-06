@@ -22,6 +22,8 @@ void	env_init(t_mother *s, char **envp)
 	i = 0;
 	while (i < len)
 	{
+		if (ft_env_cmp_arg(envp[i], "PATH"))
+			s->path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
 		s->env[i] = ft_strdup(envp[i]);
 		i++;
 	}

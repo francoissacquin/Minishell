@@ -38,7 +38,7 @@ typedef struct s_command
 	char 		*line; //the whole string inbetween separators
 
 	char		*command;
-	int			retvalue; // check how it shuld be done char*..?
+	int			retvalue; // check how it should be done char*..?
 
 	int			nbarg;
 	char		**arg;
@@ -65,7 +65,7 @@ typedef struct s_mother
 	int			nbcmd; //numberof commands
 	int			pipe; //number of pipes
 	int			exitret; // value for the exit command to be updated during execution
-	char		*path;
+	char		*path; //env variable value for PATH
 	t_command	*c;
 
 	
@@ -98,6 +98,7 @@ void	rm_env(t_mother *s, char *str);
 size_t	ft_strlen_array(char **array);
 void	ft_free_array(char **array);
 int		ft_env_cmp(char *env1, char *var);
+int		ft_env_cmp_arg(char *env1, char *var);
 
 
 

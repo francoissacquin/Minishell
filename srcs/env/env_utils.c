@@ -50,3 +50,19 @@ int		ft_env_cmp(char *env1, char *var)
 	}
 	return (0);
 }
+
+int		ft_env_cmp_arg(char *env1, char *var)
+{
+	int		i;
+
+	i = 0;
+	while (env1[i] && var[i])
+	{
+		if (env1[i] != var[i])
+			return (0);
+		i++;
+	}
+	if (env1[i] == '=')
+			return (1);
+	return (0);
+}
