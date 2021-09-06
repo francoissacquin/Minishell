@@ -29,15 +29,48 @@ void	env_init(t_mother *s, char **envp)
 	s->env[i] = NULL;
 }
 
-//creation d'une nouvelle variable tout en vérifiant qu'elle n'existe pas deja
-//Si la variable existe deja, sa valeur est modifiée (plus de tests nécessaires).
-void	export_env(t_mother *s, char *str)
+//Ajout d'une variable d'environement a env en regardant si la variable existe deja
+void	create_env(t_mother *s, char *str)
 {
 	int		i;
 	int		len;
+	int		pos;
 
 	i = 0;
 	len = ft_strlen_array(s->env);
+	pos = -1;
+	while (i < len)
+	{
+		if (ft_env_cmp(s->env[i], str) == 1)
+			pos = i;
+		i++;
+	}
+	if (pos == -1)
+		add_env(s, str);
+	else
+		change_env(s, str, pos);
+}
+
+void	change_env(t_mother *s, char *str, int pos)
+{
+	char **temp;
+	int		i;
+	int		len;
+	
+	len = ft_strlen_array(s->env);
+	temp = ft_malloc(&temp, (len + 1) * sizeof(char *));
+	i = 0;
+	while (i < len)
+	{
+		if (i = pos)
+			temp[i] = strdup(str);
+		else
+			temp[i] = strdup(s->env[i]);
+		i++;
+	}
+	temp[i] = NULL;
+	ft_free_array(s->env);
+	s->env = temp;
 }
 
 // permet d'ajouter une varaible str a la liste des env
@@ -73,13 +106,9 @@ void	rm_env(t_mother *s, char *str)
 	i = 0;
 	while (i < len)
 	{
-		if (ft_env_cmp(s->env[i], str))
-			i++;
-		else
-		{
+		if (!(ft_env_cmp(s->env[i], str)))
 			temp[i] = strdup(s->env[i]);
-			i++;
-		}
+		i++;
 	}
 	temp[i] = NULL;
 	ft_free_array(s->env);

@@ -35,22 +35,18 @@ void	ft_free_array(char **array)
 	free(array);
 }
 
-int		ft_env_cmp(char *env1, char *str)
+int		ft_env_cmp(char *env1, char *var)
 {
-	int		result;
 	int		i;
 
 	i = 0;
-	while (env[i] && str[i])
+	while (env1[i] && var[i])
 	{
-		if (env[i] != str[i])
+		if (env1[i] != var[i])
 			return (0);
-		else
-			i++;
-
-	}
-	if (env[i] == ' ' && env[i + 1] == ':')
+		else if (env1[i] == '=' && var[i] == '=')
 			return (1);
-	else
-		return (0);
+		i++;
+	}
+	return (0);
 }

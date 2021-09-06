@@ -61,7 +61,7 @@ typedef struct s_command
 typedef struct s_mother
 {
 	char 		*line; //whole string received
-	char		**env; //char ** containing the environment variables
+	char		**env; //char ** containing environment variables (useful for env and execve() PATHS)
 	int			nbcmd; //numberof commands
 	int			pipe; //number of pipes
 	int			exitret; // value for the exit command to be updated during execution
@@ -88,6 +88,16 @@ void 	ft_unset(t_mother *s);
 void	ft_execfind(t_mother *s);
 void	ft_execnotbuiltin(t_mother *s);
 char	*ft_pathfinder(t_mother *s);
+//env
+void	env_init(t_mother *s, char **envp);
+void	create_env(t_mother *s, char *str);
+void	change_env(t_mother *s, char *str, int pos);
+void	add_env(t_mother *s, char *str);
+void	rm_env(t_mother *s, char *str);
+//env_utils
+size_t	ft_strlen_array(char **array);
+void	ft_free_array(char **array);
+int		ft_env_cmp(char *env1, char *var);
 
 
 
