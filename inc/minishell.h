@@ -61,6 +61,7 @@ typedef struct s_command
 typedef struct s_mother
 {
 	char 		*line; //whole string received
+	char		**env; //char ** containing the environment variables
 	int			nbcmd; //numberof commands
 	int			pipe; //number of pipes
 	int			exitret; // value for the exit command to be updated during execution
