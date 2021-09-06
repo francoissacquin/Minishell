@@ -14,5 +14,9 @@
 
 void ft_export(t_mother *s)
 {
-	(void)s;
+	if (ft_strlen_array(s->c->arg) != 1)
+	{
+		ft_error(s, "export arg value invalid\n", 0); // a modifier pour la return value, c'est pas la bonne.
+	}
+	create_env(s, s->c->arg[0]);
 }
