@@ -6,7 +6,7 @@
 #    By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 15:59:12 by ogenser           #+#    #+#              #
-#    Updated: 2021/09/06 11:55:25 by ogenser          ###   ########.fr        #
+#    Updated: 2021/09/06 15:50:36 by ogenser          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,8 @@ srcs/builtins/exit.c \
 srcs/builtins/export.c \
 srcs/builtins/pwd.c \
 srcs/builtins/unset.c \
+srcs/env/env_manager.c \
+srcs/env/env_utils.c \
 
 OBJ = $(SRC:.c=.o)
 

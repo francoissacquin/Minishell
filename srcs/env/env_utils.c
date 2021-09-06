@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsacquin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 17:24:02 by fsacquin          #+#    #+#             */
-/*   Updated: 2021/09/02 17:24:04 by fsacquin         ###   ########.fr       */
+/*   Updated: 2021/09/06 15:51:14 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 size_t	ft_strlen_array(char **array)
 {

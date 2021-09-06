@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 16:31:30 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/06 11:58:46 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/06 15:59:02 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_initc(t_mother *s)
 	t_command	c;
 
 	c.line = NULL;
-	c.command = NULL;
+	c.command = "ls";
 	c.retvalue = 0;
 	c.nbarg = 0;
 	c.arg = NULL;
