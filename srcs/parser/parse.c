@@ -6,20 +6,85 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 16:27:55 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/06 16:13:42 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/06 19:38:07 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+int		ft_fileexits(char *testpath)
+{
+	struct stat s_buf;
+	int ret = -1;
+
+	if (stat(testpath, &s_buf) == 0)
+		ret = 0;
+	return(ret);
+}
+
+char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
+{
+	int i = 0;
+	int j;
+	char *testpath;
+	int pathsize = 0;
+	char *addcmd;
+	int	pathfound = -1;
+
+	(void)s;
+	testpath = ft_strjoin(minipath[i][0], "/");
+	while(i < minisize && pathfound == -1)
+	{
+		while (minipath[i][pathsize])
+			pathsize++;
+		testpath = ft_strjoin("", "/");
+		j = 0;
+		while(j < pathsize && pathfound == -1)
+		{
+			testpath = ft_strjoin(testpath, minipath[i][j]);
+			testpath = ft_strjoin(testpath, "/");
+			addcmd = ft_strjoin(testpath, "ls"); //replace by s->c->command after parse
+			if(ft_fileexits(addcmd) == 0)
+				pathfound = 1;
+			j++;
+		}
+		i++;
+		pathsize = 0;
+	}
+	//tester pour file at /
+	printf("||%s\n||", addcmd);
+	return(addcmd);
+}
+
 char	*ft_pathfinder(t_mother *s)
 {
-	char *path = "/bin/";
-	(void)s;
+	char *rightpath;
+	char **path;
+	char ***minipath = NULL;
+	int 	i = 0;
+	int minipathsize = 0;
 
-	printf("%s", s->path);
-	//split env path and test for each with open if path to command is right
-	return(path);
+	path = ft_split(s->path, ':');
+	while(path[i])
+		i++;
+	while (s->path[i])
+	{
+		if (s->path[i] == ':')
+			minipathsize++;
+		i++;
+	}
+	minipathsize++;
+	// printf("||%d||", minipathsize);
+	minipath = malloc(sizeof(char **) * minipathsize);
+	i = 0;
+	while(i < minipathsize)
+	{
+		minipath[i] = ft_split(path[i], '/');
+		i++;
+	}
+	// printf("||%s||||\n", s->c->command);
+	rightpath = ft_pathtester(s, minipath, minipathsize);
+	return(rightpath);
 }
 
 void	ft_execnotbuiltin(t_mother *s)
@@ -29,17 +94,17 @@ void	ft_execnotbuiltin(t_mother *s)
 
 	path = ft_pathfinder(s);
 	error = 0;
-	error = execve(path, s->c->arg, s->env); //third argument must be env
+	error = execve(path, s->c->arg, s->env);
+	// char *test = " -la";
+	// error = execve(path, &test, NULL); //this is a test
 	if(error < 0)
-		ft_error(s, "execve", error);
+		ft_error(s, "execve, binary may be corrupted", error);
 }
 
 void	ft_execfind(t_mother *s)
 {
 	s->c->command = "l";
-	s->c->arg = malloc(sizeof(char *) * 2);
-	s->c->arg[0] = "-l";
-	s->c->arg[1] = "-a";
+	
 	//builtins
 	if (ft_strcmp("cd", s->c->command) == 0)
 		ft_cd(s);
