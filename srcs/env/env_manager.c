@@ -107,7 +107,7 @@ void	rm_env(t_mother *s, char *str)
 	i = 0;
 	while (i < len)
 	{
-		if (!(ft_env_cmp(s->env[i], str)))
+		if (!(ft_env_cmp_arg(s->env[i], str)))
 			temp[i] = ft_strdup(s->env[i]);
 		i++;
 	}
