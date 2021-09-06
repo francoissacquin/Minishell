@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   env_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsacquin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 16:49:10 by fsacquin          #+#    #+#             */
-/*   Updated: 2021/09/02 16:49:12 by fsacquin         ###   ########.fr       */
+/*   Updated: 2021/09/06 15:52:32 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 void	env_init(t_mother *s, char **envp)
 {
-	char	*temp;
 	int		i;
 	int		len;
 
@@ -62,10 +61,10 @@ void	change_env(t_mother *s, char *str, int pos)
 	i = 0;
 	while (i < len)
 	{
-		if (i = pos)
-			temp[i] = strdup(str);
+		if (i == pos)
+			temp[i] = ft_strdup(str);
 		else
-			temp[i] = strdup(s->env[i]);
+			temp[i] = ft_strdup(s->env[i]);
 		i++;
 	}
 	temp[i] = NULL;
@@ -85,7 +84,7 @@ void	add_env(t_mother *s, char *str)
 	i = 0;
 	while (i < len)
 	{
-		temp[i] = strdup(s->env[i]);
+		temp[i] = ft_strdup(s->env[i]);
 		i++;
 	}
 	temp[i++] = ft_strdup(str);
@@ -107,7 +106,7 @@ void	rm_env(t_mother *s, char *str)
 	while (i < len)
 	{
 		if (!(ft_env_cmp(s->env[i], str)))
-			temp[i] = strdup(s->env[i]);
+			temp[i] = ft_strdup(s->env[i]);
 		i++;
 	}
 	temp[i] = NULL;
