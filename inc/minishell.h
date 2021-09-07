@@ -58,9 +58,24 @@ typedef struct s_command
 
 }				t_command;
 
+typedef struct s_token
+{
+	char		*token;
+	char		type;
+	s_lexer		*prev;
+	s_lexer		*next;
+}				t_token;
+
+typedef struct s_lexer
+{
+	t_token		*first_token;
+	int			quote; // a simple int to store info on quote input history for quotation rules
+}
+
 typedef struct s_mother
 {
 	char 		*line; //whole string received
+	t_lexer		*lex; // pointer to the structure of tokens for input;
 	char		**env; //char ** containing environment variables (useful for env and execve() PATHS)
 	int			nbcmd; //numberof commands
 	int			pipe; //number of pipes
