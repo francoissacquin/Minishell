@@ -32,6 +32,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)argc;
 	ft_structinit(&s);
+	lex_init(&s); // on pourra combiner cette fonction a ft_structinit pus tard si on est chaud
 	// line = ft_malloc(&line, 1000);
 	s.line = readline("Minishell> ");
 	ft_history(&s);

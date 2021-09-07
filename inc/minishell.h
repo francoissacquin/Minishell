@@ -70,6 +70,7 @@ typedef struct s_lexer
 {
 	t_token		*first_token;
 	int			quote; // a simple int to store info on quote input history for quotation rules
+	int			comment; // a simple int to store info on comments in the input line
 }
 
 typedef struct s_mother
@@ -114,6 +115,10 @@ size_t	ft_strlen_array(char **array);
 void	ft_free_array(char **array);
 int		ft_env_cmp(char *env1, char *var);
 int		ft_env_cmp_arg(char *env1, char *var);
+//lexer functions
+void    lex_init(t_mother *s);
+void    minilexer(t_mother *s);
+void    create_token(t_mother *s, int i, int j);
 
 
 
