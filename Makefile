@@ -34,6 +34,7 @@ srcs/builtins/pwd.c \
 srcs/builtins/unset.c \
 srcs/env/env_manager.c \
 srcs/env/env_utils.c \
+srcs/lexer/minilexer.c \
 
 OBJ = $(SRC:.c=.o)
 
