@@ -46,7 +46,7 @@ typedef struct s_command
 	int			nbarg;
 	char		**arg;
 	
-	int			isfollowedbypipe;	//pipe handling //set to 1 for pipe 2 for && 3 for ;
+	int			isfollowedbypipe;	//pipe handling 1 for a pipe, 2 for &, etc
 	t_command	*nextpipe;
 	int			isprecededbypipe;
 	t_command	*previouspipe;
@@ -126,7 +126,10 @@ int		ft_env_cmp_arg(char *env1, char *var);
 //lexer functions
 void    ft_lexinit(t_mother *s);
 void    minilexer(t_mother *s);
-void    create_token(t_mother *s, int i, int j);
+void    create_token(t_mother *s, int i, int j, char c);
+//lexer utils
+t_token *ft_last_elem(t_token *token);
+
 
 
 
