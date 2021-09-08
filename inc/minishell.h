@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/08 11:18:23 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/08 15:16:25 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <termios.h>
 # include <curses.h>
 # include <term.h>
+# include <fcntl.h>
 # include "../libft/libft.h"
 
 typedef struct s_mother	t_mother;
@@ -37,15 +38,15 @@ typedef struct s_token	t_token;
 
 typedef struct s_command
 {
-	char 		*line; //the whole string inbetween separators
 
+	char 		*line; //the whole string inbetween separators
 	char		*command;
 	int			retvalue; // check how it should be done char*..?
 
 	int			nbarg;
 	char		**arg;
 	
-	int			isfollowedbypipe;	//pipe handling
+	int			isfollowedbypipe;	//pipe handling //set to 1 for pipe 2 for && 3 for ;
 	t_command	*nextpipe;
 	int			isprecededbypipe;
 	t_command	*previouspipe;
@@ -80,7 +81,7 @@ typedef struct s_mother
 	char 		*line; //whole string received
 	t_lexer		*lex; // pointer to the structure of tokens for input;
 	char		**env; //char ** containing environment variables (useful for env and execve() PATHS)
-	int			nbcmd; //numberof commands
+	int			nbcmd; //number of commands
 	int			pipe; //number of pipes
 	int			exitret; // value for the exit command to be updated during execution
 	char		*path; //env variable value for PATH
@@ -106,6 +107,11 @@ void 	ft_unset(t_mother *s);
 void	ft_execfind(t_mother *s);
 void	ft_execnotbuiltin(t_mother *s);
 char	*ft_pathfinder(t_mother *s);
+//exec with muliple commands
+void	multicommands(t_mother *s);
+void	ft_redirect(t_mother *s);
+void	ft_pipe(t_mother *s);
+
 //env
 void	env_init(t_mother *s, char **envp);
 void	create_env(t_mother *s, char *str);

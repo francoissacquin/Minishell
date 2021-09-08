@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 16:31:30 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/08 11:19:23 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/08 16:15:51 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_initc(t_mother *s)
 {
 	t_command	c;
 
+	// c = ft_malloc(&c, sizeof(c));
 	c.line = NULL;
 	c.command = "ls";
 	c.retvalue = 0;
@@ -55,6 +56,7 @@ void    ft_lexinit(t_mother *s)
 
 void	ft_structinit(t_mother *s)
 {
+	// s = ft_malloc(s, sizeof(s));
 	s->line = NULL;
 	s->nbcmd = 0;
 	s->pipe = 0;

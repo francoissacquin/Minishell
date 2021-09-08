@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:19 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/08 11:19:04 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/08 16:15:31 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int main(int argc, char **argv, char **envp)
 	// ft_cd(&s);
 	// ft_echo(&s);
 	// printf("%s\n", s.line);
-	ft_execfind(&s);
+	// ft_execfind(&s);
+	multicommands(&s);
 	if (ft_parse(&s) == 0)
 	{
 		write(1, "Error:\n", 7);
