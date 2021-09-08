@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 12:20:20 by fsacquin          #+#    #+#             */
-/*   Updated: 2021/09/08 11:10:03 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/08 11:21:03 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@
 // Sorry j'ai besoin de compiler et j'ai pas le time de debug ton code
 
 
-void    lex_init(t_mother *s)
-{
-    s->lex->quote = 0;
-    s->lex->comment = 0;
-}
+////moved to ft_lexinit
+// void    lex_init(t_mother *s)
+// {
+//     s->lex->quote = 0;
+//     s->lex->comment = 0;
+// }
 
 // void    minilexer(t_mother *s)
 // {
