@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/06 11:49:39 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/08 11:02:53 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 
 typedef struct s_mother	t_mother;
 typedef struct s_command t_command;
+typedef struct s_lexer	t_lexer;
+typedef struct s_token	t_token;
 
 
 typedef struct s_command
@@ -62,8 +64,8 @@ typedef struct s_token
 {
 	char		*token;
 	char		type;
-	s_lexer		*prev;
-	s_lexer		*next;
+	t_lexer		*prev;
+	t_lexer		*next;
 }				t_token;
 
 typedef struct s_lexer
@@ -71,7 +73,7 @@ typedef struct s_lexer
 	t_token		*first_token;
 	int			quote; // a simple int to store info on quote input history for quotation rules
 	int			comment; // a simple int to store info on comments in the input line
-}
+}				t_lexer;
 
 typedef struct s_mother
 {

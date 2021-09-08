@@ -6,7 +6,7 @@
 #    By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 15:59:12 by ogenser           #+#    #+#              #
-#    Updated: 2021/09/06 15:50:36 by ogenser          ###   ########.fr        #
+#    Updated: 2021/09/08 11:00:54 by ogenser          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ srcs/builtins/unset.c \
 srcs/env/env_manager.c \
 srcs/env/env_utils.c \
 srcs/lexer/minilexer.c \
+srcs/executor/exec.c \
 
 OBJ = $(SRC:.c=.o)
 
