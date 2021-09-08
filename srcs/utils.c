@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 16:31:30 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/06 18:53:43 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/08 11:19:23 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,24 @@ void	ft_initc(t_mother *s)
 	// return(&c);
 }
 
+void    ft_lexinit(t_mother *s)
+{
+	t_lexer	lex;
+	t_token tok;
+
+	//regles d'init : si pas de valeurs speciales tt les pointeurs a NULL (y compris les char *) et les char a '\0' -> necessaire pour debug valgrind etc
+	//declarer struct locale puis assigner sinon ca fout le bordel
+	tok.token = NULL;
+	tok.type = '\0';
+	tok.prev = NULL;
+	tok.next = NULL;
+    lex.quote = 0;
+    lex.comment = 0;
+	s->lex = &lex;
+	s->lex->first_token = &tok;
+
+}
+
 void	ft_structinit(t_mother *s)
 {
 	s->line = NULL;
@@ -43,6 +61,7 @@ void	ft_structinit(t_mother *s)
 	s->exitret = 0;
 	s->path = NULL;
 	ft_initc(s);
+	ft_lexinit(s);
 }
 
 void	ft_end(t_mother *s)

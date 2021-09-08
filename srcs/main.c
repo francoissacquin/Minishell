@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:19 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/06 15:49:43 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/08 11:19:04 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)argc;
 	ft_structinit(&s);
-	lex_init(&s); // on pourra combiner cette fonction a ft_structinit pus tard si on est chaud
+	////ft_lexinit(&s); // on pourra combiner cette fonction a ft_structinit pus tard si on est chaud // ca marche pas ta declaration comme ca je fixed //named changed and moved to structinit
 	// line = ft_malloc(&line, 1000);
 	s.line = readline("Minishell> ");
 	ft_history(&s);

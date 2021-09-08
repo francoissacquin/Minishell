@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/08 11:02:53 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/08 11:18:23 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	ft_free_array(char **array);
 int		ft_env_cmp(char *env1, char *var);
 int		ft_env_cmp_arg(char *env1, char *var);
 //lexer functions
-void    lex_init(t_mother *s);
+void    ft_lexinit(t_mother *s);
 void    minilexer(t_mother *s);
 void    create_token(t_mother *s, int i, int j);
 
