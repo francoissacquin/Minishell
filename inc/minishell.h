@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/08 15:16:25 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/09 16:27:51 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_command
 	int			retvalue; // check how it should be done char*..?
 
 	int			nbarg;
-	char		**arg;
+	char		**arg; //arg[0] must be the command! and arg[last] must be null sinon bug de execve
 	
 	int			isfollowedbypipe;	//pipe handling 1 for a pipe, 2 for &, etc
 	t_command	*nextpipe;

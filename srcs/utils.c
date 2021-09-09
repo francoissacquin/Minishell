@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 16:31:30 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/08 16:15:51 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/09 14:25:49 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 void	ft_initc(t_mother *s)
 {
-	t_command	c;
+	t_command	*c;
 
-	// c = ft_malloc(&c, sizeof(c));
-	c.line = NULL;
-	c.command = "ls";
-	c.retvalue = 0;
-	c.nbarg = 0;
-	c.arg = NULL;
-	c.isfollowedbypipe = 0;
-	c.nextpipe = 0;
-	c.isprecededbypipe = 0;
-	c.previouspipe = NULL;
-	c.isinputfile = 0;
-	c.outfile = NULL;
-	c.isinputfile = 0;
-	c.inputfile = 0;
-	c.iserrofile = 0;
-	c.errorfile = NULL;
-	s->c = &c;
+	c = (t_command *)ft_malloc(&c, sizeof(c) * 1000);
+	c->line = NULL;
+	c->command = "ls";
+	c->retvalue = 0;
+	c->nbarg = 0;
+	c->arg = NULL;
+	c->isfollowedbypipe = 0;
+	c->nextpipe = 0;
+	c->isprecededbypipe = 0;
+	c->previouspipe = NULL;
+	c->isinputfile = 0;
+	c->outfile = NULL;
+	c->isinputfile = 0;
+	c->inputfile = 0;
+	c->iserrofile = 0;
+	c->errorfile = NULL;
+	s->c = c;
 	// return(&c);
 }
 
@@ -57,6 +57,8 @@ void    ft_lexinit(t_mother *s)
 void	ft_structinit(t_mother *s)
 {
 	// s = ft_malloc(s, sizeof(s));
+
+	// s = (t_mother *)ft_malloc(s, sizeof(s) * 100);
 	s->line = NULL;
 	s->nbcmd = 0;
 	s->pipe = 0;

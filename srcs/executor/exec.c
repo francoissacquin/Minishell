@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:00:09 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/08 11:00:31 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/09 17:38:46 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
 		{
 			testpath = ft_strjoin(testpath, minipath[i][j]);
 			testpath = ft_strjoin(testpath, "/");
-			addcmd = ft_strjoin(testpath, "ls"); //replace by s->c->command after parse
+			addcmd = ft_strjoin(testpath, s->c->command); //replace by s->c->command after parse
 			if(ft_fileexits(addcmd) == 0)
 				pathfound = 1;
 			j++;
@@ -94,6 +94,7 @@ void	ft_execnotbuiltin(t_mother *s)
 
 	path = ft_pathfinder(s);
 	error = 0;
+	// printf("%s , %s", path, s->c->arg[0]);
 	error = execve(path, s->c->arg, s->env);
 	// char *test = " -la";
 	// error = execve(path, &test, NULL); //this is a test
@@ -103,7 +104,7 @@ void	ft_execnotbuiltin(t_mother *s)
 
 void	ft_execfind(t_mother *s)
 {
-	s->c->command = "l";
+	// s->c->command = "l";
 	
 	//builtins
 	if (ft_strcmp("cd", s->c->command) == 0)
