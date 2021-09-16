@@ -39,11 +39,11 @@ typedef struct s_token	t_token;
 typedef struct s_command
 {
 
-	char 		*line; //the whole string inbetween separators
-	char		*command;
-	int			retvalue; // check how it should be done char*..?
+	char 		*line; //the whole string inbetween separators //cat todo.txt
+	char		*command;										//cat
+	int			retvalue; // check how it should be done char*..?	//0
 
-	int			nbarg;
+	int			nbarg;												//1
 	char		**arg; //arg[0] must be the command! and arg[last] must be null sinon bug de execve
 	
 	int			isfollowedbypipe;	//pipe handling 1 for a pipe, 2 for &, etc
@@ -73,6 +73,7 @@ typedef struct s_lexer
 {
 	t_token		*first_token;
 	int			quote; // a simple int to store info on quote input history for quotation rules
+	int			token_nb;
 }				t_lexer;
 
 typedef struct s_mother

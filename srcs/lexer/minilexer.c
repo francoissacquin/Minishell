@@ -12,9 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-// dura lex sed lex.
-// Sorry j'ai besoin de compiler et j'ai pas le time de debug ton code
-
 // POUR LES TYPES DE TOKEN JE PART LA DESSUS :
 // w = word
 // b = built-in
@@ -116,5 +113,6 @@ t_token *create_token(t_mother *s, int i, int j, char c)
         else
             new->type = '\0';
     }
+    s->lex->token_nb++;
     return (new);
 }
