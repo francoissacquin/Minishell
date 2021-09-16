@@ -6,147 +6,69 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/15 18:52:44 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/16 18:45:31 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	ft_pipe(t_mother *s) // note do note foork for certain builtins
+void		ft_child(t_command *c, t_mother *s)
 {
-	// printf("hello");
-	// // printf("hello%s\n", s->c->nextpipe->line);
-	// printf("hello%s, %s\n", s->c->line, s->c->arg[0]);
-	// printf("hello%s, %s\n", s->c->nextpipe->command, s->c->nextpipe->arg[0]);
-
-	int i = 0;
-	// while (i < s->pipe)
+	int err = 0;
+	if (c->isprecededbypipe) //si y'a un pipe avant on connecte la sortie du pipe au stdin
 	{
-
-	// 		t_command test;
-
-	// test.previouspipe = s->c;
-	// test.line = "wc";
-	// test.command = "wc";
-	// test.arg = ft_malloc(test.arg, sizeof(char **) * 10);
-	// test.arg[0] = test.command;
-	// test.arg[1] = NULL;
-	// test.arg[2] = NULL;
-	// test.isprecededbypipe = 1;
-	
-		// int pipes[2];
-		int status;
-		if(pipe(s->c->pipes) == -1)
-			ft_error(s, "pipe", -1);
-		int pid = fork();
-		if(pid < 0)
-			ft_error(s, "fork", -1);
-		if (pid < 0)
-			ft_error(s, "pipe pid is shit", -1);
-		if (pid == 0)
-		{
-			//child
-			puts("HELLO");
-			// close(pipes[1]); //close read side
-			// dup2(pipes[0], 0); //connect write to stdout
-			// close(pipes[0]);
-			if(s->c->previouspipe)
-				dup2(s->c->previouspipe->pipes[0], 0); //fermer celui d'avant
-			dup2(s->c->pipes[1], 1); //dup stdout sur la commande actuelle
-
-			// s->c = s->c->nextpipe;
-			printf("hello %s, %s\n", s->c->line, s->c->arg[0]);
-			ft_execfind(s, s->c->nextpipe);
-			write(2, "hello\n", 6);
-		}
-		else
-		{
-			//parent
-			waitpid(pid, &status, 0);
-			puts("CACA");
-			// if ()
-			close(s->c->pipes[0]); //close write side
-			//dup2(s->c->pipes[1], 1); //connect read to stdin
-			// pas de dup juste des close pipe0 prv0 et 1;
-			close(s->c->pipes[1]); //close read
-			ft_execfind(s, s->c);
-			//close pipes
-			// if(s->c->isprecededbypipe)
-			// 	close(s->c->previouspipe->)
-		}
-		// printf("hello %s, %s\n", s->c->line, s->c->arg[0]);
-		// s->c = s->c->nextpipe;
-		printf("hello %s, %s\n", s->c->line, s->c->arg[0]);
-		i++;
+		err = dup2(c->previouspipe->pipes[0], 0); //connect read side to stdin
+		if (err < 0)
+			ft_error(s, "pipe dup2", -1);
 	}
-	
+	if (c->isfollowedbypipe == 1) // si pipe apres on branche l'entree du pipe sur le stdout
+	{
+		err = dup2(c->pipes[1], 1); //on branche le write side to stdout
+		if (err < 0)
+			ft_error(s, "pipe dup2", -1);
+	}
+	ft_execfind(s, s->c); //execute command in child process meme si il y'en a que une
+	exit(1);
 }
 
-void		ft_pipe2(t_command *c, t_mother *s)
+void		ft_parent(t_command *c, int pid)
 {
 	int status;
-	int err = 0;
 
-	// if(c->isfollowedbypipe || c->isprecededbypipe)
+	if (c->isprecededbypipe)
+		close(c->previouspipe->pipes[0]); // peut etre a mettre a la fin // on ferme le pipe d'avant
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe)
+	{
+		close(c->pipes[1]); // si suivi ou apres par un pipe on close write side
+		if (c->nextpipe == NULL) //si c'est le dernier // histoire de propreté plus que de necessité
+		{
+			dup2(c->pipes[1], 0); // on branche la sortie du pipe sur stdin pour imprimer
+			close(c->pipes[0]); //si suivi par rien on close le read side
+		}
+	}
+	waitpid(pid, &status, 0); //peut etre a mettre au debut	du parent // on attends la fin du child pour etre sur d'avoir tte la sortie
+}
+
+
+void		ft_pipe(t_command *c, t_mother *s)
+{
+	int err = 0;
+	// int ret = 1;
+	int pid;
+
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe)
 		err = pipe(c->pipes);
 	if(err != 0)
 		ft_error(s, "pipe", -1);
-	int pid = fork();
+	pid = fork();
 	if(pid < 0)
 		ft_error(s, "fork", -1);
 	if (pid < 0)
 		ft_error(s, "pipe pid is shit", -1);
 	if(pid == 0)
-	{
-		puts("CHILD");
-		if (c->isfollowedbypipe)
-		{
-			puts("CAS 1");
-			err = dup2(c->pipes[1], 1); //on branche le write side to stdout
-			if (err < 0)
-				ft_error(s, "pipe dup2", -1);
-		}
-		else if (c->isprecededbypipe)
-		{
-			puts("CAS 2");
-			err = dup2(c->pipes[0], 0); //connect read side to stdin
-			if (err < 0)
-				ft_error(s, "pipe dup2", -1);
-			// dup2(c->previouspipe->pipes[0], 1);
-			// exit(0);
-		}
-		ft_execfind(s, s->c);
-		exit(0);
-	}
+		ft_child(c, s);
 	else
-	{
-		puts("CACA");
-		printf("hello %s, %s\n", c->line, c->arg[0]);
-		// (void)status;
-		waitpid(pid, &status, 0);
-		if(c->isfollowedbypipe) // || c->isprecededbypipe)
-		{
-			if (c->isfollowedbypipe)
-			{
-				puts("CAS 5");
-				close(c->pipes[1]); // si suivi par un pipe on close write side
-			}
-			if (c->nextpipe == NULL)
-			{
-				puts("CAS 4");
-				close(c->pipes[0]); //si suivi par rien on close le read side
-			}
-		}
-		if (c->isprecededbypipe)
-		{
-			puts("CAS 3");
-			close(c->previouspipe->pipes[0]);
-		}
-		// exit(0);
-		
-	}
-	
-
+		ft_parent(c, pid);
 }
 
 void		multicommands(t_mother *s) 	//sends to different functions if its a pipe redirect etc
@@ -156,6 +78,8 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 
 // cat todo.txt | grep pipe | wc
 
+
+//test with 3
 	// t_command test2;
 	// t_command test;
 
@@ -183,7 +107,8 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	// test.isprecededbypipe = 1;
 	// test.previouspipe = s->c;
 
-	// s->pipe = 3;	
+	// s->pipe = 2;
+	// s->nbcmd = 3;	
 	// s->c->line = "cat todo.txt";
 	// s->c->nbarg = 1;
 	// s->c->command = "cat";
@@ -196,6 +121,7 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	// s->c->isprecededbypipe = 0;
 	// s->c->nextpipe = &test;
 
+//test with 2
 	t_command test;
 
 	test.previouspipe = s->c;
@@ -222,6 +148,20 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	s->c->isfollowedbypipe = 1;
 	s->c->isprecededbypipe = 0;
 	s->c->nextpipe = &test;
+
+// //test with 1
+	// s->pipe = 0;	
+	// s->c->line = "cat todo.txt";
+	// s->c->nbarg = 1;
+	// s->c->command = "cat";
+	// s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
+	// s->c->arg[0] = s->c->command;
+	// s->c->arg[1] = "todo.txt";
+	// s->c->arg[2] = NULL;
+	// s->c->arg[3] = NULL; 
+	// s->c->isfollowedbypipe = 0;
+	// s->c->isprecededbypipe = 0;
+	// s->c->nextpipe = NULL;
 
 	// int i = 0;
 	// while (i < 3)
@@ -259,8 +199,8 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	while(i < 2)
 	{
 		tmp = s;
-		puts("ZGEG");
-		ft_pipe2(s->c, tmp);
+		// puts("ZGEG");
+		ft_pipe(s->c, tmp);
 		if(!s->c->nextpipe)
 			break;
 		s->c = s->c->nextpipe;
