@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/09 16:27:51 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/16 21:10:43 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_command
 	int			nbarg;												//1
 	char		**arg; //arg[0] must be the command! and arg[last] must be null sinon bug de execve
 	
-	int			isfollowedbypipe;	//pipe handling 1 for a pipe, 2 for &, etc
+	int			isfollowedbypipe;	//pipe handling 1 for a pipe, 2 for <, 3 for >, 4 for >>, 5 for <<, 6 for &, etc
 	t_command	*nextpipe;
 	int			isprecededbypipe;
 	t_command	*previouspipe;
@@ -58,6 +58,7 @@ typedef struct s_command
 
 	int			iserrofile; //check if necessary with subject
 	char		*errorfile;
+	int			pipes[2];
 
 }				t_command;
 
@@ -83,6 +84,7 @@ typedef struct s_mother
 	char		**env; //char ** containing environment variables (useful for env and execve() PATHS)
 	int			nbcmd; //number of commands
 	int			pipe; //number of pipes
+	// int			pipes[2];
 	int			exitret; // value for the exit command to be updated during execution
 	char		*path; //env variable value for PATH
 	t_command	*c;
@@ -96,6 +98,8 @@ int		ft_parse(t_mother *s);
 void	ft_structinit(t_mother *s);
 void	ft_end(t_mother *s);
 void	ft_error(t_mother *s, char * error, int code);
+int		mainaftersignal(void);
+
 //builtins
 void	ft_echo(t_mother *s);
 int		ft_cd(t_mother *s);
@@ -103,14 +107,22 @@ int		ft_pwd(t_mother *s);
 void	ft_env(t_mother *s);
 void 	ft_export(t_mother *s);
 void 	ft_unset(t_mother *s);
+int		ft_exit(t_mother *s);
+
 //exec
-void	ft_execfind(t_mother *s);
+void	ft_execfind(t_mother *s, t_command *c);
 void	ft_execnotbuiltin(t_mother *s);
 char	*ft_pathfinder(t_mother *s);
+
 //exec with muliple commands
 void	multicommands(t_mother *s);
 void	ft_redirect(t_mother *s);
-void	ft_pipe(t_mother *s);
+void	ft_pipe(t_command *c, t_mother *s);
+
+//signaux
+void	signalhandler(int c); //for ctrl-c ctrl-v
+
+
 
 //env
 void	env_init(t_mother *s, char **envp);

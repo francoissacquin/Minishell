@@ -6,7 +6,7 @@
 #    By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 15:59:12 by ogenser           #+#    #+#              #
-#    Updated: 2021/09/08 12:19:00 by ogenser          ###   ########.fr        #
+#    Updated: 2021/09/16 20:19:36 by ogenser          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ srcs/lexer/mini_lexer_rules_2.c \
 srcs/executor/exec.c \
 srcs/executor/pipes.c \
 srcs/executor/redirect.c \
+srcs/signals.c \
 
 
 

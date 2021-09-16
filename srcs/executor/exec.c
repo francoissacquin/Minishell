@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:00:09 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/09 17:38:46 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/14 15:21:40 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ void	ft_execnotbuiltin(t_mother *s)
 		ft_error(s, "execve, binary may be corrupted", error);
 }
 
-void	ft_execfind(t_mother *s)
+void	ft_execfind(t_mother *s, t_command *c)
 {
-	// s->c->command = "l";
+	s->c = c;
 	
 	//builtins
 	if (ft_strcmp("cd", s->c->command) == 0)
@@ -112,15 +112,15 @@ void	ft_execfind(t_mother *s)
 	else if (ft_strcmp("echo", s->c->command) == 0)
 		ft_echo(s);	
 	else if (ft_strcmp("env", s->c->command) == 0)
-		ft_cd(s);
+		ft_env(s);
 	else if (ft_strcmp("exit", s->c->command) == 0)
-		ft_cd(s);
+		ft_exit(s);
 	else if (ft_strcmp("export", s->c->command) == 0)
-		ft_cd(s);
+		ft_export(s);
 	else if (ft_strcmp("pwd", s->c->command) == 0)
-		ft_cd(s);
+		ft_pwd(s);
 	else if (ft_strcmp("unset", s->c->command) == 0)
-		ft_cd(s);
+		ft_unset(s);
 	else
 		ft_execnotbuiltin(s);
 }
