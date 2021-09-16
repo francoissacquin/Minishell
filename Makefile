@@ -35,10 +35,15 @@ srcs/builtins/unset.c \
 srcs/env/env_manager.c \
 srcs/env/env_utils.c \
 srcs/lexer/minilexer.c \
+srcs/lexer/lexer_lst_utils.c \
+srcs/lexer/assign_types.c \
+srcs/lexer/mini_lexer_rules.c \
+srcs/lexer/mini_lexer_rules_2.c \
 srcs/executor/exec.c \
 srcs/executor/pipes.c \
 srcs/executor/redirect.c \
 srcs/signals.c \
+
 
 
 OBJ = $(SRC:.c=.o)

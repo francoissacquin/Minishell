@@ -45,7 +45,7 @@ int		ft_env_cmp(char *env1, char *var)
 		if (env1[i] != var[i])
 			return (0);
 		else if (env1[i] == '=' && var[i] == '=')
-			return (1);
+			return (i);
 		i++;
 	}
 	return (0);
@@ -63,6 +63,33 @@ int		ft_env_cmp_arg(char *env1, char *var)
 		i++;
 	}
 	if (env1[i] == '=')
-			return (1);
+			return (i);
 	return (0);
+}
+
+// type = 1 for arg search, type = 2 for a arg=value char search
+char	*ft_return_env_value(t_mother *s, char *var, int type)
+{
+	int		i;
+	int		index;
+
+	i = 0;
+	index = 0;
+	while (s->env[i] != NULL)
+	{
+		if (type == 1)
+		{
+			index = ft_env_cmp_arg(s->env[i], var);
+			if (index != 0)
+				return (ft_substr(s->env[i], index, ft_strlen(s->env[i]) - index));
+		}
+		else if (type == 2)
+		{
+			index = ft_env_cmp(s->env[i], var);
+			if (index != 0)
+				return(ft_substr(s->env[i], index, ft_strlen(s->env[i]) - index));
+		}
+		i++;
+	}
+	return (NULL);
 }

@@ -1,3 +1,5 @@
 *.o
 .DS_Store
 test.txt
+Minishell
+libft/libft.a

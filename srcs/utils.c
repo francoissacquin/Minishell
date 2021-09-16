@@ -38,20 +38,22 @@ void	ft_initc(t_mother *s)
 
 void    ft_lexinit(t_mother *s)
 {
-	t_lexer	lex;
-	t_token tok;
+	t_lexer	*lex;
+	t_token *tok;
 
-	//regles d'init : si pas de valeurs speciales tt les pointeurs a NULL (y compris les char *) et les char a '\0' -> necessaire pour debug valgrind etc
+	//regles d'init : si pas de valeurs speciales tt les pointeurs a NULL (y compris 
+	//les char *) et les char a '\0' -> necessaire pour debug valgrind etc
 	//declarer struct locale puis assigner sinon ca fout le bordel
-	tok.token = NULL;
-	tok.type = '\0';
-	tok.prev = NULL;
-	tok.next = NULL;
-    lex.quote = 0;
-    lex.comment = 0;
-	s->lex = &lex;
-	s->lex->first_token = &tok;
-
+	lex = malloc(sizeof(t_lexer));
+	tok = malloc(sizeof(t_token));
+	tok->token = NULL;
+	tok->type = '\0';
+	tok->prev = NULL;
+	tok->next = NULL;
+    lex->quote = 0;
+	lex->token_nb = 0;
+	s->lex = lex;
+	s->lex->first_token = tok;
 }
 
 void	ft_structinit(t_mother *s)

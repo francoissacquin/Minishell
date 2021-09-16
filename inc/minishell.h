@@ -39,11 +39,11 @@ typedef struct s_token	t_token;
 typedef struct s_command
 {
 
-	char 		*line; //the whole string inbetween separators
-	char		*command;
-	int			retvalue; // check how it should be done char*..?
+	char 		*line; //the whole string inbetween separators //cat todo.txt
+	char		*command;										//cat
+	int			retvalue; // check how it should be done char*..?	//0
 
-	int			nbarg;
+	int			nbarg;												//1
 	char		**arg; //arg[0] must be the command! and arg[last] must be null sinon bug de execve
 	
 	int			isfollowedbypipe;	//pipe handling 1 for a pipe, 2 for <, 3 for >, 4 for >>, 5 for <<, 6 for &, etc
@@ -66,15 +66,15 @@ typedef struct s_token
 {
 	char		*token;
 	char		type;
-	t_lexer		*prev;
-	t_lexer		*next;
+	t_token		*prev;
+	t_token		*next;
 }				t_token;
 
 typedef struct s_lexer
 {
 	t_token		*first_token;
 	int			quote; // a simple int to store info on quote input history for quotation rules
-	int			comment; // a simple int to store info on comments in the input line
+	int			token_nb;
 }				t_lexer;
 
 typedef struct s_mother
@@ -135,13 +135,34 @@ size_t	ft_strlen_array(char **array);
 void	ft_free_array(char **array);
 int		ft_env_cmp(char *env1, char *var);
 int		ft_env_cmp_arg(char *env1, char *var);
+char	*ft_return_env_value(t_mother *s, char *var, int type);
 //lexer functions
 void    ft_lexinit(t_mother *s);
 void    minilexer(t_mother *s);
-void    create_token(t_mother *s, int i, int j, char c);
+void    minilexer_inner_loop(t_mother *s, int *i, int *j);
+t_token *create_token(t_mother *s, int i, int j, char c);
+void    link_chain_elem(t_mother *s, int *i, int *j, char c);
+// lexer rules extension for norm problems
+void	ft_separator_rule(t_mother *s, int *i, int *j);
+void	ft_new_operator_char_rule(t_mother *s, int *i, int *j);
+void	ft_quote_aligner(t_mother *s, int *i, int *j);
+void	ft_dollar_aligner(t_mother *s, int *i, int *j);
+void	ft_delimiter(t_mother *s, int *i, int *j, int o);
 //lexer utils
 t_token *ft_last_elem(t_token *token);
-
+int	    ft_match_word(char c);
+void    ft_skip_word(t_mother *s, int *j);
+void    quote_handler(t_mother *s, int *i, int *j);
+void    dollar_tokeniser(t_mother *s, int *i, int *j);
+void    clean_struc(t_mother *s);
+// assign types functions
+void	assign_types(t_mother *s);
+void	ft_type_flag(t_token *tok);
+void	ft_type_env(t_token *tok);
+void	ft_type_built(t_token *tok);
+void	ft_type_pipe(t_token *tok);
+void	ft_type_path(t_mother *s, t_token *tok);
+void	ft_type_cmd(t_mother *s, t_token *tok);
 
 
 
