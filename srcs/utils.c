@@ -51,6 +51,7 @@ void    ft_lexinit(t_mother *s)
 	tok->prev = NULL;
 	tok->next = NULL;
     lex->quote = 0;
+	lex->token_nb = 0;
 	s->lex = lex;
 	s->lex->first_token = tok;
 }
