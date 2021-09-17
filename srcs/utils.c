@@ -32,6 +32,7 @@ void	ft_initc(t_mother *s)
 	c->inputfile = 0;
 	c->iserrofile = 0;
 	c->errorfile = NULL;
+	c->cmd_status = 0;
 	s->c = c;
 	// return(&c);
 }

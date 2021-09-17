@@ -17,6 +17,11 @@ size_t	ft_strlen_array(char **array)
 	size_t	i;
 
 	i = 0;
+	if (!array)
+	{
+		printf("AAAAAAAAAAHHHHHH\n");
+		return (0);
+	}
 	while (array[i] != NULL)
 		i++;
 	return (i);
@@ -30,9 +35,11 @@ void	ft_free_array(char **array)
 	while (len > 0)
 	{
 		free(array[len - 1]);
+		array[len - 1] = NULL;
 		len--;
 	}
 	free(array);
+	array = NULL;
 }
 
 int		ft_env_cmp(char *env1, char *var)
@@ -75,16 +82,19 @@ char	*ft_return_env_value(t_mother *s, char *var, int type)
 
 	i = 0;
 	index = 0;
+	//printf("what\n");
 	while (s->env[i] != NULL)
 	{
 		if (type == 1)
 		{
+			//printf("oops1 avec i = %i et env = %s\n", i, s->env[i]);
 			index = ft_env_cmp_arg(s->env[i], var);
 			if (index != 0)
 				return (ft_substr(s->env[i], index, ft_strlen(s->env[i]) - index));
 		}
 		else if (type == 2)
 		{
+			//printf("oops2 avec i = %i et env = %s\n", i, s->env[i]);
 			index = ft_env_cmp(s->env[i], var);
 			if (index != 0)
 				return(ft_substr(s->env[i], index, ft_strlen(s->env[i]) - index));

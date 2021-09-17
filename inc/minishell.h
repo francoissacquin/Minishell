@@ -42,6 +42,7 @@ typedef struct s_command
 	char 		*line; //the whole string inbetween separators //cat todo.txt
 	char		*command;										//cat
 	int			retvalue; // check how it should be done char*..?	//0
+	int			cmd_status; //cmd_status est juste un int pour dire quelle commande tu as, 1 pour built-ins, 2 pour command, je vais ameliorer le systeme pendant le weekend
 
 	int			nbarg;												//1
 	char		**arg; //arg[0] must be the command! and arg[last] must be null sinon bug de execve
@@ -74,7 +75,7 @@ typedef struct s_lexer
 {
 	t_token		*first_token;
 	int			quote; // a simple int to store info on quote input history for quotation rules
-	int			token_nb;
+	int			token_nb; // a voir si je l'utilise en fait;
 }				t_lexer;
 
 typedef struct s_mother
@@ -99,7 +100,11 @@ void	ft_structinit(t_mother *s);
 void	ft_end(t_mother *s);
 void	ft_error(t_mother *s, char * error, int code);
 int		mainaftersignal(void);
-
+// initialization of structures
+void	ft_initc(t_mother *s);
+void    ft_lexinit(t_mother *s);
+void	ft_structinit(t_mother *s);
+void	ft_end(t_mother *s);
 //builtins
 void	ft_echo(t_mother *s);
 int		ft_cd(t_mother *s);
@@ -123,7 +128,6 @@ void	ft_pipe(t_command *c, t_mother *s);
 void	signalhandler(int c); //for ctrl-c ctrl-v
 
 
-
 //env
 void	env_init(t_mother *s, char **envp);
 void	create_env(t_mother *s, char *str);
@@ -137,7 +141,6 @@ int		ft_env_cmp(char *env1, char *var);
 int		ft_env_cmp_arg(char *env1, char *var);
 char	*ft_return_env_value(t_mother *s, char *var, int type);
 //lexer functions
-void    ft_lexinit(t_mother *s);
 void    minilexer(t_mother *s);
 void    minilexer_inner_loop(t_mother *s, int *i, int *j);
 t_token *create_token(t_mother *s, int i, int j, char c);
@@ -164,9 +167,17 @@ void	ft_type_pipe(t_token *tok);
 void	ft_type_path(t_mother *s, t_token *tok);
 void	ft_type_cmd(t_mother *s, t_token *tok);
 
-
-
-
+// parser functions
+void	miniparser(t_mother *s);
+void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
+void	ft_cmd_blt(t_mother *s, t_token *tok, int *i);
+void	ft_add_args(t_mother *s, t_token *tok, int *i);
+void	ft_add_arg_array(t_command *last, t_token *tok);
+void	ft_add_operator(t_mother *s, t_token *tok, int *i);
+void	add_cmd_elem(t_mother *s, t_token *tok, int *i);
+t_command	*create_cmd(t_mother *s, t_token *tok, int *i);
+t_command	*ft_last_cmd(t_command *first);
+void	ft_wrong_input(t_mother *s, t_token *tok, int *i);
 
 
 

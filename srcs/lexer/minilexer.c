@@ -70,7 +70,7 @@ void    link_chain_elem(t_mother *s, int *i, int *j, char c)
     int     temp_i;
     int     temp_j;
 
-    printf("creating new chain element with i = %i et j = %i\n", *i, *j);
+    //printf("creating new chain element with i = %i et j = %i\n", *i, *j);
     prev = ft_last_elem(s->lex->first_token);
     temp_i = *i;
     temp_j = *j;

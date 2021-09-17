@@ -13,6 +13,7 @@ void	miniparser(t_mother *s)
 		tok = tok->next;
 		i++;
 	}
+	ft_tok_conveyor_belt(s, tok, &i);
 }
 
 void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
@@ -23,10 +24,13 @@ void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
 		ft_add_operator(s, tok, i);
-	else if (ft_strchr("wpef", tok->type))
+	else if (ft_strchr("wpf", tok->type))
 		ft_add_args(s, tok, i);// A FAIRE
 	else if (tok->type == 'e')
-		ft_env_handler(s, tok, i); // A FAIRE
+	{
+		printf("yo\n");
+		//ft_env_handler(s, tok, i); // A FAIRE
+	}
 }
 
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
@@ -37,11 +41,11 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	last = ft_last_cmd(s->c);
 	if (tok->prev != NULL)
 	{
-		if (tok->prev->type = 'P')
+		if (tok->prev->type == 'P')
 		{
 			last->isfollowedbypipe = 1;
 			add_cmd_elem(s, tok, i);
-			next = t_last_cmd(s->c);
+			next = ft_last_cmd(s->c);
 			last->nextpipe = next;
 			next->previouspipe = last;
 			next->isprecededbypipe = 1;
@@ -63,18 +67,49 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 
 void	ft_add_args(t_mother *s, t_token *tok, int *i)
 {
-	//A FAIRE
+	t_command	*last;
+
+	(void)i;
+	last = ft_last_cmd(s->c);
+	if (ft_strchr("pwf", tok->type))
+	{
+		last->nbarg++;
+		ft_add_arg_array(last, tok);
+		last->line = ft_strjoin(last->line, ft_strjoin(" ", tok->token));
+	}
+}
+
+void	ft_add_arg_array(t_command *last, t_token *tok)
+{
+	char 	**temp;
+	int		len;
+	int		i;
+
+	len = ft_strlen_array(last->arg);
+	printf("len = %i pour tok = %s et type = %c\n", len, tok->token, tok->type);
+	temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
+	i = 0;
+	while (i < len)
+	{
+		temp[i] = ft_strdup(last->arg[i]);
+		i++;
+	}
+	temp[i++] = tok->token;
+	temp[i] = NULL;
+	ft_free_array(last->arg);
+	last->arg = temp;
 }
 
 void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
 
+	(void)i;
 	last = ft_last_cmd(s->c);
 	if (tok->type == 'P')
 	{
 		//check that last command structure is completed and next token is actually a command
-		if (last->line == NULL || last->command == 'NULL' || last->arg == NULL)
+		if (last->line == NULL || last->command == NULL || last->arg == NULL)
 			printf("wrong pipe here, lat command does not exist\n");
 		if (tok->next != NULL)
 		{
@@ -83,6 +118,9 @@ void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 			else
 				printf("pipe leads to non valid command\n"); //METTRE FT_ERROR ICI
 		}
+		else
+			printf("pipe is last token???\n");
+		
 	}
 	else if (tok->type == 'o')
 	{
@@ -118,14 +156,17 @@ t_command	*create_cmd(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*new;
 
+	(void)i;
+	(void)s;
 	new = ft_malloc(&new, sizeof(t_command));
 	new->command = ft_strdup(tok->token);
 	new->line = ft_strdup(tok->token);
 	new->retvalue = 0;
 	new->nbarg = 1;
-	new->arg = ft_malloc(&new->arg, sizeof(char **) * 2);
+	new->arg = ft_malloc(&new->arg, sizeof(char *) * 2);
 	new->arg[0] = ft_strdup(tok->token);
 	new->arg[1] = NULL;
+	return (new);
 }
 
 t_command	*ft_last_cmd(t_command *first)
