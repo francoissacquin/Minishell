@@ -1,5 +1,5 @@
 #include "../../inc/minishell.h"
-/*
+
 void	miniparser(t_mother *s)
 {
 	t_token	*tok;
@@ -17,12 +17,12 @@ void	miniparser(t_mother *s)
 
 void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 {
-	if (i == 0 && ft_strchr("pf", tok->type))
+	if (i == 0 && ft_strchr("pPf", tok->type))
 		ft_wrong_input(s, tok, i);
 	else if (ft_strchr("cb", tok->type))
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
-		ft_add_operator(s, tok, i); // A FAIRE
+		ft_add_operator(s, tok, i);
 	else if (ft_strchr("wpef", tok->type))
 		ft_add_args(s, tok, i);// A FAIRE
 	else if (tok->type == 'e')
@@ -46,6 +46,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 			next->previouspipe = last;
 			next->isprecededbypipe = 1;
 			next->isfollowedbypipe = 0;
+			s->pipe++;
 		}
 		else
 			printf("erreur de pipe, nouvelle commande sans pipe devant\n"); // METTRE FT_ERROR ICI
@@ -57,6 +58,35 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		s->c->nextpipe = NULL;
 		s->c->isprecededbypipe = 0;
 		s->c->previouspipe = NULL;
+	}
+}
+
+void	ft_add_args(t_mother *s, t_token *tok, int *i)
+{
+	//A FAIRE
+}
+
+void	ft_add_operator(t_mother *s, t_token *tok, int *i)
+{
+	t_command	*last;
+
+	last = ft_last_cmd(s->c);
+	if (tok->type == 'P')
+	{
+		//check that last command structure is completed and next token is actually a command
+		if (last->line == NULL || last->command == 'NULL' || last->arg == NULL)
+			printf("wrong pipe here, lat command does not exist\n");
+		if (tok->next != NULL)
+		{
+			if (ft_strchr("bc", tok->next->type))
+				return ;
+			else
+				printf("pipe leads to non valid command\n"); //METTRE FT_ERROR ICI
+		}
+	}
+	else if (tok->type == 'o')
+	{
+		//check if redirection or something else
 	}
 }
 
@@ -74,7 +104,6 @@ void	add_cmd_elem(t_mother *s, t_token *tok, int *i)
 		next->previouspipe = prev;
 		prev->nextpipe = next;
 		next->nextpipe = NULL;
-		s->pipe++;
 		s->nbcmd++;
 	}
 	else
@@ -115,4 +144,3 @@ void	ft_wrong_input(t_mother *s, t_token *tok, int *i)
 	(void)tok;
 	(void)i;
 }
-*/
