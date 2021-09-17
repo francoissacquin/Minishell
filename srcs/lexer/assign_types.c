@@ -7,7 +7,7 @@ void	assign_types(t_mother *s)
 	temp = s->lex->first_token;
 	while (temp != NULL)
 	{
-		if (temp->type == '\0')
+		if (temp->type == '\0' && temp->token != NULL)
 		{
 			ft_type_flag(temp);
 			ft_type_env(temp);
@@ -107,7 +107,8 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 	i = 0;
 	while (array[i] != NULL)
 	{
-		exist = stat(ft_strjoin(array[i], tok->token), &sb);
+		//printf("||%s||\n", ft_strjoin(array[i], ft_strjoin("/", tok->token)));
+		exist = stat(ft_strjoin(array[i], ft_strjoin("/", tok->token)), &sb);
 		if (exist == 0)
 		{
 			tok->type = 'c';

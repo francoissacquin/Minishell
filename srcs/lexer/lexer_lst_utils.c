@@ -56,11 +56,15 @@ void    clean_struc(t_mother *s)
     t_token *next;
 
     temp = s->lex->first_token;
+    next = NULL;
     while (temp->next != NULL)
     {
-        next = temp->next;
-        free(temp->token);
-        free(temp);
+        if (temp->next != NULL)
+            next = temp->next;
+        if (temp->token != NULL)
+            free(temp->token);
+        if (temp != NULL)
+            free(temp);
         temp = next;
     } 
 }

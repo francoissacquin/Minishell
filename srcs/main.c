@@ -26,6 +26,7 @@ void	ft_history(t_mother *s)
 	add_history(s->line);
 }
 
+
 int mainaftersignal(void)
 {
 	t_mother s;
@@ -54,6 +55,7 @@ int mainaftersignal(void)
 	system("leaks Minishell");
 	return(1);
 }
+
 
 int main(int argc, char **argv, char **envp)
 {
@@ -90,3 +92,34 @@ int main(int argc, char **argv, char **envp)
 	// system("leaks Minishell");
 	return (0);
 }
+
+/*
+int main(int argc, char **argv, char **envp)
+{
+    t_mother    s;
+    t_command	*cmd;
+    (void)argv;
+	argc = 0;
+    while (1)
+    {
+		ft_structinit(&s);
+		ft_initc(&s);
+        ft_lexinit(&s);
+		env_init(&s, envp);
+        s.line = readline("Test :");
+        minilexer(&s);
+        assign_types(&s);
+		miniparser(&s);
+        cmd = s.c;
+        printf("\n\n");
+        while (cmd->nextpipe != NULL)
+        {
+            printf("[%s] of command [%s]\n", cmd->line, cmd->command);
+            cmd = cmd->nextpipe;
+        }
+        printf("[%s] of command [%s]\n", cmd->line, cmd->command);
+        //clean_struc(&s); CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
+    }
+    return (0);
+}
+*/
