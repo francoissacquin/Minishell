@@ -114,10 +114,18 @@ int main(int argc, char **argv, char **envp)
         printf("\n\n");
         while (cmd->nextpipe != NULL)
         {
-            printf("[%s] of command [%s]\n", cmd->line, cmd->command);
+			printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
+			printf("_________________________________________\n");
+            printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+			printf("-----------------------------------------\n");
+			printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
             cmd = cmd->nextpipe;
         }
-        printf("[%s] of command [%s]\n", cmd->line, cmd->command);
+		printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
+		printf("_________________________________________\n");
+        printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+		printf("-----------------------------------------\n");
+		printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
         //clean_struc(&s); CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
     }
     return (0);

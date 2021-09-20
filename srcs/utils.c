@@ -67,6 +67,7 @@ void	ft_structinit(t_mother *s)
 	s->pipe = 0;
 	s->exitret = 0;
 	s->path = NULL;
+	s->redirect_mem = 0;
 	ft_initc(s);
 	ft_lexinit(s);
 }
