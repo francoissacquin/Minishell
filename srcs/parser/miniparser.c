@@ -24,8 +24,10 @@ void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
 		ft_add_operator(s, tok, i);
-	else if (ft_strchr("wpf", tok->type))
+	else if (ft_strchr("wpf", tok->type) && s->redirect_mem == 0)
 		ft_add_args(s, tok, i);// A FAIRE
+	else if (ft_strchr("wp", tok->type) && s->redirect_mem != 0)
+		ft_cmd_blt(s, tok, i);
 	else if (tok->type == 'e')
 	{
 		printf("yo\n");
@@ -39,29 +41,52 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	t_command	*next;
 
 	last = ft_last_cmd(s->c);
+	printf("pour passage %i on a s->redir = %i\n", *i, s->redirect_mem);
 	if (tok->prev != NULL)
 	{
 		if (tok->prev->type == 'P')
 		{
+			printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
 			last->isfollowedbypipe = 1;
 			add_cmd_elem(s, tok, i);
 			next = ft_last_cmd(s->c);
 			last->nextpipe = next;
 			next->previouspipe = last;
+			next->nextpipe = NULL;
 			next->isprecededbypipe = 1;
 			next->isfollowedbypipe = 0;
 			s->pipe++;
 		}
+		else if (tok->prev->type == 'o' && s->redirect_mem != 0)
+		{
+			printf("--creation post redir avec s->redir = %i\n", s->redirect_mem);
+			last->isfollowedbypipe = s->redirect_mem;
+			add_cmd_elem(s, tok, i);
+			next = ft_last_cmd(s->c);
+			last->nextpipe = next;
+			next->previouspipe = last;
+			next->nextpipe = NULL;
+			next->isprecededbypipe = s->redirect_mem;
+			next->isfollowedbypipe = 0;
+			s->pipe++;
+			s->redirect_mem = 0;
+		}
 		else
-			printf("erreur de pipe, nouvelle commande sans pipe devant\n"); // METTRE FT_ERROR ICI
+			printf("erreur de pipe ou d'operateur, nouvelle commande sans lien devant\n"); // METTRE FT_ERROR ICI
 	}
 	else
 	{
+		printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
 		s->c = create_cmd(s, tok, i);
 		s->c->isfollowedbypipe = 0;
 		s->c->nextpipe = NULL;
 		s->c->isprecededbypipe = 0;
 		s->c->previouspipe = NULL;
+		if (s->redirect_mem != 0)
+		{
+			s->c->isprecededbypipe = s->redirect_mem;
+			s->redirect_mem = 0;
+		}
 	}
 }
 
@@ -75,7 +100,10 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 	{
 		last->nbarg++;
 		ft_add_arg_array(last, tok);
-		last->line = ft_strjoin(last->line, ft_strjoin(" ", tok->token));
+		if (last->line == NULL)
+			last->line = ft_strdup(tok->token);
+		else
+			last->line = ft_strjoin(last->line, ft_strjoin(" ", tok->token));
 	}
 }
 
@@ -104,7 +132,6 @@ void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
 
-	(void)i;
 	last = ft_last_cmd(s->c);
 	if (tok->type == 'P')
 	{
@@ -124,8 +151,36 @@ void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 	}
 	else if (tok->type == 'o')
 	{
-		//check if redirection or something else
+		if (tok->next != NULL)
+		{
+			if (ft_strchr("bcwep", tok->next->type))
+				assign_redirect(s, tok, i);
+			
+		}
+		if (tok->prev != NULL)
+		{
+			if (last->line != NULL && ft_strrchr("bcwefpq", tok->prev->type))
+				assign_redirect(s, tok, i);
+		}
 	}
+}
+
+void	assign_redirect(t_mother *s, t_token *tok, int *i)
+{
+	t_command	*last;
+
+	(void)i;
+	last = ft_last_cmd(s->c);
+	if (last->line != NULL)
+		last->isfollowedbypipe = 1;
+	if (!(ft_strcmp(tok->token, "<")))
+		s->redirect_mem = 2;
+	else if (!(ft_strcmp(tok->token, ">")))
+		s->redirect_mem = 3;
+	else if (!(ft_strcmp(tok->token, ">>")))
+		s->redirect_mem = 4;
+	else if (!(ft_strcmp(tok->token, "<<")))
+		s->redirect_mem = 5;
 }
 
 void	add_cmd_elem(t_mother *s, t_token *tok, int *i)
@@ -166,6 +221,7 @@ t_command	*create_cmd(t_mother *s, t_token *tok, int *i)
 	new->arg = ft_malloc(&new->arg, sizeof(char *) * 2);
 	new->arg[0] = ft_strdup(tok->token);
 	new->arg[1] = NULL;
+	new->cmd_status = tok->type - 97;
 	return (new);
 }
 

@@ -42,7 +42,7 @@ typedef struct s_command
 	char 		*line; //the whole string inbetween separators //cat todo.txt
 	char		*command;										//cat
 	int			retvalue; // check how it should be done char*..?	//0
-	int			cmd_status; //cmd_status est juste un int pour dire quelle commande tu as, 1 pour built-ins, 2 pour command, je vais ameliorer le systeme pendant le weekend
+	int			cmd_status; //cmd_status est juste un int pour dire quelle commande tu as, 1 pour built-ins, 2 pour command
 
 	int			nbarg;												//1
 	char		**arg; //arg[0] must be the command! and arg[last] must be null sinon bug de execve
@@ -86,6 +86,7 @@ typedef struct s_mother
 	int			nbcmd; //number of commands
 	int			pipe; //number of pipes
 	// int			pipes[2];
+	int			redirect_mem; //an int I need to ensure compatibility between different s_command elements when redireciton is involved;
 	int			exitret; // value for the exit command to be updated during execution
 	char		*path; //env variable value for PATH
 	t_command	*c;
@@ -178,6 +179,7 @@ void	add_cmd_elem(t_mother *s, t_token *tok, int *i);
 t_command	*create_cmd(t_mother *s, t_token *tok, int *i);
 t_command	*ft_last_cmd(t_command *first);
 void	ft_wrong_input(t_mother *s, t_token *tok, int *i);
+void	assign_redirect(t_mother *s, t_token *tok, int *i);
 
 
 
