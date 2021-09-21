@@ -4,3 +4,4 @@ test.txt
 Minishell
 libft/libft.a
 libft/*.o
+test
