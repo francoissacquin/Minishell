@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/20 21:36:13 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/21 21:21:37 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,25 @@ void		ft_child(t_command *c, t_mother *s)
 		if (c->isfollowedbypipe == 3)
 			fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
 		if (c->isfollowedbypipe == 4)
-			fd = open(c->outfile, O_RDWR|O_APPEND, 0666);
+			fd = open(c->outfile, O_RDWR|O_APPEND|O_CREAT, 0666);
 		printf("%d\n", fd);
-		err = dup2(fd, 1);
+		if (c->isfollowedbypipe == 3 || c->isfollowedbypipe == 4)
+			err = dup2(fd, 1);
 		if (err < 0)
 			ft_error(s, "redirect dup2", -1);
-		err = dup2(fd, 2);
+		if (c->isfollowedbypipe == 3 || c->isfollowedbypipe == 4)
+			err = dup2(fd, 2);
 		if (err < 0)
 			ft_error(s, "redirect dup2", -1);
+		if (c->isfollowedbypipe == 2)
+		{
+			printf("caca");
+			fd = open(c->inputfile, O_RDWR|O_APPEND, 0666);
+			write(fd, "helo hello\n", 11);
+			err = dup2(1, fd);
+			dup2(2, fd);
+			// exit(0);
+		}
 	}
 	if (c->isprecededbypipe) //si y'a un pipe avant on connecte la sortie du pipe au stdin
 	{
@@ -185,17 +196,19 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 
 // //test with 1
 	s->pipe = 1;	
-	s->c->line = "cat todo.txt";
+	s->c->line = "grep pipe";
 	s->c->nbarg = 1;
-	s->c->command = "cat";
+	s->c->command = "grep";
 	s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
 	s->c->arg[0] = s->c->command;
-	s->c->arg[1] = "todo.txt";
+	s->c->arg[1] = "pipe";
 	s->c->arg[2] = NULL;
 	s->c->arg[3] = NULL; 
-	s->c->isfollowedbypipe = 3;
-	s->c->isoutfile = 1;
-	s->c->outfile = "chibrax.txt";
+	s->c->isfollowedbypipe = 2;
+	s->c->isoutfile = 0;
+	s->c->isinputfile = 1;
+	s->c->outfile = NULL;
+	s->c->inputfile = "test.txt";
 	s->c->isprecededbypipe = 0;
 	s->c->nextpipe = NULL;
 
@@ -232,7 +245,7 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	t_mother *tmp;
 	// int ret = 0;
 	int i = 0;
-	while(i < 2)
+	while(i < 1)
 	{
 		tmp = s;
 		// puts("ZGEG");
