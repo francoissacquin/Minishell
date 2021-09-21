@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-//static char **env;
+static char **env;
 
 void ft_error(t_mother *s, char * error, int code)
 {
@@ -26,7 +26,7 @@ void	ft_history(t_mother *s)
 	add_history(s->line);
 }
 
-/*
+
 int mainaftersignal(void)
 {
 	t_mother s;
@@ -92,54 +92,55 @@ int main(int argc, char **argv, char **envp)
 	// system("leaks Minishell");
 	return (0);
 }
-*/
 
-int main(int argc, char **argv, char **envp)
-{
-    t_mother    s;
-    t_command	*cmd;
-	t_token		*tok;
-    (void)argv;
-	argc = 0;
-    while (1)
-    {
-		ft_structinit(&s);
-		ft_initc(&s);
-        ft_lexinit(&s);
-		env_init(&s, envp);
-        s.line = readline("Test :");
-        minilexer(&s);
-        assign_types(&s);
-		miniparser(&s);
-        cmd = s.c;
-		tok = s.lex->first_token;
-		while (tok->next != NULL)
-        {
-            printf("[%s] of type [%c]\n", tok->token, tok->type);
-            tok = tok->next;
-        }
-		printf("[%s] of type [%c]\n", tok->token, tok->type);
-        printf("\n\n");
-        while (cmd->nextpipe != NULL)
-        {
-			printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
-			printf("_________________________________________\n");
-            printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
-			printf("-----------------------------------------\n");
-			printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
-            cmd = cmd->nextpipe;
-        }
-		printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
-		printf("_________________________________________\n");
-        printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
-		printf("-----------------------------------------\n");
-		printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
-        //clean_struc(&s); CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
-    }
-    return (0);
-}
+
+// int main(int argc, char **argv, char **envp)
+// {
+//     t_mother    s;
+//     t_command	*cmd;
+// 	t_token		*tok;
+//     (void)argv;
+// 	argc = 0;
+//     while (1)
+//     {
+// 		ft_structinit(&s);
+// 		ft_initc(&s);
+//         ft_lexinit(&s);
+// 		env_init(&s, envp);
+//         s.line = readline("Test :");
+//         minilexer(&s);
+//         assign_types(&s);
+// 		miniparser(&s);
+//         cmd = s.c;
+// 		tok = s.lex->first_token;
+// 		while (tok->next != NULL)
+//         {
+//             printf("[%s] of type [%c]\n", tok->token, tok->type);
+//             tok = tok->next;
+//         }
+// 		printf("[%s] of type [%c]\n", tok->token, tok->type);
+//         printf("\n\n");
+//         while (cmd->nextpipe != NULL)
+//         {
+// 			printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
+// 			printf("_________________________________________\n");
+//             printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+// 			printf("-----------------------------------------\n");
+// 			printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
+//             cmd = cmd->nextpipe;
+//         }
+// 		printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
+// 		printf("_________________________________________\n");
+//         printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+// 		printf("-----------------------------------------\n");
+// 		printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
+//         //clean_struc(&s); CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
+//     }
+//     return (0);
+// }
 // Ajouter le cas spécial des flags de merde. C’est juste horrible. UNIQUEMENT POUR  LES BUILT-INS ECHOOOO
 // |=> des que on a un non flag, le reste des arguments n’est plus considéré comme des flags même si il sont lexicalement de flags.
 // Rebrancher le ft_error. Surtout pour empêcher les unclosed quotes.
 // Ne pas expand les singles quotes!!!
 // Voir si on garde l’espace entre les arguments. 
+// VOIR POUR LA REDIRECTION
