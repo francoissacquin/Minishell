@@ -42,7 +42,7 @@ typedef struct s_command
 	char 		*line; //the whole string inbetween separators //cat todo.txt
 	char		*command;										//cat
 	int			retvalue; // check how it should be done char*..?	//0
-	int			cmd_status; //cmd_status est juste un int pour dire quelle commande tu as, 1 pour built-ins, 2 pour command
+	int			cmd_status; //cmd_status is int for cmd info, 1 for built-ins, 2 for command, 22 for a non-command word.
 
 	int			nbarg;												//1
 	char		**arg; //arg[0] must be the command! and arg[last] must be null sinon bug de execve
@@ -135,6 +135,11 @@ void	create_env(t_mother *s, char *str);
 void	change_env(t_mother *s, char *str, int pos);
 void	add_env(t_mother *s, char *str);
 void	rm_env(t_mother *s, char *str);
+void	expanding_env(t_mother *s, t_token *tok);
+void	quote_env_replacing(t_mother *s, t_token *tok, int start, int end);
+void	env_replacing(t_mother *s, t_token *tok);
+int		quote_env_finder(t_token *tok);
+char	*ft_strjoin_env(char *str1, char *str2);
 //env_utils
 size_t	ft_strlen_array(char **array);
 void	ft_free_array(char **array);
@@ -173,6 +178,7 @@ void	miniparser(t_mother *s);
 void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i);
 void	ft_add_args(t_mother *s, t_token *tok, int *i);
+void	check_echo_flag(t_mother *s, t_token *tok);
 void	ft_add_arg_array(t_command *last, t_token *tok);
 void	ft_add_operator(t_mother *s, t_token *tok, int *i);
 void	add_cmd_elem(t_mother *s, t_token *tok, int *i);

@@ -13,7 +13,8 @@ void	miniparser(t_mother *s)
 		tok = tok->next;
 		i++;
 	}
-	ft_tok_conveyor_belt(s, tok, &i);
+	if (tok->token != NULL)
+		ft_tok_conveyor_belt(s, tok, &i);
 }
 
 void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
@@ -25,13 +26,13 @@ void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	else if (ft_strchr("Po", tok->type))
 		ft_add_operator(s, tok, i);
 	else if (ft_strchr("wpf", tok->type) && s->redirect_mem == 0)
-		ft_add_args(s, tok, i);// A FAIRE
+		ft_add_args(s, tok, i);
 	else if (ft_strchr("wp", tok->type) && s->redirect_mem != 0)
 		ft_cmd_blt(s, tok, i);
-	else if (tok->type == 'e')
+	else if (ft_strchr("eq", tok->type))
 	{
-		printf("yo\n");
-		//ft_env_handler(s, tok, i); // A FAIRE
+		expanding_env(s, tok);
+		ft_add_args(s, tok, i);
 	}
 }
 
@@ -96,8 +97,17 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 
 	(void)i;
 	last = ft_last_cmd(s->c);
-	if (ft_strchr("pwf", tok->type))
+	if (ft_strchr("pwfqe", tok->type))
 	{
+		printf("AAAAAAHHHH pour %i\n", last->cmd_status);
+		if (last->cmd_status == 'b')
+		{
+			printf("entering built-ins HQ\n");
+			if (tok->type == 'f' && !(ft_strcmp(last->command, "echo")))
+				check_echo_flag(s, tok);
+			else if (tok->type == 'f')
+				printf("AUCUN FLAG AUTORISÉ POUR LES BUILT-INS\n"); //METTRE FT_ERROR ICI
+		}
 		last->nbarg++;
 		ft_add_arg_array(last, tok);
 		if (last->line == NULL)
@@ -107,6 +117,23 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 	}
 }
 
+void	check_echo_flag(t_mother *s, t_token *tok)
+{
+	int		i;
+
+	(void)s;
+	i = 1;
+	printf("WHAT?\n");
+	while (tok->token[i])
+	{
+		if (tok->token[i] != 'n')
+			printf("flag non-valide pour le built-in echo\n"); //METTRE FT_ERROR ICI
+		i++;
+	}
+	free(tok->token);
+	tok->token = ft_strdup("-n");
+}
+
 void	ft_add_arg_array(t_command *last, t_token *tok)
 {
 	char 	**temp;
@@ -114,7 +141,6 @@ void	ft_add_arg_array(t_command *last, t_token *tok)
 	int		i;
 
 	len = ft_strlen_array(last->arg);
-	printf("len = %i pour tok = %s et type = %c\n", len, tok->token, tok->type);
 	temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
 	i = 0;
 	while (i < len)
@@ -122,7 +148,7 @@ void	ft_add_arg_array(t_command *last, t_token *tok)
 		temp[i] = ft_strdup(last->arg[i]);
 		i++;
 	}
-	temp[i++] = tok->token;
+	temp[i++] = ft_strdup(tok->token);
 	temp[i] = NULL;
 	ft_free_array(last->arg);
 	last->arg = temp;
@@ -146,7 +172,7 @@ void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 				printf("pipe leads to non valid command\n"); //METTRE FT_ERROR ICI
 		}
 		else
-			printf("pipe is last token???\n");
+			printf("pipe is last token???\n"); //METTRE FT_ERROR ICI
 		
 	}
 	else if (tok->type == 'o')
@@ -222,6 +248,7 @@ t_command	*create_cmd(t_mother *s, t_token *tok, int *i)
 	new->arg[0] = ft_strdup(tok->token);
 	new->arg[1] = NULL;
 	new->cmd_status = tok->type - 97;
+	printf("on a un cmd_status = %i\n", new->cmd_status);
 	return (new);
 }
 
@@ -240,4 +267,5 @@ void	ft_wrong_input(t_mother *s, t_token *tok, int *i)
 	(void)s;
 	(void)tok;
 	(void)i;
+	printf("INPUT NON VALIDE\n"); // METTRE FT_ERROR ICI
 }

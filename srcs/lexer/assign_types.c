@@ -11,9 +11,9 @@ void	assign_types(t_mother *s)
 		{
 			ft_type_flag(temp);
 			ft_type_env(temp);
-			ft_type_built(temp);
 			ft_type_path(s, temp);
 			ft_type_cmd(s, temp);
+			ft_type_built(temp);
 		}
 		if (temp->type == 'o')
 			ft_type_pipe(temp);

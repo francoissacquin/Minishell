@@ -35,6 +35,7 @@ srcs/builtins/pwd.c \
 srcs/builtins/unset.c \
 srcs/env/env_manager.c \
 srcs/env/env_utils.c \
+srcs/env/env_expanding.c \
 srcs/lexer/minilexer.c \
 srcs/lexer/lexer_lst_utils.c \
 srcs/lexer/assign_types.c \
