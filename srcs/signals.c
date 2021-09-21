@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
+/*
 void	signalhandler(int c)
 {
 	if (c == SIGQUIT)
@@ -26,3 +26,4 @@ void	signalhandler(int c)
 		mainaftersignal();
 	}
 }
+*/

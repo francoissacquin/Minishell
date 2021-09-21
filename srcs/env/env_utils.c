@@ -19,7 +19,7 @@ size_t	ft_strlen_array(char **array)
 	i = 0;
 	if (!array)
 	{
-		printf("AAAAAAAAAAHHHHHH\n");
+		printf("AAAAAAAAAAHHHHHH\n"); // we need to find a better way for this I think
 		return (0);
 	}
 	while (array[i] != NULL)
@@ -79,6 +79,7 @@ char	*ft_return_env_value(t_mother *s, char *var, int type)
 {
 	int		i;
 	int		index;
+	char	*res;
 
 	i = 0;
 	index = 0;
@@ -90,7 +91,7 @@ char	*ft_return_env_value(t_mother *s, char *var, int type)
 			//printf("oops1 avec i = %i et env = %s\n", i, s->env[i]);
 			index = ft_env_cmp_arg(s->env[i], var);
 			if (index != 0)
-				return (ft_substr(s->env[i], index, ft_strlen(s->env[i]) - index));
+				return (ft_substr(s->env[i], index + 1, ft_strlen(s->env[i]) - index));
 		}
 		else if (type == 2)
 		{
@@ -101,5 +102,8 @@ char	*ft_return_env_value(t_mother *s, char *var, int type)
 		}
 		i++;
 	}
-	return (NULL);
+	printf("no value found\n");
+	res = ft_malloc(&res, sizeof(char));
+	res[0] = '\0';
+	return (res);
 }
