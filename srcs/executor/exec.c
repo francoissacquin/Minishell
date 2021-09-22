@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:00:09 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/14 15:21:40 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/22 19:30:09 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ void	ft_execnotbuiltin(t_mother *s)
 
 	path = ft_pathfinder(s);
 	error = 0;
-	// printf("%s , %s", path, s->c->arg[0]);
+	 //printf("%s , %s", path, s->c->arg[0]);
+	 dprintf(1,"fghm");
 	error = execve(path, s->c->arg, s->env);
 	// char *test = " -la";
 	// error = execve(path, &test, NULL); //this is a test
