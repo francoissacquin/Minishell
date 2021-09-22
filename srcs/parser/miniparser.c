@@ -100,7 +100,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 	if (ft_strchr("pwfqe", tok->type))
 	{
 		printf("AAAAAAHHHH pour %i\n", last->cmd_status);
-		if (last->cmd_status == 'b')
+		if (last->cmd_status == 1)
 		{
 			printf("entering built-ins HQ\n");
 			if (tok->type == 'f' && !(ft_strcmp(last->command, "echo")))
@@ -120,18 +120,26 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 void	check_echo_flag(t_mother *s, t_token *tok)
 {
 	int		i;
+	int		wrong_flag;
 
 	(void)s;
 	i = 1;
+	wrong_flag = 0;
 	printf("WHAT?\n");
 	while (tok->token[i])
 	{
 		if (tok->token[i] != 'n')
+		{
 			printf("flag non-valide pour le built-in echo\n"); //METTRE FT_ERROR ICI
+			wrong_flag = 1;
+		}
 		i++;
 	}
-	free(tok->token);
-	tok->token = ft_strdup("-n");
+	if (!wrong_flag)
+	{
+		free(tok->token);
+		tok->token = ft_strdup("-n");
+	}
 }
 
 void	ft_add_arg_array(t_command *last, t_token *tok)
