@@ -25,6 +25,7 @@ HEADER = inc/minishell.h
 SRC = srcs/main.c \
 srcs/parser/parse.c \
 srcs/parser/miniparser.c \
+srcs/parser/redir_parsing.c \
 srcs/utils.c \
 srcs/builtins/cd.c \
 srcs/builtins/echo.c \

@@ -24,6 +24,7 @@
 // q = quoted string
 // e = environement variable
 // f = flags (anything that starts with '-')
+// d = delimiter (specifically for << redirection)
 
 void    minilexer(t_mother *s)
 {

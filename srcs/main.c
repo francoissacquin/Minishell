@@ -138,9 +138,7 @@ int main(int argc, char **argv, char **envp)
 //     }
 //     return (0);
 // }
-// Ajouter le cas spécial des flags de merde. C’est juste horrible. UNIQUEMENT POUR  LES BUILT-INS ECHOOOO
-// |=> des que on a un non flag, le reste des arguments n’est plus considéré comme des flags même si il sont lexicalement de flags.
+// |=> des que on a un non flag, le reste des arguments n’est plus considéré comme des flags même si il sont lexicalement de flags?
 // Rebrancher le ft_error. Surtout pour empêcher les unclosed quotes.
-// Ne pas expand les singles quotes!!!
 // Voir si on garde l’espace entre les arguments. 
 // VOIR POUR LA REDIRECTION

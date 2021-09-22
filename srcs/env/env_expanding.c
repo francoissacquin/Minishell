@@ -6,6 +6,8 @@ void	expanding_env(t_mother *s, t_token *tok)
 	int		end;
 
 	index = quote_env_finder(tok);
+	if (tok->type == 'q' && tok->token[0] == '\'')
+		return ;
 	while (index != -1)
 	{
 		printf("entering here\n");
