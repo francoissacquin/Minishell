@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/21 21:21:37 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/22 20:23:46 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 void		ft_child(t_command *c, t_mother *s)
 {
 	int err = 0;
+	int fd = 0;
+
 	if (c->isfollowedbypipe > 1)
 	{
 		printf("hello\n");
-		int fd;
 		printf("%s\n", c->outfile);
 		if (c->isfollowedbypipe == 3)
 			fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
@@ -37,10 +38,14 @@ void		ft_child(t_command *c, t_mother *s)
 		{
 			printf("caca");
 			fd = open(c->inputfile, O_RDWR|O_APPEND, 0666);
-			write(fd, "helo hello\n", 11);
-			err = dup2(1, fd);
-			dup2(2, fd);
-			// exit(0);
+			printf("%d\n", fd);
+			err = dup2(fd, 0);
+			close(c->pipes[1]);
+			//write(0, "test redir dup2", 16);
+			if (err < 0)
+				ft_error(s, "pipe dup2", -1);
+			close(fd);
+			//connect read side to stdin
 		}
 	}
 	if (c->isprecededbypipe) //si y'a un pipe avant on connecte la sortie du pipe au stdin
@@ -55,6 +60,8 @@ void		ft_child(t_command *c, t_mother *s)
 		if (err < 0)
 			ft_error(s, "pipe dup2", -1);
 	}
+	if(fd)
+		close(fd);
 	ft_execfind(s, s->c); //execute command in child process meme si il y'en a que une
 	exit(1);
 }
@@ -93,6 +100,7 @@ void		ft_parent(t_command *c, int pid)
 	}
 	waitpid(pid, &status, 0); //peut etre a mettre au debut	du parent // on attends la fin du child pour etre sur d'avoir tte la sortie
 }
+
 
 
 void		ft_pipe(t_command *c, t_mother *s)
@@ -196,19 +204,19 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 
 // //test with 1
 	s->pipe = 1;	
-	s->c->line = "grep pipe";
+	s->c->line = "grep make";
 	s->c->nbarg = 1;
 	s->c->command = "grep";
 	s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
 	s->c->arg[0] = s->c->command;
-	s->c->arg[1] = "pipe";
+	s->c->arg[1] = "make";
 	s->c->arg[2] = NULL;
 	s->c->arg[3] = NULL; 
 	s->c->isfollowedbypipe = 2;
 	s->c->isoutfile = 0;
 	s->c->isinputfile = 1;
 	s->c->outfile = NULL;
-	s->c->inputfile = "test.txt";
+	s->c->inputfile = "Makefile";
 	s->c->isprecededbypipe = 0;
 	s->c->nextpipe = NULL;
 
@@ -242,7 +250,21 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 
 	// if (s->c->isfollowedbypipe == 1)
 	// 	ft_pipe(s);
-	t_mother *tmp;
+	// t_mother *tmp;
+	// // int ret = 0;
+	// int i = 0;
+	// while(i < 1)
+	// {
+	// 	tmp = s;
+	// 	// puts("ZGEG");
+	// 	ft_pipe(s->c, tmp);
+	// 	if(!s->c->nextpipe)
+	// 		break;
+	// 	s->c = s->c->nextpipe;
+	// 	i++;
+	// }
+
+		t_mother *tmp;
 	// int ret = 0;
 	int i = 0;
 	while(i < 1)
