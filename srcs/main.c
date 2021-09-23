@@ -38,12 +38,12 @@ int mainaftersignal(void)
 	ft_history(&s);
 	env_init(&s, env);
 
-	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR BLOC SUIVANT.
-	minilexer(&s);
-	assign_types(&s);
-	redir_input_handler(&s);
-	miniparser(&s);
-	ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR LE BLOC SUIVANT. :D
+	// minilexer(&s);
+	// assign_types(&s);
+	// redir_input_handler(&s);
+	// miniparser(&s);
+	// ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
 
 	// ft_echo(&s);
 	// ft_cd(&s);
