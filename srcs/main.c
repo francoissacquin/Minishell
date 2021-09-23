@@ -38,6 +38,13 @@ int mainaftersignal(void)
 	ft_history(&s);
 	env_init(&s, env);
 
+	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR BLOC SUIVANT.
+	minilexer(&s);
+	assign_types(&s);
+	redir_input_handler(&s);
+	miniparser(&s);
+	ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+
 	// ft_echo(&s);
 	// ft_cd(&s);
 	// ft_echo(&s);
@@ -57,7 +64,7 @@ int mainaftersignal(void)
 
 int main(int argc, char **argv, char **envp)
 {
-	t_mother 	s;
+	//t_mother 	s;
 	
 	(void)argv;
 	(void)argc;
@@ -74,11 +81,11 @@ int main(int argc, char **argv, char **envp)
 	// env_init(&s, envp);
 
 	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR BLOC SUIVANT.
-	minilexer(&s);
-	assign_types(&s);
-	redir_input_handler(&s);
-	miniparser(&s);
-	ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+	// minilexer(&s);
+	// assign_types(&s);
+	// redir_input_handler(&s);
+	// miniparser(&s);
+	// ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
 
 	// // ft_echo(&s);
 	// // ft_cd(&s);
@@ -102,35 +109,32 @@ void	ft_print_parsing_results(t_mother *s)
     t_command	*cmd;
 	t_token		*tok;
 
-    while (1)
+    cmd = s->c;
+	tok = s->lex->first_token;
+	while (tok->next != NULL)
     {
-        cmd = s->c;
-		tok = s->lex->first_token;
-		while (tok->next != NULL)
-        {
-            printf("[%s] of type [%c]\n", tok->token, tok->type);
-            tok = tok->next;
-        }
-		printf("[%s] of type [%c]\n", tok->token, tok->type);
-        printf("\n\n");
-        while (cmd->nextpipe != NULL)
-        {
-			printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
-			printf("_________________________________________\n");
-            printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
-			printf("-----------------------------------------\n");
-			printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
-            cmd = cmd->nextpipe;
-        }
+        printf("[%s] of type [%c]\n", tok->token, tok->type);
+        tok = tok->next;
+    }
+	printf("[%s] of type [%c]\n", tok->token, tok->type);
+    printf("\n\n");
+    while (cmd->nextpipe != NULL)
+    {
 		printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
 		printf("_________________________________________\n");
         printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
 		printf("-----------------------------------------\n");
 		printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
-		if (s->lex->std_input_redir != NULL)
-			printf("<< input was :\n%s\n", s->lex->std_input_redir);
-        //clean_struc(&s); CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
+        cmd = cmd->nextpipe;
     }
+	printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
+	printf("_________________________________________\n");
+    printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+	printf("-----------------------------------------\n");
+	printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
+	if (s->lex->std_input_redir != NULL)
+		printf("<< input was :\n%s\n", s->lex->std_input_redir);
+    //clean_struc(&s); CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
 }
 // |=> des que on a un non flag, le reste des arguments n’est plus considéré comme des flags même si il sont lexicalement de flags?
 // Rebrancher le ft_error. Surtout pour empêcher les unclosed quotes.
