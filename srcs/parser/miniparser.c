@@ -42,12 +42,12 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	t_command	*next;
 
 	last = ft_last_cmd(s->c);
-	printf("pour passage %i on a s->redir = %i\n", *i, s->redirect_mem);
+	//printf("pour passage %i on a s->redir = %i\n", *i, s->redirect_mem);
 	if (tok->prev != NULL)
 	{
 		if (tok->prev->type == 'P')
 		{
-			printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
+			//printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
 			last->isfollowedbypipe = 1;
 			add_cmd_elem(s, tok, i);
 			next = ft_last_cmd(s->c);
@@ -60,7 +60,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		}
 		else if (tok->prev->type == 'o' && s->redirect_mem != 0)
 		{
-			printf("--creation post redir avec s->redir = %i\n", s->redirect_mem);
+			//printf("--creation post redir avec s->redir = %i\n", s->redirect_mem);
 			last->isfollowedbypipe = s->redirect_mem;
 			add_cmd_elem(s, tok, i);
 			next = ft_last_cmd(s->c);
@@ -77,7 +77,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	}
 	else
 	{
-		printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
+		//printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
 		s->c = create_cmd(s, tok, i);
 		s->c->isfollowedbypipe = 0;
 		s->c->nextpipe = NULL;
@@ -99,10 +99,8 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 	last = ft_last_cmd(s->c);
 	if (ft_strchr("pwfqe", tok->type))
 	{
-		printf("AAAAAAHHHH pour %i\n", last->cmd_status);
 		if (last->cmd_status == 1)
 		{
-			printf("entering built-ins HQ\n");
 			if (tok->type == 'f' && !(ft_strcmp(last->command, "echo")))
 				check_echo_flag(s, tok);
 			else if (tok->type == 'f')
@@ -222,7 +220,7 @@ void	add_cmd_elem(t_mother *s, t_token *tok, int *i)
 	t_command	*next;
 	t_command	*prev;
 
-	printf("creating new cmd element with i = %i\n", *i);
+	//printf("creating new cmd element with i = %i\n", *i);
 	prev = ft_last_cmd(s->c);
 	if (prev->command != NULL)
 	{
@@ -256,7 +254,6 @@ t_command	*create_cmd(t_mother *s, t_token *tok, int *i)
 	new->arg[0] = ft_strdup(tok->token);
 	new->arg[1] = NULL;
 	new->cmd_status = tok->type - 97;
-	printf("on a un cmd_status = %i\n", new->cmd_status);
 	return (new);
 }
 

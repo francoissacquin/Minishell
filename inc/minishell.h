@@ -76,6 +76,8 @@ typedef struct s_lexer
 	t_token		*first_token;
 	int			quote; // a simple int to store info on quote input history for quotation rules
 	int			token_nb; // a voir si je l'utilise en fait;
+	char		*delimiter; //delimiter for << input;
+	char		*std_input_redir; // this stores the standard input entered in the terminal for the 
 }				t_lexer;
 
 typedef struct s_mother
@@ -101,6 +103,7 @@ void	ft_structinit(t_mother *s);
 void	ft_end(t_mother *s);
 void	ft_error(t_mother *s, char * error, int code);
 int		mainaftersignal(void);
+void	ft_print_parsing_results(t_mother *s);
 // initialization of structures
 void	ft_initc(t_mother *s);
 void    ft_lexinit(t_mother *s);
@@ -172,7 +175,12 @@ void	ft_type_built(t_token *tok);
 void	ft_type_pipe(t_token *tok);
 void	ft_type_path(t_mother *s, t_token *tok);
 void	ft_type_cmd(t_mother *s, t_token *tok);
-
+// << redirection interception for input
+void	redir_input_handler(t_mother *s);
+void	ft_finding_delimiter(t_mother *s, t_token *tok);
+void	ft_redir_error_check(t_mother *s, t_token *tok);
+void	ft_redir_input_activator(t_mother *s);
+int		ft_strnstr_index(char *haystack, char *needle, int len);
 // parser functions
 void	miniparser(t_mother *s);
 void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
