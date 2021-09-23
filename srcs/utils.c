@@ -53,6 +53,8 @@ void    ft_lexinit(t_mother *s)
 	tok->next = NULL;
     lex->quote = 0;
 	lex->token_nb = 0;
+	lex->delimiter = NULL;
+	lex->std_input_redir = NULL;
 	s->lex = lex;
 	s->lex->first_token = tok;
 }
