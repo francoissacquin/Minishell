@@ -18,14 +18,9 @@ void ft_error(t_mother *s, char * error, int code)
 {
 	printf("%s ", error);
 	printf("%d\n", code);
+	ft_clear_history();
 	ft_end(s);
 }
-
-void	ft_history(t_mother *s)
-{
-	add_history(s->line);
-}
-
 
 int mainaftersignal(void)
 {
@@ -35,15 +30,20 @@ int mainaftersignal(void)
 	envp = env;
 	ft_structinit(&s);
 	s.line = readline("Minishell> ");
-	ft_history(&s);
+	ft_add_history(&s);
 	env_init(&s, env);
 
 	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR LE BLOC SUIVANT. :D
-	// minilexer(&s);
-	// assign_types(&s);
-	// redir_input_handler(&s);
-	// miniparser(&s);
-	// ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+	// if (s.line != NULL)
+	// {
+	// 	minilexer(&s);
+	// 	assign_types(&s);
+	// 	redir_input_handler(&s);
+	// 	miniparser(&s);
+	// 	ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+	// 	free(s.line);
+	// 	s.line = NULL;
+	// }
 
 	// ft_echo(&s);
 	// ft_cd(&s);
@@ -108,6 +108,7 @@ void	ft_print_parsing_results(t_mother *s)
 {
     t_command	*cmd;
 	t_token		*tok;
+	int			i;
 
     cmd = s->c;
 	tok = s->lex->first_token;
@@ -123,6 +124,13 @@ void	ft_print_parsing_results(t_mother *s)
 		printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
 		printf("_________________________________________\n");
         printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+		printf("Using following args =\n");
+		i = 0;
+		while (cmd->arg[i])
+		{
+			printf("||%s\n", cmd->arg[i]);
+			i++;
+		}
 		printf("-----------------------------------------\n");
 		printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
         cmd = cmd->nextpipe;
@@ -130,6 +138,12 @@ void	ft_print_parsing_results(t_mother *s)
 	printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
 	printf("_________________________________________\n");
     printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+	i = 0;
+	while (cmd->arg[i])
+	{
+		printf("||%s\n", cmd->arg[i]);
+		i++;
+	}
 	printf("-----------------------------------------\n");
 	printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
 	if (s->lex->std_input_redir != NULL)

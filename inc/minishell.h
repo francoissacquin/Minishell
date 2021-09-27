@@ -114,7 +114,7 @@ void	ft_echo(t_mother *s);
 int		ft_cd(t_mother *s);
 int		ft_pwd(t_mother *s);
 void	ft_env(t_mother *s);
-void 	ft_export(t_mother *s);
+void 	ft_export(t_mother *s, t_command *cmd);
 void 	ft_unset(t_mother *s);
 int		ft_exit(t_mother *s);
 
@@ -131,6 +131,9 @@ void	ft_pipe(t_command *c, t_mother *s);
 //signaux
 void	signalhandler(int c); //for ctrl-c ctrl-v
 
+// history
+void	ft_add_history(t_mother *s);
+void	ft_clear_history();
 
 //env
 void	env_init(t_mother *s, char **envp);
@@ -143,23 +146,27 @@ void	quote_env_replacing(t_mother *s, t_token *tok, int start, int end);
 void	env_replacing(t_mother *s, t_token *tok);
 int		quote_env_finder(t_token *tok);
 char	*ft_strjoin_env(char *str1, char *str2);
+
 //env_utils
 size_t	ft_strlen_array(char **array);
 void	ft_free_array(char **array);
 int		ft_env_cmp(char *env1, char *var);
 int		ft_env_cmp_arg(char *env1, char *var);
 char	*ft_return_env_value(t_mother *s, char *var, int type);
+
 //lexer functions
 void    minilexer(t_mother *s);
 void    minilexer_inner_loop(t_mother *s, int *i, int *j);
 t_token *create_token(t_mother *s, int i, int j, char c);
 void    link_chain_elem(t_mother *s, int *i, int *j, char c);
+
 // lexer rules extension for norm problems
 void	ft_separator_rule(t_mother *s, int *i, int *j);
 void	ft_new_operator_char_rule(t_mother *s, int *i, int *j);
 void	ft_quote_aligner(t_mother *s, int *i, int *j);
 void	ft_dollar_aligner(t_mother *s, int *i, int *j);
 void	ft_delimiter(t_mother *s, int *i, int *j, int o);
+
 //lexer utils
 t_token *ft_last_elem(t_token *token);
 int	    ft_match_word(char c);
@@ -167,6 +174,7 @@ void    ft_skip_word(t_mother *s, int *j);
 void    quote_handler(t_mother *s, int *i, int *j);
 void    dollar_tokeniser(t_mother *s, int *i, int *j);
 void    clean_struc(t_mother *s);
+
 // assign types functions
 void	assign_types(t_mother *s);
 void	ft_type_flag(t_token *tok);
@@ -175,12 +183,14 @@ void	ft_type_built(t_token *tok);
 void	ft_type_pipe(t_token *tok);
 void	ft_type_path(t_mother *s, t_token *tok);
 void	ft_type_cmd(t_mother *s, t_token *tok);
+
 // << redirection interception for input
 void	redir_input_handler(t_mother *s);
 void	ft_finding_delimiter(t_mother *s, t_token *tok);
 void	ft_redir_error_check(t_mother *s, t_token *tok);
 void	ft_redir_input_activator(t_mother *s);
 int		ft_strnstr_index(char *haystack, char *needle, int len);
+
 // parser functions
 void	miniparser(t_mother *s);
 void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
@@ -194,6 +204,7 @@ t_command	*create_cmd(t_mother *s, t_token *tok, int *i);
 t_command	*ft_last_cmd(t_command *first);
 void	ft_wrong_input(t_mother *s, t_token *tok, int *i);
 void	assign_redirect(t_mother *s, t_token *tok, int *i);
+void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok);
 
 
 

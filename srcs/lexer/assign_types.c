@@ -46,18 +46,29 @@ void	ft_type_env(t_token *tok)
 	int		i;
 
 	i = 1;
-	if (tok->token[0] != '$')
-		return ;
-	while (tok->token[i] && tok->token[i] != '=')
+	printf("what up\n");
+	if (tok->token[0] == '$')
 	{
-		if (!(ft_isalnum(tok->token[i]) || tok->token[i] == '_'))
-			return ;
-		i++;
+		while (tok->token[i] && tok->token[i] != '=')
+		{
+			if (!(ft_isalnum(tok->token[i]) || tok->token[i] == '_'))
+				return ;
+			i++;
+		}
+		if (tok->token[i] == '\0')
+			tok->type = 'e';
 	}
-	if (tok->token[i] == '\0')
-		tok->type = 'e';
 	else
 	{
+		i = 0;
+		while (tok->token[i] && tok->token[i] != '=')
+		{
+			if (!(ft_isalnum(tok->token[i]) || tok->token[i] == '_'))
+				return ;
+			i++;
+		}
+		if (tok->token[i] != '=')
+			return;
 		i++;
 		while (tok->token[i] && tok->token[i] != '=')
 		{
@@ -65,7 +76,7 @@ void	ft_type_env(t_token *tok)
 				return ;
 			i++;
 		}
-		tok->type = 'e';
+		tok->type = 'E';
 	}
 }
 
@@ -105,6 +116,8 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 
 	array = ft_split(ft_return_env_value(s, "PATH", 1), ':');
 	i = 0;
+	if (tok->type == 'p')
+		return ;
 	while (array[i] != NULL)
 	{
 		//printf("||%s||\n", ft_strjoin(array[i], ft_strjoin("/", tok->token)));

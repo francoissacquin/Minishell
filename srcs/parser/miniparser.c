@@ -97,6 +97,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 
 	(void)i;
 	last = ft_last_cmd(s->c);
+	pre_exec_arg_checking(s, last, tok);
 	if (ft_strchr("pwfqe", tok->type))
 	{
 		if (last->cmd_status == 1)
@@ -112,31 +113,6 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 			last->line = ft_strdup(tok->token);
 		else
 			last->line = ft_strjoin(last->line, ft_strjoin(" ", tok->token));
-	}
-}
-
-void	check_echo_flag(t_mother *s, t_token *tok)
-{
-	int		i;
-	int		wrong_flag;
-
-	(void)s;
-	i = 1;
-	wrong_flag = 0;
-	printf("WHAT?\n");
-	while (tok->token[i])
-	{
-		if (tok->token[i] != 'n')
-		{
-			printf("flag non-valide pour le built-in echo\n"); //METTRE FT_ERROR ICI
-			wrong_flag = 1;
-		}
-		i++;
-	}
-	if (!wrong_flag)
-	{
-		free(tok->token);
-		tok->token = ft_strdup("-n");
 	}
 }
 

@@ -117,7 +117,7 @@ void	ft_execfind(t_mother *s, t_command *c)
 	else if (ft_strcmp("exit", s->c->command) == 0)
 		ft_exit(s);
 	else if (ft_strcmp("export", s->c->command) == 0)
-		ft_export(s);
+		ft_export(s, c);
 	else if (ft_strcmp("pwd", s->c->command) == 0)
 		ft_pwd(s);
 	else if (ft_strcmp("unset", s->c->command) == 0)
