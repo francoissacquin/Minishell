@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:19 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/22 16:32:54 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/27 19:04:27 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ int mainaftersignal(void)
 	
 	char **envp;
 	envp = env;
+	// signal(SIGINT, SIG_IGN);
+	signal(SIGINT, signalhandler);
+	// signal(SIGQUIT, signalhandler);
+	// signal(SIGINT, SIG_IGN);
 	ft_structinit(&s);
 	s.line = readline("Minishell> ");
 	ft_add_history(&s);
@@ -71,8 +75,10 @@ int main(int argc, char **argv, char **envp)
 	env = envp;
 	while (1)
 	{
-		signal(SIGINT, signalhandler);
-		signal(SIGQUIT, signalhandler);
+		// signal(SIGINT, signalhandler);
+		// signal(SIGQUIT, signalhandler);
+		//signal(SIGINT, SIG_IGN);
+
 		mainaftersignal();
 	}
 	// ft_structinit(&s);
