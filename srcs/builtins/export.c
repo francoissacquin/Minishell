@@ -12,11 +12,11 @@
 
 #include "../../inc/minishell.h"
 
-void ft_export(t_mother *s)
+void ft_export(t_mother *s, t_command *cmd)
 {
-	if (ft_strlen_array(s->c->arg) != 1)
+	if (ft_strlen_array(cmd->arg) != 2)
 	{
-		ft_error(s, "export arg value invalid\n", 0); // a modifier pour la return value, c'est pas la bonne.
+		ft_error(s, "export arg number invalid\n", 0); // a modifier pour la return value, c'est pas la bonne.
 	}
-	create_env(s, s->c->arg[0]);
+	create_env(s, cmd->arg[1]);
 }
