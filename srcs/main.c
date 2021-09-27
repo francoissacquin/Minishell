@@ -34,28 +34,28 @@ int mainaftersignal(void)
 	env_init(&s, env);
 
 	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR LE BLOC SUIVANT. :D
-	// if (s.line != NULL)
-	// {
-	// 	minilexer(&s);
-	// 	assign_types(&s);
-	// 	redir_input_handler(&s);
-	// 	miniparser(&s);
-	// 	ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
-	// 	free(s.line);
-	// 	s.line = NULL;
-	// }
+	if (s.line != NULL)
+	{
+		minilexer(&s);
+		assign_types(&s);
+		redir_input_handler(&s);
+		miniparser(&s);
+		ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+		free(s.line);
+		s.line = NULL;
+	}
 
 	// ft_echo(&s);
 	// ft_cd(&s);
 	// ft_echo(&s);
 	// printf("%s\n", s.line);
 	// ft_execfind(&s);
-	multicommands(&s);
-	if (ft_parse(&s) == 0)
-	{
-		write(1, "Error:\n", 7);
-		return(0);
-	}
+	// multicommands(&s);
+	// if (ft_parse(&s) == 0)
+	// {
+	// 	write(1, "Error:\n", 7);
+	// 	return(0);
+	// }
 	ft_end(&s);
 	system("leaks Minishell");
 	return(1);
@@ -148,7 +148,7 @@ void	ft_print_parsing_results(t_mother *s)
 	printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
 	if (s->lex->std_input_redir != NULL)
 		printf("<< input was :\n%s\n", s->lex->std_input_redir);
-    //clean_struc(&s); CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
+    free_t_token(s); //CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
 }
 // |=> des que on a un non flag, le reste des arguments n’est plus considéré comme des flags même si il sont lexicalement de flags?
 // Rebrancher le ft_error. Surtout pour empêcher les unclosed quotes.

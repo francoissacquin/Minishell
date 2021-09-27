@@ -49,22 +49,3 @@ void    dollar_tokeniser(t_mother *s, int *i, int *j)
     if (s->line[*j] != ' ')
         *j = *j - 1;
 }
-
-void    clean_struc(t_mother *s)
-{
-    t_token *temp;
-    t_token *next;
-
-    temp = s->lex->first_token;
-    next = NULL;
-    while (temp->next != NULL)
-    {
-        if (temp->next != NULL)
-            next = temp->next;
-        if (temp->token != NULL)
-            free(temp->token);
-        if (temp != NULL)
-            free(temp);
-        temp = next;
-    } 
-}
