@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/22 20:23:46 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/27 18:59:59 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,5 +277,6 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 		s->c = s->c->nextpipe;
 		i++;
 	}
+	mainaftersignal();
 	// printf("||hello");
 }
