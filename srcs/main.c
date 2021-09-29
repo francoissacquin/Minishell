@@ -44,7 +44,7 @@ int mainaftersignal(void)
 		assign_types(&s);
 		redir_input_handler(&s);
 		miniparser(&s);
-		ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+		// ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
 		free(s.line);
 		s.line = NULL;
 	}

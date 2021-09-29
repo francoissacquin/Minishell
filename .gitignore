@@ -5,3 +5,4 @@ Minishell
 libft/libft.a
 libft/*.o
 test
+todo.txt

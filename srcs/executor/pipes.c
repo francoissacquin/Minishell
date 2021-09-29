@@ -202,6 +202,33 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	// s->c->isprecededbypipe = 0;
 	// s->c->nextpipe = &test;
 
+//other test 2
+	// t_command test;
+
+	// test.previouspipe = s->c;
+	// test.line = "wc";
+	// test.command = "wc";
+	// test.arg = ft_malloc(test.arg, sizeof(char **) * 10);
+	// test.arg[0] = test.command;
+	// test.arg[1] = NULL;
+	// test.isfollowedbypipe = 0;
+	// test.nextpipe = NULL;
+	// test.isprecededbypipe = 1;
+	// test.previouspipe = s->c;
+
+	// s->pipe = 1;	
+	// s->c->line = "ls";
+	// s->c->nbarg = 1;
+	// s->c->command = "ls";
+	// s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
+	// s->c->arg[0] = s->c->command;
+	// s->c->arg[1] = NULL;
+	// s->c->arg[2] = NULL;
+	// s->c->arg[3] = NULL; 
+	// s->c->isfollowedbypipe = 1;
+	// s->c->isprecededbypipe = 0;
+	// s->c->nextpipe = &test;
+
 // //test with 1
 	// s->pipe = 1;	
 	// s->c->line = "grep make";
@@ -267,7 +294,8 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 		t_mother *tmp;
 	// int ret = 0;
 	int i = 0;
-	while(i < 1)
+	printf("\n|||| %d |||||\n", s->nbcmd);
+	while(i < s->nbcmd)
 	{
 		tmp = s;
 		// puts("ZGEG");
