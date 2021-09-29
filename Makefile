@@ -27,7 +27,8 @@ srcs/parser/parse.c \
 srcs/parser/miniparser.c \
 srcs/parser/redir_parsing.c \
 srcs/parser/arg_checking.c \
-srcs/utils.c \
+srcs/structure/utils.c \
+srcs/structure/mem_utils.c \
 srcs/history_handler.c \
 srcs/builtins/cd.c \
 srcs/builtins/echo.c \

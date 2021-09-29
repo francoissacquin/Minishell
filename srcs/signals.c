@@ -16,7 +16,11 @@ void	sighandl(void)
 {
 	write(1, "\n", 1);
 	rl_on_new_line();
+<<<<<<< HEAD
 	rl_replace_line("", 0);
+=======
+	// rl_replace_line("", 0);
+>>>>>>> 1b751153d1d01390ccc8f3047c643526069f96d2
 	rl_redisplay();
 }
 
