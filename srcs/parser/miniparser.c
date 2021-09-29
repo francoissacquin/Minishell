@@ -205,7 +205,6 @@ void	add_cmd_elem(t_mother *s, t_token *tok, int *i)
 		next->previouspipe = prev;
 		prev->nextpipe = next;
 		next->nextpipe = NULL;
-		s->nbcmd++;
 	}
 	else
 	{
@@ -230,6 +229,7 @@ t_command	*create_cmd(t_mother *s, t_token *tok, int *i)
 	new->arg[0] = ft_strdup(tok->token);
 	new->arg[1] = NULL;
 	new->cmd_status = tok->type - 97;
+	s->nbcmd++;
 	return (new);
 }
 

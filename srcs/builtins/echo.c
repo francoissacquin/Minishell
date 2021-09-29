@@ -25,43 +25,28 @@ void ft_parserecho(t_mother *s)
 
 }
 
-void	ft_echo(t_mother *s)
+void	ft_echo(t_command *c)
 {
-	char *toecho = "hello $USER caca";
-	int	nflag = 1;
-	int	dollar = 0;
-	int i = 0;
-	char *variable = "usr"; //viens du parsing
+	int		i;
+	int		flag_n_switch;
 
-	while (i < (int)ft_strlen(toecho))
+	i = 1;
+	flag_n_switch = 0;
+	if (c->arg[i] == NULL)
 	{
-		if (toecho[i] == '$')
-		{
-			ft_parserecho(s);
-			dollar = 1;
-		}
+		write(1, "\n", 1);
+		return ;
+	}
+	while (c->arg[i] && !(ft_strcmp("-n", c->arg[i])))
+	{
+		flag_n_switch = 1;
 		i++;
 	}
-	i = 0;
-	if (dollar == 1)
+	while (c->arg[i])
 	{
-		while(toecho[i] != '$' && i < (int)ft_strlen(toecho))
-		{
-			ft_putchar_fd(toecho[i], 1);
-			i++;
-		}
-		while(toecho[i] != ' ' && i < (int)ft_strlen(toecho))
-			i++;
-		ft_putstr_fd(variable, 1);
-		while(i < (int)ft_strlen(toecho))
-		{
-			ft_putchar_fd(toecho[i], 1);
-			i++;
-		}
-
+		ft_putstr_fd(c->arg[i], 1);
+		i++;
 	}
-	else if (dollar == 0)
-		ft_putstr_fd(toecho, 1);
-	if (nflag == 0)
-		ft_putchar_fd('\n', 1);
+	if (flag_n_switch == 0)
+		write(1, "\n", 1);
 }

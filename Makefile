@@ -16,7 +16,7 @@ TESTER = tester
 
 CC = clang
 
-CFLAGS = -Wall -Wextra -Werror -g  -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -g -g3
 
 SFLAGS = -lreadline
 
