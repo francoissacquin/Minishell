@@ -182,7 +182,7 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	// test.command = "grep";
 	// test.arg = ft_malloc(test.arg, sizeof(char **) * 10);
 	// test.arg[0] = test.command;
-	// test.arg[1] = "grep";
+	// test.arg[1] = "pipe";
 	// test.arg[2] = NULL;
 	// test.isfollowedbypipe = 0;
 	// test.nextpipe = NULL;
@@ -294,7 +294,11 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 		t_mother *tmp;
 	// int ret = 0;
 	int i = 0;
+<<<<<<< HEAD
 	printf("\n|||| %d |||||\n", s->nbcmd);
+=======
+	printf("|||||| %d |||||||\n", s->nbcmd);
+>>>>>>> 6e96b77a49080862164a965552c0c278c6c00a33
 	while(i < s->nbcmd)
 	{
 		tmp = s;
