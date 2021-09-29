@@ -14,13 +14,13 @@ NAME = Minishell
 
 TESTER = tester
 
-CC = gcc
+CC = clang
 
 CFLAGS = -Wall -Wextra -Werror -g  -fsanitize=address -g3
 
 SFLAGS = -lreadline
 
-HEADER = inc/minishell.h
+HEADER = /inc/minishell.h
 
 SRC = srcs/main.c \
 srcs/parser/parse.c \
@@ -59,9 +59,9 @@ all: $(NAME)
 
 $(NAME): ${OBJ}
 	@echo "\n\033[0;32mCompiling libft\033[0m"
-	cd libft && make
+	cd libft && make re
 	@echo "\n\033[0;32mCompiling\033[0m"
-	# $(CC) ${LIBFT} ${CFLAGS} $(OBJ) -o $(NAME)
+	#$(CC)  ${LIBFT} ${CFLAGS} ${SFLAGS} $(OBJ) -o $(NAME)
 	$(CC) ${CFLAGS} ${SFLAGS} $(OBJ) ${LIBFT} -o $(NAME)
 	@echo "\n\033[0;32mDONE\033[0m"
 
@@ -83,3 +83,6 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+#sudo apt-get install libreadline6 libreadline6-dev
+

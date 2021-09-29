@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:19 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/27 19:04:27 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/09/28 18:29:59 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int mainaftersignal(void)
 {
 	t_mother s;
 	
-	char **envp;
-	envp = env;
+	// char **envp;
+	// envp = env;
 	// signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signalhandler);
 	// signal(SIGQUIT, signalhandler);

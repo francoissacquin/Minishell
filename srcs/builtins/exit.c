@@ -20,7 +20,9 @@ int ft_exit(t_mother *s)
 {
 	int lastcommandfail = 0;
 	char *arg = "2";
-	int retvalue = 0;
+	int retvalue;
+	
+	retvalue = 0;
 
 	if (arg /*&& ft_isdigit(arg) >= 1*/) // check we only send digits -> parsing
 		retvalue = ft_atoi(arg);
@@ -34,7 +36,7 @@ int ft_exit(t_mother *s)
 	}
 	//set value in env
 	//send retrun value
-	return(1);
+	return(retvalue);
 	ft_end(s);
 	//
 }
