@@ -154,7 +154,7 @@ void	ft_print_parsing_results(t_mother *s)
 	printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
 	if (s->lex->std_input_redir != NULL)
 		printf("<< input was :\n%s\n", s->lex->std_input_redir);
-    //clean_struc(&s); CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
+    free_t_token(s); //CLEAN_STRUC DOIT ETRE REPARE, JÁI UN DOUBLE FREE JE SAIS PAS POURQUOI
 }
 // |=> des que on a un non flag, le reste des arguments n’est plus considéré comme des flags même si il sont lexicalement de flags?
 // Rebrancher le ft_error. Surtout pour empêcher les unclosed quotes.

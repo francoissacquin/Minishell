@@ -173,7 +173,6 @@ int	    ft_match_word(char c);
 void    ft_skip_word(t_mother *s, int *j);
 void    quote_handler(t_mother *s, int *i, int *j);
 void    dollar_tokeniser(t_mother *s, int *i, int *j);
-void    clean_struc(t_mother *s);
 
 // assign types functions
 void	assign_types(t_mother *s);
@@ -206,6 +205,8 @@ void	ft_wrong_input(t_mother *s, t_token *tok, int *i);
 void	assign_redirect(t_mother *s, t_token *tok, int *i);
 void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok);
 
+// memory handling for structure cleaning
+void	free_t_token(t_mother *s);
 
 
 #endif
