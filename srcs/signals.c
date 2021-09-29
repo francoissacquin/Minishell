@@ -16,11 +16,7 @@ void	sighandl(void)
 {
 	write(1, "\n", 1);
 	rl_on_new_line();
-<<<<<<< HEAD
 	rl_replace_line("", 0);
-=======
-	// rl_replace_line("", 0);
->>>>>>> 1b751153d1d01390ccc8f3047c643526069f96d2
 	rl_redisplay();
 }
 
@@ -52,3 +48,4 @@ void	signalhandler(int c)
 	// signal(SIGINT, SIG_DFL);
 }
 
+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
