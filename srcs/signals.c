@@ -18,6 +18,7 @@ void	sighandl(void)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	// TUER LES ENFANTS ICI
 }
 
 
@@ -35,7 +36,7 @@ void	signalhandler(int c)
 	{
 		//printf("\n");
 		// signal(SIGINT, signalhandler);
-		// write(1, "\b\b \b\b", 6);
+		write(1, "\b\b  ", 4);
 		// return;
 		sighandl();
 		// write(1,"\nMinishellS> ", 14);
