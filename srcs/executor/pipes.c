@@ -203,22 +203,22 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	// s->c->nextpipe = &test;
 
 // //test with 1
-	s->pipe = 1;	
-	s->c->line = "grep make";
-	s->c->nbarg = 1;
-	s->c->command = "grep";
-	s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
-	s->c->arg[0] = s->c->command;
-	s->c->arg[1] = "make";
-	s->c->arg[2] = NULL;
-	s->c->arg[3] = NULL; 
-	s->c->isfollowedbypipe = 2;
-	s->c->isoutfile = 0;
-	s->c->isinputfile = 1;
-	s->c->outfile = NULL;
-	s->c->inputfile = "Makefile";
-	s->c->isprecededbypipe = 0;
-	s->c->nextpipe = NULL;
+	// s->pipe = 1;	
+	// s->c->line = "grep make";
+	// s->c->nbarg = 1;
+	// s->c->command = "grep";
+	// s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
+	// s->c->arg[0] = s->c->command;
+	// s->c->arg[1] = "make";
+	// s->c->arg[2] = NULL;
+	// s->c->arg[3] = NULL; 
+	// s->c->isfollowedbypipe = 2;
+	// s->c->isoutfile = 0;
+	// s->c->isinputfile = 1;
+	// s->c->outfile = NULL;
+	// s->c->inputfile = "Makefile";
+	// s->c->isprecededbypipe = 0;
+	// s->c->nextpipe = NULL;
 
 	// int i = 0;
 	// while (i < 3)

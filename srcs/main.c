@@ -38,16 +38,16 @@ int mainaftersignal(void)
 	env_init(&s, env);
 
 	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR LE BLOC SUIVANT. :D
-	// if (s.line != NULL)
-	// {
-	// 	minilexer(&s);
-	// 	assign_types(&s);
-	// 	redir_input_handler(&s);
-	// 	miniparser(&s);
-	// 	ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
-	// 	free(s.line);
-	// 	s.line = NULL;
-	// }
+	if (s.line != NULL)
+	{
+		minilexer(&s);
+		assign_types(&s);
+		redir_input_handler(&s);
+		miniparser(&s);
+		ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+		free(s.line);
+		s.line = NULL;
+	}
 
 	// ft_echo(&s);
 	// ft_cd(&s);
@@ -61,7 +61,7 @@ int mainaftersignal(void)
 		return(0);
 	}
 	ft_end(&s);
-	system("leaks Minishell");
+	// system("leaks Minishell");
 	return(1);
 }
 
