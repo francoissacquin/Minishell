@@ -110,7 +110,7 @@ void    ft_lexinit(t_mother *s);
 void	ft_structinit(t_mother *s);
 void	ft_end(t_mother *s);
 //builtins
-void	ft_echo(t_mother *s);
+void	ft_echo(t_command *c);
 int		ft_cd(t_mother *s);
 int		ft_pwd(t_mother *s);
 void	ft_env(t_mother *s);

@@ -14,7 +14,7 @@
 
 void	sighandl(void)
 {
-	// write(1, "\n", 1);
+	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -38,7 +38,6 @@ void	signalhandler(int c)
 		// write(1, "\b\b \b\b", 6);
 		// return;
 		sighandl();
-		write(1, "\n", 1);
 		// write(1,"\nMinishellS> ", 14);
 		// rl_redisplay();
 		// write(1,"\b", 1);
