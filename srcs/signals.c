@@ -47,5 +47,3 @@ void	signalhandler(int c)
 	}
 	// signal(SIGINT, SIG_DFL);
 }
-
-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
