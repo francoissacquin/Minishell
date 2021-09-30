@@ -12,7 +12,9 @@
 
 #include "../../inc/minishell.h"
 
-void ft_env(t_mother *s)
+int ft_env(t_mother *s)
 {
+	int ret = 1;
 	(void)s;
+	return(ret);
 }

@@ -12,10 +12,11 @@
 
 #include "../../inc/minishell.h"
 
-void		ft_child(t_command *c, t_mother *s)
+int		ft_child(t_command *c, t_mother *s)
 {
 	int err = 0;
 	int fd = 0;
+	int ret = 1;
 
 	if (c->isfollowedbypipe > 1)
 	{
@@ -62,13 +63,15 @@ void		ft_child(t_command *c, t_mother *s)
 	}
 	if(fd)
 		close(fd);
-	ft_execfind(s, s->c); //execute command in child process meme si il y'en a que une
-	exit(1);
+	ret = ft_execfind(s, s->c); //execute command in child process meme si il y'en a que une
+	exit(ret);
 }
 
-void		ft_parent(t_command *c, int pid)
+int		ft_parent(t_command *c, int pid)
 {
 	int status;
+	int ret = 1;
+	int ex = 0;
 
 	if (c->isprecededbypipe)
 		close(c->previouspipe->pipes[0]); // peut etre a mettre a la fin // on ferme le pipe d'avant
@@ -99,14 +102,19 @@ void		ft_parent(t_command *c, int pid)
 		}
 	}
 	waitpid(pid, &status, 0); //peut etre a mettre au debut	du parent // on attends la fin du child pour etre sur d'avoir tte la sortie
+	ex = WIFEXITED(status);;
+	if (ex > 0)
+		ret = WEXITSTATUS(status);
+	// ex++;
+	return(ret);
 }
 
 
 
-void		ft_pipe(t_command *c, t_mother *s)
+int		ft_pipe(t_command *c, t_mother *s)
 {
 	int err = 0;
-	// int ret = 1;
+	int ret = 1;
 	int pid;
 
 	if(c->isfollowedbypipe == 1|| c->isprecededbypipe)
@@ -119,9 +127,10 @@ void		ft_pipe(t_command *c, t_mother *s)
 	if (pid < 0)
 		ft_error(s, "pipe pid is shit", -1);
 	if(pid == 0)
-		ft_child(c, s);
+		ret = ft_child(c, s);
 	else
 		ft_parent(c, pid);
+	return(ret);
 }
 
 void		multicommands(t_mother *s) 	//sends to different functions if its a pipe redirect etc
@@ -182,7 +191,7 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	// test.command = "grep";
 	// test.arg = ft_malloc(test.arg, sizeof(char **) * 10);
 	// test.arg[0] = test.command;
-	// test.arg[1] = "pipe";
+	// test.arg[1] = "grep";
 	// test.arg[2] = NULL;
 	// test.isfollowedbypipe = 0;
 	// test.nextpipe = NULL;
@@ -294,18 +303,15 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 		t_mother *tmp;
 	// int ret = 0;
 	int i = 0;
-<<<<<<< HEAD
-	printf("\n|||| %d |||||\n", s->nbcmd);
-=======
-	printf("|||||| %d |||||||\n", s->nbcmd);
->>>>>>> 6e96b77a49080862164a965552c0c278c6c00a33
+	printf("|||| %d |||||", s->nbcmd);
 	while(i < s->nbcmd)
 	{
 		tmp = s;
 		// puts("ZGEG");
-		ft_pipe(s->c, tmp);
+		s->c->retvalue = ft_pipe(s->c, tmp);
+		s->ret = s->c->retvalue;
 		if(!s->c->nextpipe)
-			break;
+			break; 
 		s->c = s->c->nextpipe;
 		i++;
 	}

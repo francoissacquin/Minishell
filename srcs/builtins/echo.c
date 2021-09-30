@@ -25,17 +25,18 @@ void ft_parserecho(t_mother *s)
 
 }
 
-void	ft_echo(t_command *c)
+int	ft_echo(t_command *c)
 {
 	int		i;
 	int		flag_n_switch;
+	int ret = 1;
 
 	i = 1;
 	flag_n_switch = 0;
 	if (c->arg[i] == NULL)
 	{
 		write(1, "\n", 1);
-		return ;
+		return (ret) ;
 	}
 	while (c->arg[i] && !(ft_strcmp("-n", c->arg[i])))
 	{
@@ -49,4 +50,6 @@ void	ft_echo(t_command *c)
 	}
 	if (flag_n_switch == 0)
 		write(1, "\n", 1);
+	
+	return(ret);
 }

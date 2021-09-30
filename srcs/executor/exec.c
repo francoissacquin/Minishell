@@ -87,7 +87,7 @@ char	*ft_pathfinder(t_mother *s)
 	return(rightpath);
 }
 
-void	ft_execnotbuiltin(t_mother *s)
+int	ft_execnotbuiltin(t_mother *s)
 {
 	int	error;
 	char *path;
@@ -101,27 +101,30 @@ void	ft_execnotbuiltin(t_mother *s)
 	// error = execve(path, &test, NULL); //this is a test
 	if(error < 0)
 		ft_error(s, "execve, binary may be corrupted", error);
+	return(error);
 }
 
-void	ft_execfind(t_mother *s, t_command *c)
+int	ft_execfind(t_mother *s, t_command *c)
 {
 	s->c = c;
+	int ret = 1;
 	
 	//builtins
 	if (ft_strcmp("cd", s->c->command) == 0)
-		ft_cd(s);
+		ret = ft_cd(s);
 	else if (ft_strcmp("echo", s->c->command) == 0)
-		ft_echo(s->c);	
+		ret = ft_echo(s->c);	
 	else if (ft_strcmp("env", s->c->command) == 0)
-		ft_env(s);
+		ret = ft_env(s);
 	else if (ft_strcmp("exit", s->c->command) == 0)
-		ft_exit(s);
+		ret = ft_exit(s);
 	else if (ft_strcmp("export", s->c->command) == 0)
-		ft_export(s, c);
+		ret = ft_export(s, c);
 	else if (ft_strcmp("pwd", s->c->command) == 0)
-		ft_pwd(s);
+		ret = ft_pwd(s);
 	else if (ft_strcmp("unset", s->c->command) == 0)
-		ft_unset(s);
+		ret = ft_unset(s);
 	else
-		ft_execnotbuiltin(s);
+		ret = ft_execnotbuiltin(s);
+	return(ret);
 }
