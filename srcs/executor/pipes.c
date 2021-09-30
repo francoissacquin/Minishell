@@ -102,14 +102,18 @@ int		ft_parent(t_command *c, int pid)
 		}
 	}
 	waitpid(pid, &status, 0); //peut etre a mettre au debut	du parent // on attends la fin du child pour etre sur d'avoir tte la sortie
-	// ex = WIFEXITED(status);;
-	// if (ex > 0)
-	// 	ret = WEXITSTATUS(status);
+	ex = WIFEXITED(status);;
+	if (ex > 0)
+		ret = WEXITSTATUS(status);
 	// ex++;
 	return(ret);
 }
 
-
+// void	killchild(int signal)
+// {
+// 	(void)signal;
+// 	kill()
+// }
 
 int		ft_pipe(t_command *c, t_mother *s)
 {
@@ -126,6 +130,8 @@ int		ft_pipe(t_command *c, t_mother *s)
 		ft_error(s, "fork", -1);
 	if (pid < 0)
 		ft_error(s, "pipe pid is shit", -1);
+	signal(SIGALRM, killchild);
+	kill(SIGTERM, pid);
 	if(pid == 0)
 		ret = ft_child(c, s);
 	else
