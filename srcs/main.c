@@ -38,13 +38,13 @@ int mainaftersignal(void)
 	env_init(&s, env);
 
 	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR LE BLOC SUIVANT. :D
-	if (s.line != NULL)
+	if (s.line[0] != '\0')
 	{
 		minilexer(&s);
 		assign_types(&s);
 		redir_input_handler(&s);
 		miniparser(&s);
-		// ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+		ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
 		free(s.line);
 		s.line = NULL;
 	}
@@ -129,7 +129,10 @@ void	ft_print_parsing_results(t_mother *s)
     {
 		printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
 		printf("_________________________________________\n");
-        printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+		if (cmd->line != NULL)
+        	printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
+		else 
+			printf("line is NULL\n");
 		printf("Using following args =\n");
 		i = 0;
 		while (cmd->arg[i])

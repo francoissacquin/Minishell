@@ -25,7 +25,7 @@ void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
 		ft_add_operator(s, tok, i);
-	else if (ft_strchr("wpf", tok->type) && s->redirect_mem == 0)
+	else if (ft_strchr("wpfd", tok->type) && s->redirect_mem == 0)
 		ft_add_args(s, tok, i);
 	else if (ft_strchr("wp", tok->type) && s->redirect_mem != 0)
 		ft_cmd_blt(s, tok, i);
@@ -43,11 +43,11 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 
 	last = ft_last_cmd(s->c);
 	//printf("pour passage %i on a s->redir = %i\n", *i, s->redirect_mem);
-	if (tok->prev != NULL)
+	if (tok->prev != NULL && last->line != NULL)
 	{
 		if (tok->prev->type == 'P')
 		{
-			//printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
+			printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
 			last->isfollowedbypipe = 1;
 			add_cmd_elem(s, tok, i);
 			next = ft_last_cmd(s->c);
@@ -58,9 +58,19 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 			next->isfollowedbypipe = 0;
 			s->pipe++;
 		}
+		else if (s->redirect_mem == 5)
+		{
+			last->nbarg++;
+			ft_add_arg_array(last, s->lex->std_input_redir);
+			if (last->line == NULL)
+				last->line = ft_strdup(s->lex->std_input_redir);
+			else
+				last->line = ft_strjoin(last->line, ft_strjoin(" ", s->lex->std_input_redir));
+			last->isfollowedbypipe = 0;
+		}
 		else if (tok->prev->type == 'o' && s->redirect_mem != 0)
 		{
-			//printf("--creation post redir avec s->redir = %i\n", s->redirect_mem);
+			printf("--creation post redir avec s->redir = %i\n", s->redirect_mem);
 			last->isfollowedbypipe = s->redirect_mem;
 			add_cmd_elem(s, tok, i);
 			next = ft_last_cmd(s->c);
@@ -77,7 +87,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	}
 	else
 	{
-		//printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
+		printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
 		s->c = create_cmd(s, tok, i);
 		s->c->isfollowedbypipe = 0;
 		s->c->nextpipe = NULL;
@@ -108,7 +118,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 				printf("AUCUN FLAG AUTORISÉ POUR LES BUILT-INS\n"); //METTRE FT_ERROR ICI
 		}
 		last->nbarg++;
-		ft_add_arg_array(last, tok);
+		ft_add_arg_array(last, tok->token);
 		if (last->line == NULL)
 			last->line = ft_strdup(tok->token);
 		else
@@ -116,7 +126,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 	}
 }
 
-void	ft_add_arg_array(t_command *last, t_token *tok)
+void	ft_add_arg_array(t_command *last, char *str)
 {
 	char 	**temp;
 	int		len;
@@ -130,7 +140,7 @@ void	ft_add_arg_array(t_command *last, t_token *tok)
 		temp[i] = ft_strdup(last->arg[i]);
 		i++;
 	}
-	temp[i++] = ft_strdup(tok->token);
+	temp[i++] = ft_strdup(str);
 	temp[i] = NULL;
 	ft_free_array(last->arg);
 	last->arg = temp;
@@ -145,7 +155,7 @@ void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 	{
 		//check that last command structure is completed and next token is actually a command
 		if (last->line == NULL || last->command == NULL || last->arg == NULL)
-			printf("wrong pipe here, lat command does not exist\n");
+			printf("wrong pipe here, last command does not exist\n");
 		if (tok->next != NULL)
 		{
 			if (ft_strchr("bc", tok->next->type))
