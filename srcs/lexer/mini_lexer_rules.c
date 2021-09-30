@@ -11,6 +11,8 @@ void	ft_separator_rule(t_mother *s, int *i, int *j)
     link_chain_elem(s, i, j, 'S');
     if (s->line[*i] && s->line[*i] == ' ')
         *i = *i + 1;
+	if (s->line[*j] == '\0')
+		*j = *j - 1;
 }
 
 void	ft_new_operator_char_rule(t_mother *s, int *i, int *j)

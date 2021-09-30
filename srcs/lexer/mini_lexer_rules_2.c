@@ -9,7 +9,7 @@ int    ft_match_word(char c)
 
 void    ft_skip_word(t_mother *s, int *j)
 {
-    while (!(ft_strchr("<>+-!=&|^~\\\"\'$`;", s->line[*j]) || s->line[*j] < 33 || s->line[*j] > 126))
+    while (s->line[*j] && (!(ft_strchr("<>+-!=&|^~\\\"\'$`;", s->line[*j]) || s->line[*j] < 33 || s->line[*j] > 126)))
         *j = *j + 1;
     *j = *j - 1;
 }
