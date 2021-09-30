@@ -26,6 +26,8 @@ int mainaftersignal(void)
 {
 	t_mother s;
 	
+	int pid = getpid();
+	printf("\noooglobal pid = %dooo\n", pid);
 	// char **envp;
 	// envp = env;
 	// signal(SIGINT, SIG_IGN);
