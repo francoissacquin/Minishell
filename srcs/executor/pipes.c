@@ -102,9 +102,9 @@ int		ft_parent(t_command *c, int pid)
 		}
 	}
 	waitpid(pid, &status, 0); //peut etre a mettre au debut	du parent // on attends la fin du child pour etre sur d'avoir tte la sortie
-	ex = WIFEXITED(status);;
-	if (ex > 0)
-		ret = WEXITSTATUS(status);
+	// ex = WIFEXITED(status);;
+	// if (ex > 0)
+	// 	ret = WEXITSTATUS(status);
 	// ex++;
 	return(ret);
 }
