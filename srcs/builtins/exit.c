@@ -23,6 +23,7 @@ int ft_exit(t_mother *s)
 	int retvalue;
 	
 	retvalue = 0;
+	exit(2);
 
 	if (arg /*&& ft_isdigit(arg) >= 1*/) // check we only send digits -> parsing
 		retvalue = ft_atoi(arg);
