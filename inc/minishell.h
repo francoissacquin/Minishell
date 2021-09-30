@@ -109,7 +109,9 @@ void	ft_print_parsing_results(t_mother *s);
 void	ft_initc(t_mother *s);
 void    ft_lexinit(t_mother *s);
 void	ft_structinit(t_mother *s);
+// end of structures
 void	ft_end(t_mother *s);
+void	free_t_token(t_mother *s);
 //builtins
 int	ft_echo(t_command *c);
 int		ft_cd(t_mother *s);
@@ -197,7 +199,7 @@ void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i);
 void	ft_add_args(t_mother *s, t_token *tok, int *i);
 void	check_echo_flag(t_mother *s, t_token *tok);
-void	ft_add_arg_array(t_command *last, t_token *tok);
+void	ft_add_arg_array(t_command *last, char *str);
 void	ft_add_operator(t_mother *s, t_token *tok, int *i);
 void	add_cmd_elem(t_mother *s, t_token *tok, int *i);
 t_command	*create_cmd(t_mother *s, t_token *tok, int *i);
@@ -205,9 +207,6 @@ t_command	*ft_last_cmd(t_command *first);
 void	ft_wrong_input(t_mother *s, t_token *tok, int *i);
 void	assign_redirect(t_mother *s, t_token *tok, int *i);
 void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok);
-
-// memory handling for structure cleaning
-void	free_t_token(t_mother *s);
 
 
 #endif

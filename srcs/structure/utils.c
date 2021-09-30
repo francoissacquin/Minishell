@@ -81,6 +81,7 @@ void	ft_end(t_mother *s)
 		free(s->line);
 	// if (s->c)
 	// 	free(s->c);
+	//free_t_token(s);
 	ft_clear_history();
 	exit(0);
 }
