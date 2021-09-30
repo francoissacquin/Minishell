@@ -35,8 +35,10 @@ void    minilexer(t_mother *s)
     j = 0;
     while (s->line[j])
     {
+        printf("on est la %i\n", j);
         minilexer_inner_loop(s, &i, &j);
         j++;
+        printf("on est la fin %i\n", j);
     }
     if (i <= j - 1 && i < (int)ft_strlen(s->line))
         link_chain_elem(s, &i, &j, '\0');

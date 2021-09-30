@@ -7,6 +7,8 @@ void	assign_types(t_mother *s)
 	temp = s->lex->first_token;
 	while (temp != NULL)
 	{
+		if (temp->type == 'S')
+			ft_error(s, "Error, input should not contain a delimiter\n", 1);
 		if (temp->type == '\0' && temp->token != NULL)
 		{
 			ft_type_flag(temp);
