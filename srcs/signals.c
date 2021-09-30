@@ -14,7 +14,13 @@
 
 void	sighandl(void)
 {
-	write(1, "\n", 1);
+	// int pid = getpid();
+	// printf("HELLO");
+	// 	printf("jhgj PID=%d, kajhakjh\n", pid);
+
+	// kill(SIGUSR1, pid);
+	// write(1, "\n", 1);
+	
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -25,12 +31,14 @@ void	signalhandler(int c)
 {
 	//printf("|%d|", c);
 	// signal(SIGINT, SIG_DFL);
-	if (c == SIGQUIT)
-	{
-		printf("va falloir gerer le ctrl-\\ mieux que ca\n");
-		printf("^\\Quit: 3\n");
-		mainaftersignal();
-	}
+	// if (c == SIGQUIT)
+	// {
+	// 	printf("va falloir gerer le ctrl-\\ mieux que ca\n");
+	// 	printf("^\\Quit: (core dumped)\n"); //dois on vraiment faire un core dump?
+	// 	sighandl();
+	// 	return;
+	// 	// mainaftersignal();
+	// }
 	if (c == SIGINT)
 	{
 		//printf("\n");

@@ -115,11 +115,29 @@ int		ft_parent(t_command *c, int pid)
 // 	kill()
 // }
 
+int pid = -1;
+
+void	killchild(int signal)
+{
+	(void)signal;
+	printf("caca PID=%d, kajhakjh\n", pid);
+	kill(pid, SIGTERM);
+}
+
+void	quitchild(int signal)
+{
+	(void)signal;
+	printf("bye PID=%d, kajhakjh\n", pid);
+	printf("^\\Quit: 3\n");
+	if (pid != -1)
+		kill(pid, SIGTERM);
+}
+
 int		ft_pipe(t_command *c, t_mother *s)
 {
 	int err = 0;
 	int ret = 1;
-	int pid;
+	// int pid;
 
 	if(c->isfollowedbypipe == 1|| c->isprecededbypipe)
 		err = pipe(c->pipes);
@@ -130,8 +148,8 @@ int		ft_pipe(t_command *c, t_mother *s)
 		ft_error(s, "fork", -1);
 	if (pid < 0)
 		ft_error(s, "pipe pid is shit", -1);
-	signal(SIGALRM, killchild);
-	kill(SIGTERM, pid);
+	signal(SIGINT, killchild);
+	signal(SIGQUIT, quitchild);
 	if(pid == 0)
 		ret = ft_child(c, s);
 	else
