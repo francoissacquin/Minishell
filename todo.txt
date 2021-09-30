@@ -3,6 +3,7 @@
 
 
 Todo oscar:
+built ins out of forks with pipe and ctrl c
 
 Todo Francois:
 

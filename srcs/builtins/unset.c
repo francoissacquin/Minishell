@@ -12,10 +12,11 @@
 
 #include "../../inc/minishell.h"
 
-void ft_unset(t_mother *s)
+int ft_unset(t_mother *s)
 {
 	int		i;
 	int		rm_switch;
+	int		ret = 1;
 
 	if (ft_strlen_array(s->c->arg) != 1)
 		ft_error(s, "unset arg value invalid\n", 0); // a modifier pour la return value, c'est pas la bonne.
@@ -31,4 +32,5 @@ void ft_unset(t_mother *s)
 		rm_env(s, s->c->arg[1]);
 	else
 		ft_error(s, "unser arg does not exist in env\n", 0); // a modifier pour le 0 egalement
+	return(ret);
 }

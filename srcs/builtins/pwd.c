@@ -15,6 +15,7 @@
 int	ft_pwd(t_mother *s)
 {
 	char	temp[1000];
+	int ret = 1;
 	
 	(void)s;
 	if (getcwd(temp, sizeof(temp)) == NULL)
@@ -26,5 +27,5 @@ int	ft_pwd(t_mother *s)
 		// ft_putstr_fd(temp, 0);
 	printf("%s\n", temp);
 
-	return (0);
+	return (ret);
 }

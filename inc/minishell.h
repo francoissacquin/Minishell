@@ -87,6 +87,7 @@ typedef struct s_mother
 	char		**env; //char ** containing environment variables (useful for env and execve() PATHS)
 	int			nbcmd; //number of commands
 	int			pipe; //number of pipes
+	int			ret;
 	// int			pipes[2];
 	int			redirect_mem; //an int I need to ensure compatibility between different s_command elements when redireciton is involved;
 	int			exitret; // value for the exit command to be updated during execution
@@ -112,23 +113,23 @@ void	ft_structinit(t_mother *s);
 void	ft_end(t_mother *s);
 void	free_t_token(t_mother *s);
 //builtins
-void	ft_echo(t_command *c);
+int	ft_echo(t_command *c);
 int		ft_cd(t_mother *s);
 int		ft_pwd(t_mother *s);
-void	ft_env(t_mother *s);
-void 	ft_export(t_mother *s, t_command *cmd);
-void 	ft_unset(t_mother *s);
+int		ft_env(t_mother *s);
+int 	ft_export(t_mother *s, t_command *cmd);
+int 	ft_unset(t_mother *s);
 int		ft_exit(t_mother *s);
 
 //exec
-void	ft_execfind(t_mother *s, t_command *c);
-void	ft_execnotbuiltin(t_mother *s);
+int		ft_execfind(t_mother *s, t_command *c);
+int	ft_execnotbuiltin(t_mother *s);
 char	*ft_pathfinder(t_mother *s);
 
 //exec with muliple commands
 void	multicommands(t_mother *s);
 void	ft_redirect(t_mother *s);
-void	ft_pipe(t_command *c, t_mother *s);
+int		ft_pipe(t_command *c, t_mother *s);
 
 //signaux
 void	signalhandler(int c); //for ctrl-c ctrl-v
