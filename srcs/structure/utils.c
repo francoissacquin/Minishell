@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 16:31:30 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/09 14:25:49 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/02 18:23:05 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_initc(t_mother *s)
 
 	c = (t_command *)ft_malloc(&c, sizeof(c) * 1000);
 	c->line = NULL;
-	c->command = "ls";
+	c->command = NULL;
 	c->retvalue = 0;
 	c->nbarg = 0;
 	c->arg = NULL;
@@ -34,6 +34,11 @@ void	ft_initc(t_mother *s)
 	c->errorfile = NULL;
 	c->cmd_status = 0;
 	s->c = c;
+
+	puts("CACACACCA");
+		printf("s.command %s\n", s->c->command);
+	// if (s->c->inputfile)
+		printf("s.inputfile %s\n", s->c->inputfile);
 	// return(&c);
 }
 
