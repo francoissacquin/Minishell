@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/04 14:25:11 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/04 16:17:24 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,22 +254,22 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	// s->c->nextpipe = &test;
 
 // //test with 1
-	s->pipe = 1;	
-	s->c->line = "grep make";
-	s->c->nbarg = 1;
-	s->c->command = "grep";
-	s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
-	s->c->arg[0] = s->c->command;
-	s->c->arg[1] = "make";
-	s->c->arg[2] = NULL;
-	s->c->arg[3] = NULL; 
-	s->c->isfollowedbypipe = 2;
-	s->c->isoutfile = 1;
-	s->c->isinputfile = 1;
-	s->c->outfile = "todo.txt";
-	s->c->inputfile = "Makefile";
-	s->c->isprecededbypipe = 2;
-	s->c->nextpipe = NULL;
+	// s->pipe = 1;	
+	// s->c->line = "grep make";
+	// s->c->nbarg = 1;
+	// s->c->command = "grep";
+	// s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
+	// s->c->arg[0] = s->c->command;
+	// s->c->arg[1] = "make";
+	// s->c->arg[2] = NULL;
+	// s->c->arg[3] = NULL; 
+	// s->c->isfollowedbypipe = 2;
+	// s->c->isoutfile = 1;
+	// s->c->isinputfile = 1;
+	// s->c->outfile = "todo.txt";
+	// s->c->inputfile = "Makefile";
+	// s->c->isprecededbypipe = 2;
+	// s->c->nextpipe = NULL;
 
 	// int i = 0;
 	// while (i < 3)
@@ -329,18 +329,21 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	printf("s.isfollowedbypipe %d\n", s->c->isfollowedbypipe);
 	printf("s.isinputfile %d\n", s->c->isinputfile);
 	printf("s.isoutfile %d\n", s->c->isoutfile);
-	puts("|||hello|||");
+	// puts("|||hello|||");
 
 	t_mother *tmp;
 	// int ret = 0;
 	int i = 0;
-	printf("|||| %d |||||", s->nbcmd);
+	// printf("|||| %d |||||", s->nbcmd);
 	while(i < s->nbcmd)
 	{
+		if(ft_strcmp("exit", s->c->command) == 0)
+			ft_exit(s);
 		tmp = s;
 		// puts("ZGEG");
 		s->c->retvalue = ft_pipe(s->c, tmp);
 		s->ret = s->c->retvalue;
+		printf("PPPPs->ret %dPPPP s->c->retvalue %d PPPP\n", s->ret, s->c->retvalue);
 		if(!s->c->nextpipe)
 			break; 
 		s->c = s->c->nextpipe;
