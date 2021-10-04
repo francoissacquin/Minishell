@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 20:16:52 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/28 19:45:33 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/02 18:32:32 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	signalhandler(int c)
 	// 	sighandl();
 	// 	return;
 	// 	// mainaftersignal();
-	// }
+	// 
 	if (c == SIGINT)
 	{
 		//printf("\n");
