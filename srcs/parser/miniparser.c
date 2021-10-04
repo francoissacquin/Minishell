@@ -70,30 +70,24 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 				last->line = ft_strdup(s->lex->std_input_redir);
 			else
 				last->line = ft_strjoin(last->line, ft_strjoin(" ", s->lex->std_input_redir));
-			last->isfollowedbypipe = 0;
+			last->isprecededbypipe = 3;
+			s->redirect_mem = 0;
 		}
 		else if (s->redirect_mem == 2)
 		{
 			last->isinputfile = 1;
 			last->inputfile = ft_strdup(tok->token);
+			last->isprecededbypipe = 2;
+			s->redirect_mem = 0;
 		}
 		else if (s->redirect_mem == 3 || s->redirect_mem == 4)
 		{
 			last->isoutfile = 1;
 			last->outfile = ft_strdup(tok->token);
-		}
-		else if (tok->prev->type == 'o' && s->redirect_mem != 0)
-		{
-			printf("--creation post redir avec s->redir = %i\n", s->redirect_mem);
-			last->isfollowedbypipe = s->redirect_mem;
-			add_cmd_elem(s, tok, i);
-			next = ft_last_cmd(s->c);
-			last->nextpipe = next;
-			next->previouspipe = last;
-			next->nextpipe = NULL;
-			next->isprecededbypipe = s->redirect_mem;
-			next->isfollowedbypipe = 0;
-			s->pipe++;
+			if (s->redirect_mem == 3)
+				last->isfollowedbypipe = 2;
+			else if (s->redirect_mem == 4)
+				last->isfollowedbypipe = 3;
 			s->redirect_mem = 0;
 		}
 		else
@@ -215,8 +209,6 @@ void	assign_redirect(t_mother *s, t_token *tok, int *i)
 
 	(void)i;
 	last = ft_last_cmd(s->c);
-	if (last->line != NULL)
-		last->isfollowedbypipe = 1;
 	if (!(ft_strcmp(tok->token, "<")))
 		s->redirect_mem = 2;
 	else if (!(ft_strcmp(tok->token, ">")))

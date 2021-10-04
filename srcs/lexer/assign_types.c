@@ -114,8 +114,11 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 	char	**array;
 	int		i;
 	int		exist;
+	char	*temp;
 
-	array = ft_split(ft_return_env_value(s, "PATH", 1), ':');
+	temp = ft_return_env_value(s, "PATH", 1);
+	array = ft_split(temp, ':');
+	free(temp);
 	i = 0;
 	if (tok->type == 'p')
 		return ;
