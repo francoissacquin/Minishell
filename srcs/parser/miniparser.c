@@ -56,6 +56,10 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 			next->nextpipe = NULL;
 			next->isprecededbypipe = 1;
 			next->isfollowedbypipe = 0;
+			next->isinputfile = 0;
+			next->inputfile = NULL;
+			next->isoutfile = 0;
+			next->outfile = NULL;
 			s->pipe++;
 		}
 		else if (s->redirect_mem == 5)
@@ -67,6 +71,16 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 			else
 				last->line = ft_strjoin(last->line, ft_strjoin(" ", s->lex->std_input_redir));
 			last->isfollowedbypipe = 0;
+		}
+		else if (s->redirect_mem == 2)
+		{
+			last->isinputfile = 1;
+			last->inputfile = ft_strdup(tok->token);
+		}
+		else if (s->redirect_mem == 3 || s->redirect_mem == 4)
+		{
+			last->isoutfile = 1;
+			last->outfile = ft_strdup(tok->token);
 		}
 		else if (tok->prev->type == 'o' && s->redirect_mem != 0)
 		{
@@ -93,6 +107,10 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		s->c->nextpipe = NULL;
 		s->c->isprecededbypipe = 0;
 		s->c->previouspipe = NULL;
+		s->c->isinputfile = 0;
+		s->c->inputfile = NULL;
+		s->c->isoutfile = 0;
+		s->c->outfile = NULL;
 		if (s->redirect_mem != 0)
 		{
 			s->c->isprecededbypipe = s->redirect_mem;

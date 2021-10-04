@@ -71,7 +71,7 @@ int		ft_parent(t_command *c, int pid)
 {
 	int status;
 	int ret = 1;
-	//int ex = 0;
+	int ex = 0;
 
 	if (c->isprecededbypipe)
 		close(c->previouspipe->pipes[0]); // peut etre a mettre a la fin // on ferme le pipe d'avant
