@@ -114,7 +114,6 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 	char	**array;
 	int		i;
 	int		exist;
-	struct stat	sb;
 
 	array = ft_split(ft_return_env_value(s, "PATH", 1), ':');
 	i = 0;
@@ -123,7 +122,7 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 	while (array[i] != NULL)
 	{
 		//printf("||%s||\n", ft_strjoin(array[i], ft_strjoin("/", tok->token)));
-		exist = stat(ft_strjoin(array[i], ft_strjoin("/", tok->token)), &sb);
+		exist = ft_stat_check(array[i], tok);
 		if (exist == 0)
 		{
 			tok->type = 'c';
@@ -132,6 +131,22 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 		}
 		i++;
 	}
+	ft_free_array(array);
+}
+
+int		ft_stat_check(char *path, t_token *tok)
+{
+	char	*temp;
+	char	*temp_2;
+	struct stat	sb;
+	int		i;
+
+	temp = ft_strjoin("/", tok->token);
+	temp_2 = ft_strjoin(path, temp);
+	i = stat(temp_2, &sb);
+	free(temp);
+	free(temp_2);
+	return (i);
 }
 
 void	ft_type_path(t_mother *s, t_token *tok)

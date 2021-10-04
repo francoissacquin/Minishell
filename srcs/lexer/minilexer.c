@@ -100,7 +100,25 @@ t_token *create_token(t_mother *s, int i, int j, char c)
 {
     t_token *new;
 
-    if (j <= i)
+    if (s->lex->token_nb == 0)
+    {
+        new = s->lex->first_token;
+        if (j <= i)
+        {
+            printf("weird token creation in create_token\n");
+            new->token = NULL;
+            new->type = '\0';
+        }
+        else
+        {
+            new->token = ft_substr(s->line, i, j - i);
+            if (ft_strchr("wbcopPrSqef", c))
+                new->type = c;
+            else
+                new->type = '\0';
+        }
+    }
+    else if (j <= i)
     {
         printf("weird token creation in create_token\n");
         new = ft_malloc(&new, sizeof(t_token));
