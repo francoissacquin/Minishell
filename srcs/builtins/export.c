@@ -21,6 +21,5 @@ int ft_export(t_mother *s, t_command *cmd)
 		ft_error(s, "export arg number invalid\n", 0); // a modifier pour la return value, c'est pas la bonne.
 	}
 	create_env(s, cmd->arg[1]);
-
 	return(ret);
 }

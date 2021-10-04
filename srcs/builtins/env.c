@@ -14,7 +14,16 @@
 
 int ft_env(t_mother *s)
 {
-	int ret = 1;
-	(void)s;
+	int		i;
+	int		ret;
+
+	i = 0;
+	while (s->env[i] != NULL)
+	{
+		ft_putstr_fd(s->env[i], 1);
+		write(1, "\n", 1);
+		i++;
+	}
+	ret = 0;
 	return(ret);
 }
