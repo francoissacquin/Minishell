@@ -3,6 +3,8 @@
 void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok)
 {
 	(void)s;
+	if (cmd->command == NULL)
+		return ;
 	if (!(ft_strcmp("echo", cmd->command)) && tok->type == 'f')
 		return ;
 	else if (cmd->cmd_status == 1)
