@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/04 11:35:40 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/04 13:17:57 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ int		ft_child(t_command *c, t_mother *s)
 	{
 		printf("hello\n");
 		printf("%s\n", c->outfile);
-		if (c->isfollowedbypipe == 3)
+		if (c->isfollowedbypipe == 2)
 			fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
-		if (c->isfollowedbypipe == 4)
+		if (c->isfollowedbypipe == 3)
 			fd = open(c->outfile, O_RDWR|O_APPEND|O_CREAT, 0666);
 		printf("%d\n", fd);
-		if (c->isfollowedbypipe == 3 || c->isfollowedbypipe == 4)
+		if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3)
 			err = dup2(fd, 1);
 		if (err < 0)
 			ft_error(s, "redirect dup2", -1);
-		if (c->isfollowedbypipe == 3 || c->isfollowedbypipe == 4)
+		if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3)
 			err = dup2(fd, 2);
 		if (err < 0)
 			ft_error(s, "redirect dup2", -1);
@@ -75,10 +75,10 @@ int		ft_parent(t_command *c, int pid)
 
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]); // peut etre a mettre a la fin // on ferme le pipe d'avant
-	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 || c->isfollowedbypipe == 3)
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 || c->isfollowedbypipe == 2)
 	{
 		close(c->pipes[1]); // si suivi ou apres par un pipe on close write side
-	if (c->isfollowedbypipe == 3)
+	if (c->isfollowedbypipe == 2)
 	{
 		printf("hello\n");
 		int fd;
@@ -272,10 +272,10 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	s->c->arg[1] = "make";
 	s->c->arg[2] = NULL;
 	s->c->arg[3] = NULL; 
-	s->c->isfollowedbypipe = 0;
-	s->c->isoutfile = 0;
+	s->c->isfollowedbypipe = 2;
+	s->c->isoutfile = 1;
 	s->c->isinputfile = 1;
-	s->c->outfile = NULL;
+	s->c->outfile = "todo.txt";
 	s->c->inputfile = "Makefile";
 	s->c->isprecededbypipe = 2;
 	s->c->nextpipe = NULL;
