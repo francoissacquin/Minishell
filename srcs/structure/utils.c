@@ -81,7 +81,9 @@ void	ft_end(t_mother *s)
 		free(s->line);
 	// if (s->c)
 	// 	free(s->c);
-	//free_t_token(s);
+	printf("ft_end activated\n");
+	free_t_token(s);
+	free_t_cmd(s);
 	ft_clear_history();
 	exit(0);
 }

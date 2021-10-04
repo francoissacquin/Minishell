@@ -112,6 +112,7 @@ void	ft_structinit(t_mother *s);
 // end of structures
 void	ft_end(t_mother *s);
 void	free_t_token(t_mother *s);
+void    free_t_cmd(t_mother *s);
 //builtins
 int	ft_echo(t_command *c);
 int		ft_cd(t_mother *s);
@@ -185,6 +186,7 @@ void	ft_type_built(t_token *tok);
 void	ft_type_pipe(t_token *tok);
 void	ft_type_path(t_mother *s, t_token *tok);
 void	ft_type_cmd(t_mother *s, t_token *tok);
+int		ft_stat_check(char *path, t_token *tok);
 
 // << redirection interception for input
 void	redir_input_handler(t_mother *s);

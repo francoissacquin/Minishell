@@ -102,7 +102,15 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	else
 	{
 		printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
-		s->c = create_cmd(s, tok, i);
+		s->c->command = ft_strdup(tok->token);
+		s->c->line = ft_strdup(tok->token);
+		s->c->retvalue = 0;
+		s->c->nbarg = 1;
+		s->c->arg = ft_malloc(&s->c->arg, sizeof(char *) * 2);
+		s->c->arg[0] = ft_strdup(tok->token);
+		s->c->arg[1] = NULL;
+		s->c->cmd_status = tok->type - 97;
+		s->nbcmd++;
 		s->c->isfollowedbypipe = 0;
 		s->c->nextpipe = NULL;
 		s->c->isprecededbypipe = 0;
