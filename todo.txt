@@ -1,5 +1,4 @@
-- normer a peu pres au fur et a mesure
-- free direct in utils.c/ft_exit
+
 
 
 Todo oscar:

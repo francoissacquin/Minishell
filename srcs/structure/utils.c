@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 16:31:30 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/02 18:23:05 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/04 16:00:46 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_structinit(t_mother *s)
 	s->exitret = 0;
 	s->path = NULL;
 	s->redirect_mem = 0;
-	s->ret = 0;
+	// s->ret = 0;
 	ft_initc(s);
 	ft_lexinit(s);
 }
@@ -90,5 +90,5 @@ void	ft_end(t_mother *s)
 	free_t_token(s);
 	free_t_cmd(s);
 	ft_clear_history();
-	exit(0);
+	// exit(0);
 }
