@@ -142,6 +142,7 @@ void	ft_print_parsing_results(t_mother *s)
 			printf("||%s\n", cmd->arg[i]);
 			i++;
 		}
+		printf(" with infile = %s and outile = %s", cmd->inputfile, cmd->outfile);
 		printf("-----------------------------------------\n");
 		printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
         cmd = cmd->nextpipe;
@@ -155,6 +156,7 @@ void	ft_print_parsing_results(t_mother *s)
 		printf("||%s\n", cmd->arg[i]);
 		i++;
 	}
+	printf(" with infile = %s and outile = %s", cmd->inputfile, cmd->outfile);
 	printf("-----------------------------------------\n");
 	printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
 	if (s->lex->std_input_redir != NULL)
