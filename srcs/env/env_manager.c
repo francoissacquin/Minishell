@@ -103,7 +103,7 @@ void	rm_env(t_mother *s, char *str)
 	int		len;
 
 	len = ft_strlen_array(s->env);
-	temp = ft_malloc(&temp, len * sizeof(char *));
+	temp = ft_malloc(&temp, (len + 1) * sizeof(char *));
 	i = 0;
 	while (i < len)
 	{

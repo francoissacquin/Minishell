@@ -121,6 +121,7 @@ int		ft_env(t_mother *s);
 int 	ft_export(t_mother *s, t_command *cmd);
 int 	ft_unset(t_mother *s);
 int		ft_exit(t_mother *s);
+int		ft_check_exit_arg(char *str);
 
 //exec
 int		ft_execfind(t_mother *s, t_command *c);
