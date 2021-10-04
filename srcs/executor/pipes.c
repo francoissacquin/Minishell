@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/04 13:17:57 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/04 14:25:11 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,23 @@ int		ft_child(t_command *c, t_mother *s)
 	{
 		printf("hello\n");
 		printf("%s\n", c->outfile);
-		if (c->isfollowedbypipe == 2)
+		if (c->isfollowedbypipe == 2) //check les flags d'open
 			fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
 		if (c->isfollowedbypipe == 3)
-			fd = open(c->outfile, O_RDWR|O_APPEND|O_CREAT, 0666);
+			fd = open(c->outfile, O_RDWR|O_APPEND|O_CREAT, 0666); //check les flags d'open
 		printf("%d\n", fd);
-		if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3)
+		if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3) //gestion, branchement de > et >>
 			err = dup2(fd, 1);
 		if (err < 0)
 			ft_error(s, "redirect dup2", -1);
-		if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3)
+		if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3) //gestion, branchement de > et >>
 			err = dup2(fd, 2);
 		if (err < 0)
 			ft_error(s, "redirect dup2", -1);
-		if (c->isprecededbypipe == 2) // redir <
+		if (c->isprecededbypipe == 2) //gestion redirection <
 		{
 			printf("caca");
-			fd = open(c->inputfile, O_RDWR|O_APPEND, 0666);
+			fd = open(c->inputfile, O_RDWR|O_APPEND, 0666); //check les flegs d'open
 			printf("%d\n", fd);
 			err = dup2(fd, 0);
 			close(c->pipes[1]);
@@ -62,7 +62,7 @@ int		ft_child(t_command *c, t_mother *s)
 			ft_error(s, "pipe dup2", -1);
 	}
 	if(fd)
-		close(fd);
+		close(fd); //fermeture de fd apres avoir ecrit
 	ret = ft_execfind(s, s->c); //execute command in child process meme si il y'en a que une
 	exit(ret);
 }
@@ -72,28 +72,19 @@ int		ft_parent(t_command *c, int pid)
 	int status;
 	int ret = 1;
 	int ex = 0;
+	int fd;
 
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]); // peut etre a mettre a la fin // on ferme le pipe d'avant
 	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 || c->isfollowedbypipe == 2)
 	{
 		close(c->pipes[1]); // si suivi ou apres par un pipe on close write side
-	if (c->isfollowedbypipe == 2)
+	if (c->isfollowedbypipe == 2) // gestion de la redirection >
 	{
 		printf("hello\n");
-		int fd;
-		// int err;
 		printf("%s\n", c->outfile);
 		fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
 		printf("%d\n", fd);
-		// write(fd, "chib", 4);
-		// err = dup2(c->pipes[1], 3); //on branche le write side to stdout
-		// close(c->pipes[0]);
-		// if (err < 0)
-		// 	{
-		// 		printf("exxor");
-		// 		exit(0);}
-
 	}
 		if (c->nextpipe == NULL) //si c'est le dernier // histoire de propreté plus que de necessité
 		{
@@ -102,7 +93,7 @@ int		ft_parent(t_command *c, int pid)
 		}
 	}
 	waitpid(pid, &status, 0); //peut etre a mettre au debut	du parent // on attends la fin du child pour etre sur d'avoir tte la sortie
-	ex = WIFEXITED(status);;
+	ex = WIFEXITED(status);   //get return value of child process
 	if (ex > 0)
 		ret = WEXITSTATUS(status);
 	// ex++;
@@ -117,14 +108,14 @@ int		ft_parent(t_command *c, int pid)
 
 int pid = -1;
 
-void	killchild(int signal)
+void	killchild(int signal)  //ctrl-c handler in child process
 {
 	(void)signal;
 	printf("caca PID=%d, kajhakjh\n", pid);
 	kill(pid, SIGTERM);
 }
 
-void	quitchild(int signal)
+void	quitchild(int signal) //ctrl-\ handler in child process
 {
 	(void)signal;
 	printf("bye PID=%d, kajhakjh\n", pid);
@@ -143,17 +134,17 @@ int		ft_pipe(t_command *c, t_mother *s)
 		err = pipe(c->pipes);
 	if(err != 0)
 		ft_error(s, "pipe", -1);
-	pid = fork();
+	pid = fork();													//always fork to save minishell parent in case of crash
 	if(pid < 0)
 		ft_error(s, "fork", -1);
 	if (pid < 0)
 		ft_error(s, "pipe pid is shit", -1);
-	signal(SIGINT, killchild);
+	signal(SIGINT, killchild);										// catching signals to kill child processes
 	signal(SIGQUIT, quitchild);
 	if(pid == 0)
-		ret = ft_child(c, s);
+		ret = ft_child(c, s);										//exec child
 	else
-		ft_parent(c, pid);
+		ft_parent(c, pid);											//exec parent
 	return(ret);
 }
 
