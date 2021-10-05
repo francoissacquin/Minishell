@@ -85,7 +85,7 @@ int ft_exit(t_mother *s)
 		temp = temp - ((temp / 256) * 256);
 	s->ret = temp;
 	write(2, "exit\n", 5);
-	// ft_end(s);
-	// s->ret = 234;
+	free_t_token(s);
+	free_t_cmd(s);
 	exit(s->ret);
 }
