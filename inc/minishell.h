@@ -119,7 +119,7 @@ int		ft_cd(t_mother *s);
 int		ft_pwd(t_mother *s);
 int		ft_env(t_mother *s);
 int 	ft_export(t_mother *s, t_command *cmd);
-int 	ft_unset(t_mother *s);
+int 	ft_unset(t_mother *s, t_command *c);
 int		ft_exit(t_mother *s);
 int		ft_check_exit_arg(char *str);
 
