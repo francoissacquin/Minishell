@@ -33,6 +33,9 @@ void    quote_handler(t_mother *s, int *i, int *j)
     }
     if (s->line[*i] == ' ')
         *i = *i + 1;
+    printf("handler :j = %i et i = %i\n", *j, *i);
+    if (s->line[*j] == '\0')
+        return ;
     if (ft_strchr("\"\'", s->line[*j]) && s->line[*j + 1] != '\0')
         ft_quote_aligner(s, i, j);
 }

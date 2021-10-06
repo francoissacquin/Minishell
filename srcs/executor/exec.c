@@ -123,7 +123,7 @@ int	ft_execfind(t_mother *s, t_command *c)
 	else if (ft_strcmp("pwd", s->c->command) == 0)
 		ret = ft_pwd(s);
 	else if (ft_strcmp("unset", s->c->command) == 0)
-		ret = ft_unset(s);
+		ret = ft_unset(s, c);
 	else
 		ret = ft_execnotbuiltin(s);
 	return(ret);

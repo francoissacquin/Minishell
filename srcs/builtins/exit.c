@@ -74,18 +74,25 @@ int ft_exit(t_mother *s)
 	// 	s->c = s->c->nextpipe;
 	// 	multicommands(s);
 	// }
-	if (ft_strlen_array(s->c->arg) != 2)
+	if (ft_strlen_array(s->c->arg) > 2)
 		ft_error(s, "error\nwrong number of arguments for exit\n", 1);
-	if (ft_check_exit_arg(s->c->arg[1]))
-		s->ret = 2;
-	temp  = ft_atol(s->c->arg[1]);
-	if (temp < 0)
-		temp = temp + (((temp / 256) + 1) * 256);
-	else if (temp > 255)
-		temp = temp - ((temp / 256) * 256);
-	s->ret = temp;
+	else if (ft_strlen_array(s->c->arg) == 2)
+	{
+		if (ft_check_exit_arg(s->c->arg[1]))
+			s->ret = 2;
+		else
+		{
+			temp  = ft_atol(s->c->arg[1]);
+			if (temp < 0)
+				temp = temp + (((temp / 256) + 1) * 256);
+			else if (temp > 255)
+				temp = temp - ((temp / 256) * 256);
+			s->ret = temp;
+		}
+	}
 	write(2, "exit\n", 5);
 	free_t_token(s);
 	free_t_cmd(s);
+	ft_clear_history();
 	exit(s->ret);
 }

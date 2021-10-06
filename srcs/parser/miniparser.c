@@ -124,6 +124,8 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 void	ft_add_args(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
+	char		*temp;
+	char		*temp_line;
 
 	(void)i;
 	last = ft_last_cmd(s->c);
@@ -142,7 +144,14 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 		if (last->line == NULL)
 			last->line = ft_strdup(tok->token);
 		else
-			last->line = ft_strjoin(last->line, ft_strjoin(" ", tok->token));
+		{
+			temp = ft_strjoin(" ", tok->token);
+			temp_line = ft_strdup(last->line);
+			free(last->line);
+			last->line = ft_strjoin(temp_line, temp);
+			free(temp);
+			free(temp_line);
+		}
 	}
 }
 

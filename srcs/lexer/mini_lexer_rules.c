@@ -24,6 +24,7 @@ void	ft_new_operator_char_rule(t_mother *s, int *i, int *j)
 
 void	ft_quote_aligner(t_mother *s, int *i, int *j)
 {
+	printf("aligner :j = %i et i = %i\n", *j, *i);
 	if (*j > *i && s->line[*j - 1] != ' ')
         link_chain_elem(s, i, j, '\0');
     quote_handler(s, i, j);
