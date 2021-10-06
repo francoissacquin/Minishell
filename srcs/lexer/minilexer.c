@@ -36,6 +36,8 @@ void    minilexer(t_mother *s)
     while (s->line[j])
     {
         minilexer_inner_loop(s, &i, &j);
+        if (s->line[j] == '\0')
+            break;
         j++;
     }
     if (i <= j - 1 && i < (int)ft_strlen(s->line))

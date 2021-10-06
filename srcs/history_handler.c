@@ -9,4 +9,5 @@ void	ft_add_history(t_mother *s)
 void	ft_clear_history()
 {
 	clear_history();
+	printf("clear_history() activated\n");
 }

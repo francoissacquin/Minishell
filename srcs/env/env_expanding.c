@@ -4,6 +4,7 @@ void	expanding_env(t_mother *s, t_token *tok)
 {
 	int		index;
 	int		end;
+	char	*temp;
 
 	index = quote_env_finder(tok);
 	if (tok->type == 'q' && tok->token[0] == '\'')
@@ -21,6 +22,12 @@ void	expanding_env(t_mother *s, t_token *tok)
 		else if (tok->type == 'e')
 			env_replacing(s, tok);
 		index = quote_env_finder(tok);
+	}
+	if (tok->type == 'q')
+	{
+		temp = ft_substr(tok->token, 1, ft_strlen(tok->token) - 2);
+		free(tok->token);
+		tok->token = temp;
 	}
 }
 
