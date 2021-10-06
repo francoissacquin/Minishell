@@ -35,10 +35,10 @@ void	ft_initc(t_mother *s)
 	c->cmd_status = 0;
 	s->c = c;
 
-	puts("CACACACCA");
-		printf("s.command %s\n", s->c->command);
+	//puts("CACACACCA");
+		//printf("s.command %s\n", s->c->command);
 	// if (s->c->inputfile)
-		printf("s.inputfile %s\n", s->c->inputfile);
+		//printf("s.inputfile %s\n", s->c->inputfile);
 	// return(&c);
 }
 
@@ -86,7 +86,6 @@ void	ft_end(t_mother *s)
 		free(s->line);
 	// if (s->c)
 	// 	free(s->c);
-	printf("ft_end activated\n");
 	free_t_token(s);
 	free_t_cmd(s);
 	ft_clear_history();

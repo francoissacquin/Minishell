@@ -36,6 +36,6 @@ int		ft_cd(t_mother *s)
 		ft_error(s, "chdir failed", -1);
 	getcwd(targetpath, sizeof(targetpath));
 	ft_pwd(s);
-	printf("%s r = %d", targetpath, r);
+	//printf("%s r = %d", targetpath, r);
 	return(0);
 }

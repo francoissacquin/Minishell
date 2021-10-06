@@ -52,7 +52,7 @@ char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
 		pathsize = 0;
 	}
 	//tester pour file at /
-	printf("||%s\n||", addcmd);
+	//printf("||%s\n||", addcmd);
 	return(addcmd);
 }
 
@@ -95,7 +95,7 @@ int	ft_execnotbuiltin(t_mother *s)
 	path = ft_pathfinder(s);
 	error = 0;
 	//  printf("%s , %s", path, s->c->arg[0]);
-	 dprintf(1,"fghm");
+	 //dprintf(1,"fghm");
 	error = execve(path, s->c->arg, s->env);
 	// char *test = " -la";
 	// error = execve(path, &test, NULL); //this is a test

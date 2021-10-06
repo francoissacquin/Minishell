@@ -18,10 +18,7 @@ size_t	ft_strlen_array(char **array)
 
 	i = 0;
 	if (!array)
-	{
-		printf("AAAAAAAAAAHHHHHH\n"); // we need to find a better way for this I think
 		return (0);
-	}
 	while (array[i] != NULL)
 		i++;
 	return (i);
@@ -102,7 +99,7 @@ char	*ft_return_env_value(t_mother *s, char *var, int type)
 		}
 		i++;
 	}
-	printf("no value found\n");
+	//printf("no value found\n");
 	res = ft_malloc(&res, sizeof(char));
 	res[0] = '\0';
 	return (res);

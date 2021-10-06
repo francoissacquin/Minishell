@@ -48,7 +48,6 @@ void	ft_type_env(t_token *tok)
 	int		i;
 
 	i = 1;
-	printf("what up\n");
 	if (tok->token[0] == '$')
 	{
 		while (tok->token[i] && tok->token[i] != '=')

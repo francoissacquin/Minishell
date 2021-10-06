@@ -47,9 +47,11 @@ int	ft_echo(t_command *c)
 	{
 		ft_putstr_fd(c->arg[i], 1);
 		i++;
+		if (c->arg[i] != NULL)
+			ft_putstr_fd(" ", 1);
 	}
 	if (flag_n_switch == 0)
 		write(1, "\n", 1);
-	
+	ret = 0;
 	return(ret);
 }

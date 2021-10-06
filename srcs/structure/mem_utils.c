@@ -25,7 +25,23 @@ void	free_t_token(t_mother *s)
         free(temp->token);
     if (temp != NULL)
         free(temp);
-    printf("free_t_token activated\n");
+    //printf("free_t_token activated\n");
+}
+
+
+void    free_t_lexer(t_mother *s)
+{
+    if (s->lex->delimiter != NULL)
+        free(s->lex->delimiter);
+    if (s->lex->std_input_redir != NULL)
+        free(s->lex->std_input_redir);
+    free(s->lex);
+}
+
+void    free_t_mother(t_mother *s)
+{
+    free(s->path);
+    ft_free_array(s->env);
 }
 
 void    free_t_cmd(t_mother *s)
@@ -73,5 +89,5 @@ void    free_t_cmd(t_mother *s)
         free(temp->inputfile);
     if (temp != NULL)
         free(temp);
-    printf("free_t_command activated\n");
+    //printf("free_t_command activated\n");
 }
