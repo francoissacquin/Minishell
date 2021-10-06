@@ -47,7 +47,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	{
 		if (tok->prev->type == 'P')
 		{
-			printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
+			//printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
 			last->isfollowedbypipe = 1;
 			add_cmd_elem(s, tok, i);
 			next = ft_last_cmd(s->c);
@@ -95,7 +95,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	}
 	else
 	{
-		printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
+		//printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
 		s->c->command = ft_strdup(tok->token);
 		s->c->line = ft_strdup(tok->token);
 		s->c->retvalue = 0;
@@ -285,5 +285,5 @@ void	ft_wrong_input(t_mother *s, t_token *tok, int *i)
 	(void)s;
 	(void)tok;
 	(void)i;
-	printf("INPUT NON VALIDE\n"); // METTRE FT_ERROR ICI
+	//printf("INPUT NON VALIDE\n"); // METTRE FT_ERROR ICI
 }

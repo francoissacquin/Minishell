@@ -105,7 +105,7 @@ t_token *create_token(t_mother *s, int i, int j, char c)
         new = s->lex->first_token;
         if (j <= i)
         {
-            printf("weird token creation in create_token\n");
+            //printf("weird token creation in create_token\n");
             new->token = NULL;
             new->type = '\0';
         }
@@ -120,7 +120,7 @@ t_token *create_token(t_mother *s, int i, int j, char c)
     }
     else if (j <= i)
     {
-        printf("weird token creation in create_token\n");
+       // printf("weird token creation in create_token\n");
         new = ft_malloc(&new, sizeof(t_token));
         new->token = NULL;
         new->type ='\0';

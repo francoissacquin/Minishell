@@ -11,7 +11,6 @@ void	expanding_env(t_mother *s, t_token *tok)
 		return ;
 	while (index != -1)
 	{
-		printf("entering here\n");
 		if (tok->type == 'q')
 		{
 			end = index + 1;
@@ -39,9 +38,7 @@ void	quote_env_replacing(t_mother *s, t_token *tok, int start, int end)
 
 	len = ft_strlen(tok->token);
 	temp = ft_substr(tok->token, start + 1, end - start - 1);
-	printf("searchin with temp = %s\n", temp);
 	value = ft_return_env_value(s, temp, 1);
-	printf(" ======>%s\n", value);
 	free(temp);
 	temp = ft_substr(tok->token, 0, start);
 	temp = ft_strjoin_env(temp, value);
@@ -57,7 +54,6 @@ void	env_replacing(t_mother *s, t_token *tok)
 {
 	char	*temp;
 
-	printf("NANIIIIIIIIIII\n");
 	temp = ft_substr(tok->token, 1, ft_strlen(tok->token) - 1);
 	free(tok->token);
 	tok->token = ft_return_env_value(s, temp, 1);

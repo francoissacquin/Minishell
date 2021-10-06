@@ -23,7 +23,7 @@ void    quote_handler(t_mother *s, int *i, int *j)
         *j = *j + 1;
     if (s->line[*i] == '\0' || s->line[*j] == '\0')
     {
-        printf("unfinished quotes\n"); // METTRE FT_ERROR ICI
+        //printf("unfinished quotes\n"); // METTRE FT_ERROR ICI
         return ;
     }
     if (s->line[*j] == quote)
@@ -33,7 +33,6 @@ void    quote_handler(t_mother *s, int *i, int *j)
     }
     if (s->line[*i] == ' ')
         *i = *i + 1;
-    printf("handler :j = %i et i = %i\n", *j, *i);
     if (s->line[*j] == '\0')
         return ;
     if (ft_strchr("\"\'", s->line[*j]) && s->line[*j + 1] != '\0')

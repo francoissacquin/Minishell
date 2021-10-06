@@ -52,7 +52,6 @@ void	ft_finding_delimiter(t_mother *s, t_token *tok)
 	}
 	temp[k] = '\0';
 	s->lex->delimiter = temp;
-	printf("delimiter = %s\n", s->lex->delimiter);
 }
 
 void	ft_redir_error_check(t_mother *s, t_token *tok)

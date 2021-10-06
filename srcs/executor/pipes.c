@@ -20,13 +20,13 @@ int		ft_child(t_command *c, t_mother *s)
 
 	if (c->isfollowedbypipe > 1 || c->isprecededbypipe == 2)
 	{
-		printf("hello\n");
-		printf("%s\n", c->outfile);
+		//printf("hello\n");
+		//printf("%s\n", c->outfile);
 		if (c->isfollowedbypipe == 2) //check les flags d'open
 			fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
 		if (c->isfollowedbypipe == 3)
 			fd = open(c->outfile, O_RDWR|O_APPEND|O_CREAT, 0666); //check les flags d'open
-		printf("%d\n", fd);
+		//printf("%d\n", fd);
 		if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3) //gestion, branchement de > et >>
 			err = dup2(fd, 1);
 		if (err < 0)
@@ -37,9 +37,9 @@ int		ft_child(t_command *c, t_mother *s)
 			ft_error(s, "redirect dup2", -1);
 		if (c->isprecededbypipe == 2) //gestion redirection <
 		{
-			printf("caca");
+			//printf("caca");
 			fd = open(c->inputfile, O_RDWR|O_APPEND, 0666); //check les flegs d'open
-			printf("%d\n", fd);
+			//printf("%d\n", fd);
 			err = dup2(fd, 0);
 			close(c->pipes[1]);
 			//write(0, "test redir dup2", 16);
@@ -81,10 +81,10 @@ int		ft_parent(t_command *c, int pid)
 		close(c->pipes[1]); // si suivi ou apres par un pipe on close write side
 	if (c->isfollowedbypipe == 2) // gestion de la redirection >
 	{
-		printf("hello\n");
-		printf("%s\n", c->outfile);
+		//printf("hello\n");
+		//printf("%s\n", c->outfile);
 		fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
-		printf("%d\n", fd);
+		//printf("%d\n", fd);
 	}
 		if (c->nextpipe == NULL) //si c'est le dernier // histoire de propreté plus que de necessité
 		{
@@ -111,15 +111,15 @@ int pid = -1;
 void	killchild(int signal)  //ctrl-c handler in child process
 {
 	(void)signal;
-	printf("caca PID=%d, kajhakjh\n", pid);
+	//printf("caca PID=%d, kajhakjh\n", pid);
 	kill(pid, SIGTERM);
 }
 
 void	quitchild(int signal) //ctrl-\ handler in child process
 {
 	(void)signal;
-	printf("bye PID=%d, kajhakjh\n", pid);
-	printf("^\\Quit: 3\n");
+	//printf("bye PID=%d, kajhakjh\n", pid);
+	//printf("^\\Quit: 3\n");
 	if (pid != -1)
 		kill(pid, SIGTERM);
 }
@@ -144,7 +144,7 @@ int		ft_pipe(t_command *c, t_mother *s)
 	if(pid == 0)
 		ret = ft_child(c, s);										//exec child
 	else
-		ft_parent(c, pid);											//exec parent
+		ret = ft_parent(c, pid);											//exec parent
 	return(ret);
 }
 
@@ -317,18 +317,18 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 
 	// s->c->inputfile = NULL;
 	// s->c->outfile = NULL;
-	printf("s.command %s\n", s->c->command);
+	//printf("s.command %s\n", s->c->command);
 	// if (s->c->inputfile)
-		printf("s.inputfile %s\n", s->c->inputfile);
+		//printf("s.inputfile %s\n", s->c->inputfile);
 	// if (s->c->outfile)
-	printf("s.outfile %s\n", s->c->outfile);
-	if (s->c->arg[0])
-		printf("s.arg[0] %s\n", s->c->arg[0]);
+	//printf("s.outfile %s\n", s->c->outfile);
+	//if (s->c->arg[0])
+		//printf("s.arg[0] %s\n", s->c->arg[0]);
 	// if (s->c->inputfile)
-	printf("s.isprecededbypipe %d\n", s->c->isprecededbypipe);
-	printf("s.isfollowedbypipe %d\n", s->c->isfollowedbypipe);
-	printf("s.isinputfile %d\n", s->c->isinputfile);
-	printf("s.isoutfile %d\n", s->c->isoutfile);
+	//printf("s.isprecededbypipe %d\n", s->c->isprecededbypipe);
+	//printf("s.isfollowedbypipe %d\n", s->c->isfollowedbypipe);
+	//printf("s.isinputfile %d\n", s->c->isinputfile);
+	//printf("s.isoutfile %d\n", s->c->isoutfile);
 	// puts("|||hello|||");
 
 	t_mother *tmp;
@@ -337,7 +337,7 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	// printf("|||| %d |||||", s->nbcmd);
 	while(i < s->nbcmd)
 	{
-		printf("ZAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
+		//printf("ZAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
 
 		if(ft_strcmp("exit", s->c->command) == 0)
 			ft_exit(s);
@@ -345,12 +345,12 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 		// puts("ZGEG");
 		s->c->retvalue = ft_pipe(s->c, tmp);
 		s->ret = s->c->retvalue;
-		printf("PPPPs->ret %dPPPP s->c->retvalue %d PPPP\n", s->ret, s->c->retvalue);
+		//printf("PPPPs->ret %dPPPP s->c->retvalue %d PPPP\n", s->ret, s->c->retvalue);
 		if(!s->c->nextpipe)
 			break; 
 		s->c = s->c->nextpipe;
 		i++;
 	}
-	mainaftersignal();
+	//mainaftersignal();
 	// printf("||hello");
 }

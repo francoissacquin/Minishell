@@ -24,12 +24,11 @@ void	check_echo_flag(t_mother *s, t_token *tok)
 	(void)s;
 	i = 1;
 	wrong_flag = 0;
-	printf("WHAT?\n");
 	while (tok->token[i])
 	{
 		if (tok->token[i] != 'n')
 		{
-			printf("flag non-valide pour le built-in echo\n"); //METTRE FT_ERROR ICI
+			//printf("flag non-valide pour le built-in echo\n"); //METTRE FT_ERROR ICI
 			wrong_flag = 1;
 		}
 		i++;
