@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 17:22:51 by ogenser           #+#    #+#             */
-/*   Updated: 2021/09/04 11:47:43 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/07 16:07:29 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	ft_echo(t_command *c)
 
 	i = 1;
 	flag_n_switch = 0;
+	if(c->arg[1] == NULL)
+		ret = 0;
 	if (c->arg[i] == NULL)
 	{
 		write(1, "\n", 1);

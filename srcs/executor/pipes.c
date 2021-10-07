@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/04 16:23:54 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/07 16:52:14 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,23 +334,43 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	t_mother *tmp;
 	// int ret = 0;
 	int i = 0;
+	// puts("ZGEG");
 	// printf("|||| %d |||||", s->nbcmd);
+	if (s->c->command == NULL) // pas sur aue ca fonctionne
+		{
+			// puts("ZGEG");
+			s->c->retvalue = 127;
+			s->ret = s->c->retvalue;
+		}
 	while(i < s->nbcmd)
 	{
-		//printf("ZAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
-
+		// printf("ZAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
+		tmp = s;
 		if(ft_strcmp("exit", s->c->command) == 0)
 			ft_exit(s);
-		tmp = s;
+		// printf("||| %s |||", s->c->command);
+		if (s->c->command == NULL) // pas sur aue ca fonctionne
+		{
+			// puts("ZGEG");
+			s->c->retvalue = 127;
+		}
+		// tmp = s;
 		// puts("ZGEG");
-		s->c->retvalue = ft_pipe(s->c, tmp);
+		else
+		{
+			// puts("the else \n");
+				s->c->retvalue = ft_pipe(s->c, tmp);
+		}
 		s->ret = s->c->retvalue;
+		// printf("BAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
+
 		//printf("PPPPs->ret %dPPPP s->c->retvalue %d PPPP\n", s->ret, s->c->retvalue);
 		if(!s->c->nextpipe)
 			break; 
 		s->c = s->c->nextpipe;
 		i++;
 	}
+	// exit(0);
 	//mainaftersignal();
 	// printf("||hello");
 }
