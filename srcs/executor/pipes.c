@@ -340,7 +340,7 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 		//printf("ZAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
 
 		if(ft_strcmp("exit", s->c->command) == 0)
-			ft_exit(s);
+			ft_exit(s, s->c);
 		tmp = s;
 		// puts("ZGEG");
 		s->c->retvalue = ft_pipe(s->c, tmp);

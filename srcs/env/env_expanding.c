@@ -8,7 +8,12 @@ void	expanding_env(t_mother *s, t_token *tok)
 
 	index = quote_env_finder(tok);
 	if (tok->type == 'q' && tok->token[0] == '\'')
+	{
+		temp = ft_substr(tok->token, 1, ft_strlen(tok->token) - 2);
+		free(tok->token);
+		tok->token = temp;
 		return ;
+	}
 	while (index != -1)
 	{
 		if (tok->type == 'q')
@@ -67,7 +72,7 @@ int	quote_env_finder(t_token *tok)
 	i = 0;
 	while (tok->token[i])
 	{
-		if (tok->token[i] == '$')
+		if (tok->token[i] == '$' && tok->token[i + 1] != '\0' && tok->token[i + 1] != ' ')
 			return (i);
 		i++;
 	}

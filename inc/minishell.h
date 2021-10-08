@@ -116,14 +116,17 @@ void    free_t_lexer(t_mother *s);
 void	free_t_token(t_mother *s);
 void    free_t_cmd(t_mother *s);
 //builtins
-int	ft_echo(t_command *c);
+int		ft_echo(t_command *c);
 int		ft_cd(t_mother *s);
 int		ft_pwd(t_mother *s);
 int		ft_env(t_mother *s);
 int 	ft_export(t_mother *s, t_command *cmd);
 int 	ft_unset(t_mother *s, t_command *c);
-int		ft_exit(t_mother *s);
+int		ft_exit(t_mother *s, t_command *c);
 int		ft_check_exit_arg(char *str);
+void    ft_linking_args(t_mother *s, t_command *cmd);
+int     ft_skip_quote_marks(char *str, int i, int end);
+int		ft_strstr_index(char *haystack, char *needle);
 
 //exec
 int		ft_execfind(t_mother *s, t_command *c);

@@ -91,7 +91,10 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 			s->redirect_mem = 0;
 		}
 		else
-			printf("erreur de pipe ou d'operateur, nouvelle commande sans lien devant\n"); // METTRE FT_ERROR ICI
+		{
+			tok->type = 'w';
+			ft_add_args(s, tok, i);
+		}
 	}
 	else
 	{
@@ -137,7 +140,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 			if (tok->type == 'f' && !(ft_strcmp(last->command, "echo")))
 				check_echo_flag(s, tok);
 			else if (tok->type == 'f')
-				printf("AUCUN FLAG AUTORISÉ POUR LES BUILT-INS\n"); //METTRE FT_ERROR ICI
+				write(2,"AUCUN FLAG AUTORISÉ POUR LES BUILT-INS\n", 39);
 		}
 		last->nbarg++;
 		ft_add_arg_array(last, tok->token);

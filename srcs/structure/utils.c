@@ -82,8 +82,8 @@ void	ft_structinit(t_mother *s)
 
 void	ft_end(t_mother *s)
 {
-	if (s->line)
-		free(s->line);
+	//if (s->line)
+		//free(s->line);
 	// if (s->c)
 	// 	free(s->c);
 	free_t_token(s);

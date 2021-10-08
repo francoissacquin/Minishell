@@ -117,7 +117,7 @@ int	ft_execfind(t_mother *s, t_command *c)
 	else if (ft_strcmp("env", s->c->command) == 0)
 		ret = ft_env(s);
 	else if (ft_strcmp("exit", s->c->command) == 0)
-		ret = ft_exit(s);
+		ret = ft_exit(s, c);
 	else if (ft_strcmp("export", s->c->command) == 0)
 		ret = ft_export(s, c);
 	else if (ft_strcmp("pwd", s->c->command) == 0)

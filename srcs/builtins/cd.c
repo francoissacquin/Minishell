@@ -21,7 +21,8 @@
 
 int ft_updatepwd(t_mother *s)
 {
-
+	(void)s;
+	return (0);
 }
 
 int		ft_cd(t_mother *s)
