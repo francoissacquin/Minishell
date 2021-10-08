@@ -10,9 +10,9 @@ void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok)
 	else if (cmd->cmd_status == 1)
 	{
 		if (!(ft_strcmp(cmd->command, "export")) && !(ft_strchr("E", tok->type)))
-			printf("error, invalid argument was given to export, non valid env variable\n"); //METTRE FT_ERROR ICI
+			write(2, "error, invalid argument was given to export, non valid env variable\n", 68);
 		else if (!(ft_strcmp(cmd->command, "env")) && cmd->nbarg == 1)
-			printf("error, env takes no flag or argument\n"); // METTRE FT_ERROR ICI
+			write(2, "error, env takes no flag or argument\n", 37); // METTRE FT_ERROR ICI
 	}
 }
 

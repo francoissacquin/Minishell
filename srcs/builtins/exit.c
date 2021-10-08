@@ -102,10 +102,11 @@ int ft_exit(t_mother *s, t_command *c)
 				temp = temp - ((temp / 256) * 256);
 			s->ret = temp;
 		}
+		free_t_token(s);
+		free_t_cmd(s);
+		ft_clear_history();
+		exit(s->ret);
 	}
 	write(2, "exit\n", 5);
-	free_t_token(s);
-	free_t_cmd(s);
-	ft_clear_history();
-	exit(s->ret);
+	return (s->ret);
 }
