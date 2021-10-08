@@ -6,3 +6,6 @@ libft/libft.a
 libft/*.o
 test
 todo.txt
+minishell
+minishell
+minishell_tester/tofix/tofix_tests.txt
