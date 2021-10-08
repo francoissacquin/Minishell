@@ -18,8 +18,8 @@ void ft_error(t_mother *s, char * error, int code)
 {
 	printf("%s ", error);
 	printf("%d\n", code);
-	ft_clear_history();
-	ft_end(s);
+	if (code == 1)
+		ft_end(s);
 }
 
 int mainaftersignal(char *str)
@@ -35,8 +35,10 @@ int mainaftersignal(char *str)
 	// signal(SIGQUIT, signalhandler);
 	// signal(SIGINT, SIG_IGN);
 	ft_structinit(&s);
-	//s.line = readline("Minishell> ");
-	s.line = str;
+	if (str == NULL)
+		s.line = readline("Minishell> ");
+	else
+		s.line = str;
 	//ft_add_history(&s);
 	s.env = NULL;
 	env_init(&s, env);
@@ -77,11 +79,20 @@ int main(int argc, char **argv, char **envp)
 {
 	//t_mother 	s;
 	
-	env = envp;
-	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+	if (envp != NULL)
+		env = envp;
+	else
 	{
-    	int exit_status = mainaftersignal(argv[2]);
-    	exit(exit_status);
+		printf("Whatare you trying to do exactly?????\n");
+		exit(0);
+	}
+	if (argc >= 3)
+	{
+		if (!ft_strncmp(argv[1], "-c", 3))
+		{
+    		int exit_status = mainaftersignal(argv[2]);
+    		exit(exit_status);
+		}
 	}
 	while (1)
 	{

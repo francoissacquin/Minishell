@@ -16,7 +16,7 @@ TESTER = tester
 
 CC = clang
 
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address -g
 
 SFLAGS = -lreadline
 
@@ -37,6 +37,7 @@ srcs/builtins/exit.c \
 srcs/builtins/export.c \
 srcs/builtins/pwd.c \
 srcs/builtins/unset.c \
+srcs/builtins/built_utils.c \
 srcs/env/env_manager.c \
 srcs/env/env_utils.c \
 srcs/env/env_expanding.c \

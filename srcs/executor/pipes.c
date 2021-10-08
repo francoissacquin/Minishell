@@ -347,7 +347,7 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 		// printf("ZAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
 		tmp = s;
 		if(ft_strcmp("exit", s->c->command) == 0)
-			ft_exit(s);
+			ft_exit(s, s->c);
 		// printf("||| %s |||", s->c->command);
 		if (s->c->command == NULL) // pas sur aue ca fonctionne
 		{

@@ -30,6 +30,8 @@ long	ft_atol(char *str)
 		count_sign = -1;
 		i++;
 	}
+	else if (str[i] == '+')
+		i++;
 	temp_ulong = 0;
 	while (str[i])
 	{
@@ -49,7 +51,7 @@ int	ft_check_exit_arg(char *str)
 	int		i;
 
 	i = 0;
-	if (str[i] == '-')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
 	{
@@ -62,7 +64,7 @@ int	ft_check_exit_arg(char *str)
 	return (0);
 }
 
-int ft_exit(t_mother *s)
+int ft_exit(t_mother *s, t_command *c)
 {
 	long	temp;
 	// if (s->c->isprecededbypipe != 0 && s->c->isfollowedbypipe == 0)
@@ -74,12 +76,23 @@ int ft_exit(t_mother *s)
 	// 	s->c = s->c->nextpipe;
 	// 	multicommands(s);
 	// }
+	if (ft_strlen_array(c->arg) > 2)
+		ft_linking_args(s, c);
 	if (ft_strlen_array(s->c->arg) > 2)
-		ft_error(s, "error\nwrong number of arguments for exit\n", 1);
+	{
+		write(2, "minishell : exit : trop d'arguments\n", 36);
+		if (ft_check_exit_arg(s->c->arg[1]) == 0)
+			s->ret = 1;
+		else
+			s->ret = 2;
+	}
 	else if (ft_strlen_array(s->c->arg) == 2)
 	{
 		if (ft_check_exit_arg(s->c->arg[1]))
+		{
+			write(2, "minishell : exit : argument numerique necessaire\n", 49);
 			s->ret = 2;
+		}
 		else
 		{
 			temp  = ft_atol(s->c->arg[1]);
