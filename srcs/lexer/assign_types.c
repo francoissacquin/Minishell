@@ -120,7 +120,10 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 	free(temp);
 	i = 0;
 	if (tok->type == 'p')
+	{
+		ft_free_array(array);
 		return ;
+	}
 	while (array[i] != NULL)
 	{
 		//printf("||%s||\n", ft_strjoin(array[i], ft_strjoin("/", tok->token)));
