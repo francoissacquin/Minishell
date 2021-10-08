@@ -62,12 +62,18 @@ void	ft_type_env(t_token *tok)
 	else
 	{
 		i = 0;
-		while (tok->token[i] && tok->token[i] != '=')
+		while (tok->token[i] && !(ft_strchr("+=",tok->token[i])))
 		{
-			if (!(ft_isalnum(tok->token[i]) || tok->token[i] == '_'))
+			if (ft_isdigit(tok->token[i]) && i == 0)
+				return ;
+			else if (!(ft_isalnum(tok->token[i]) || tok->token[i] == '_'))
 				return ;
 			i++;
 		}
+		if (tok->token[i] == '=' && i == 0)
+			return ;
+		if (tok->token[i] == '+')
+			i++;
 		if (tok->token[i] != '=')
 			return;
 		i++;

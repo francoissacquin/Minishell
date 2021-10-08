@@ -19,7 +19,7 @@ void	sighandl(void)
 	// 	printf("jhgj PID=%d, kajhakjh\n", pid);
 
 	// kill(SIGUSR1, pid);
-	// write(1, "\n", 1);
+	write(1, "\n", 1);
 	
 	rl_on_new_line();
 	rl_replace_line("", 0);

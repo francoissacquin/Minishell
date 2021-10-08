@@ -22,7 +22,8 @@
 // P = pipe
 // S = separator ie : ';'
 // q = quoted string
-// e = environement variable
+// e = environement variable to expand ($)
+// E = environment variable defined (?=?)
 // f = flags (anything that starts with '-')
 // d = delimiter (specifically for << redirection)
 
@@ -48,13 +49,13 @@ void    minilexer_inner_loop(t_mother *s, int *i, int *j)
 {
     if (*j > 0 && s->line[*j] == ';')
         ft_separator_rule(s, i, j);
-    else if (*j > 0 && (ft_strchr("<>!&|^", s->line[*j - 1]) && !(ft_strchr("<>!&|^", s->line[*j]))))
+    else if (*j > 0 && (ft_strchr("<>&|", s->line[*j - 1]) && !(ft_strchr("<>&|", s->line[*j]))))
         ft_new_operator_char_rule(s, i, j);
     else if (s->lex->quote == 0 && ft_strchr("\"\'", s->line[*j]))
         ft_quote_aligner(s, i, j);
     else if (s->lex->quote == 0 && ft_strchr("$`", s->line[*j]))
         ft_dollar_aligner(s, i, j);
-    else if (*j > 0 && (s->lex->quote == 0 && ft_strchr("!&|^", s->line[*j - 1])))
+    else if (*j > 0 && (s->lex->quote == 0 && ft_strchr("&|", s->line[*j - 1])))
         ft_delimiter(s, i, j, 2);
     else if (s->lex->quote == 0 && (s->line[*j] == '\n' || s->line[*j] == '\r'))
         link_chain_elem(s, i, j, 48);

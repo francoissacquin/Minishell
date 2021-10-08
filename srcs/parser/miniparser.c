@@ -25,7 +25,7 @@ void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
 		ft_add_operator(s, tok, i);
-	else if (ft_strchr("wpfd", tok->type) && s->redirect_mem == 0)
+	else if (ft_strchr("wpfdE", tok->type) && s->redirect_mem == 0)
 		ft_add_args(s, tok, i);
 	else if (ft_strchr("wp", tok->type) && s->redirect_mem != 0)
 		ft_cmd_blt(s, tok, i);
@@ -133,7 +133,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 	(void)i;
 	last = ft_last_cmd(s->c);
 	pre_exec_arg_checking(s, last, tok);
-	if (ft_strchr("pwfqe", tok->type))
+	if (ft_strchr("pwfqeE", tok->type))
 	{
 		if (last->cmd_status == 1)
 		{
