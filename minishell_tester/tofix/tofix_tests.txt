@@ -1,13 +1,4 @@
-env | grep "_="
-export | grep "SHLVL"
-export --TEST=123
-export ""=""
-export ''=''
-export TE\ST=100
-export -TEST=100
-export | grep "SHLVL"
-export ""=""
-export TE+S=T=""
-export TES\$T=123
-export -TEST=123
-export TES$?T=123
+echo -n"-n" bonjour
+echo $USER'$USER'text oui oui oui oui $USER oui $USER ''
+echo $USER '' $USER $USER '' $USER '' $USER -n $USER
+echo \" \" \" \"\"\" \'\'\'

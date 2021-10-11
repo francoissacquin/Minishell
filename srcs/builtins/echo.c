@@ -25,9 +25,19 @@ void ft_parserecho(t_mother *s)
 
 }
 
-int	ft_echo(t_command *c)
+int		ft_skip_spaces(char *str, int i)
+{
+	while (str[i] == ' ')
+		i++;
+	return (i);
+}
+
+int	ft_echo(t_mother *s, t_command *c)
 {
 	int		i;
+	int		j;
+	int		increment_spaces;
+	int		space_switch;
 	int		flag_n_switch;
 	int ret = 1;
 
@@ -47,10 +57,42 @@ int	ft_echo(t_command *c)
 	}
 	while (c->arg[i])
 	{
-		ft_putstr_fd(c->arg[i], 1);
+		if (!(ft_strcmp(c->arg[i], "$?")))
+		{
+			ft_putnbr_fd(s->ret, 1);
+		}
+		else
+			ft_putstr_fd(c->arg[i], 1);
 		i++;
 		if (c->arg[i] != NULL)
-			ft_putstr_fd(" ", 1);
+		{
+			j = ft_strstr_index(s->line, "echo");
+			j = j + 4;
+			j = ft_skip_spaces(s->line, j);
+			increment_spaces = 1;
+			space_switch = 0;
+			while (increment_spaces < i)
+			{
+				//printf("i = %i, j = %i, space_switch = %i, increment_spaces = %i\n", i, j, space_switch, increment_spaces);
+				if (s->line[j] == '\'' || s->line[j] == '\"')
+					j = ft_skip_quote_marks(s->line, j, ft_strlen(s->line));
+				else
+				{
+					while (s->line[j] && s->line[j] != ' ' && s->line[j] != '\"' && s->line[j] != '\'')
+						j++;
+				}
+				if (s->line[j] == ' ' && increment_spaces + 1 == i)
+					space_switch = 1;
+				j = ft_skip_spaces(s->line, j);
+				increment_spaces++;
+			}
+			//printf("i = %i, j = %i, space_switch = %i, increment_spaces = %i\n", i, j, space_switch, increment_spaces);
+			if (c->arg[i][0] == '\0')
+				space_switch = 0;
+			if (space_switch == 1)
+				ft_putstr_fd(" ", 1);
+			space_switch = 0;
+		}
 	}
 	if (flag_n_switch == 0)
 		write(1, "\n", 1);

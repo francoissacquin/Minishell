@@ -41,6 +41,7 @@ srcs/builtins/built_utils.c \
 srcs/env/env_manager.c \
 srcs/env/env_utils.c \
 srcs/env/env_expanding.c \
+srcs/env/env_expanding_utils.c \
 srcs/lexer/minilexer.c \
 srcs/lexer/lexer_lst_utils.c \
 srcs/lexer/assign_types.c \

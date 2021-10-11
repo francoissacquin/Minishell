@@ -8,9 +8,9 @@ void	ft_separator_rule(t_mother *s, int *i, int *j)
 		*j = *j + 1;
 	if (s->line[*j] != '\0' && s->line[*j] != ' '/* && !(ft_strchr("\0", s->line[*j + 1]))*/)
     	*j = *j + 1;
-    link_chain_elem(s, i, j, 'S');
-    if (s->line[*i] && s->line[*i] == ' ')
-        *i = *i + 1;
+	link_chain_elem(s, i, j, 'S');
+	if (s->line[*i] && s->line[*i] == ' ')
+    	*i = *i + 1;
 	if (s->line[*j] == '\0')
 		*j = *j - 1;
 }

@@ -21,6 +21,8 @@ void	assign_types(t_mother *s)
 			ft_type_pipe(temp);
 		if (temp->type == '\0')
 			temp->type = 'w';
+		if (temp->type == 'q' || temp->type == 'e')
+			expanding_env(s, temp);
 		temp = temp->next;
 	}
 }
@@ -168,20 +170,24 @@ void	ft_type_path(t_mother *s, t_token *tok)
 
 	(void)s; // A ENLEVER
 	i = 0;
-	if (ft_strchr("./~", tok->token[0]))
+	if (ft_strchr("./", tok->token[0]))
 		tok->type = 'p';
-	while (tok->token[i])
+	else if ((tok->token[0] == '~' && tok->token[1] == '/') || !(ft_strcmp(tok->token, "~")))
 	{
-		if (tok->token[i] == '~')
+		while (tok->token[i])
 		{
-			temp = ft_strdup(tok->token);
-			free(tok->token);
-			inter = ft_strjoin(ft_substr(temp, 0, i), ft_return_env_value(s, "HOME", 1));
-			tok->token = ft_strjoin(inter, &temp[i + 1]);
-			free(inter);
-			free(temp);
+			if (tok->token[i] == '~')
+			{
+				temp = ft_strdup(tok->token);
+				free(tok->token);
+				inter = ft_strjoin(ft_substr(temp, 0, i), ft_return_env_value(s, "HOME", 1));
+				tok->token = ft_strjoin(inter, &temp[i + 1]);
+				free(inter);
+				free(temp);
+			}
+			i++;
 		}
-		i++;
+		tok->type = 'p';
 	}
 	i = 0;
 	while (tok->token[i])
