@@ -7,5 +7,5 @@ libft/*.o
 test
 todo.txt
 minishell
-minishell
 minishell_tester/tofix/tofix_tests.txt
+minishell_tester/minishell

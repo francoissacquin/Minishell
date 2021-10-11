@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 17:22:46 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/07 15:58:07 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/11 18:43:17 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ int		ft_cd(t_mother *s)
 	ft_memset(targetpath, 0, sizeof(targetpath));
 	getcwd(path, sizeof(path));
 	pathhome = getenv("HOME");
-	printf("chirac%schibrax", pathhome);
+	// printf("chirac%schibrax", pathhome);
 	if (s->c->arg[2] != NULL)
-		ft_error(s, "cd: Too many arguments", -1);
+	{
+		return(1);
+	}
+		// ft_error(s, "cd: Too many arguments", -1);
 	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
 	{
 		if (pathhome == NULL)
@@ -62,9 +65,10 @@ int		ft_cd(t_mother *s)
 	else
 		r = chdir(s->c->arg[1]);
 	if (r == -1)
-		ft_error(s, "chdir failed", -1);
+		return(1);
+		//ft_error(s, "chdir failed", -1);
 	getcwd(targetpath, sizeof(targetpath));
-	ft_pwd(s);
+	// ft_pwd(s);
 	//printf("%s r = %d", targetpath, r);
 	return(0);
 }
