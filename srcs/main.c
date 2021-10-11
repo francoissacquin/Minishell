@@ -22,9 +22,8 @@ void ft_error(t_mother *s, char * error, int code)
 		ft_end(s);
 }
 
-int mainaftersignal(char *str)
+int mainaftersignal(t_mother *s, char *str)
 {
-	t_mother s;
 	
 	//int pid = getpid();
 	//printf("\noooglobal pid = %dooo\n", pid);
@@ -34,50 +33,50 @@ int mainaftersignal(char *str)
 	signal(SIGINT, signalhandler);
 	// signal(SIGQUIT, signalhandler);
 	// signal(SIGINT, SIG_IGN);
-	ft_structinit(&s);
+	ft_structinit(s);
 	if (str == NULL)
-		s.line = readline("Minishell> ");
+		s->line = readline("Minishell> ");
 	else
-		s.line = str;
+		s->line = str;
 	//ft_add_history(&s);
-	s.env = NULL;
-	env_init(&s, env);
+	s->env = NULL;
+	env_init(s, env);
 
 	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR LE BLOC SUIVANT. :D
-	if (s.line[0] != '\0')
+	if (s->line[0] != '\0')
 	{
-		minilexer(&s);
-		assign_types(&s);
-		redir_input_handler(&s);
-		miniparser(&s);
-		//ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
-		//free(s.line);
-		//s.line = NULL;
+		minilexer(s);
+		assign_types(s);
+		redir_input_handler(s);
+		miniparser(s);
+		//ft_print_parsing_results(s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
+		//free(s->line);
+		//s->line = NULL;
 	}
-	// ft_end(&s);
-	// ft_echo(&s);
-	// ft_cd(&s);
-	// ft_echo(&s);
-	// printf("%s\n", s.line);
-	// ft_execfind(&s);
-	multicommands(&s);
-	if (ft_parse(&s) == 0)
+	// ft_end(s);
+	// ft_echo(s);
+	// ft_cd(s);
+	// ft_echo(s);
+	// printf("%s\n", s->line);
+	// ft_execfind(s);
+	multicommands(s);
+	if (ft_parse(s) == 0)
 	{
 		write(1, "Error:\n", 7);
-		return(s.ret);
+		return(s->ret);
 	}
-	free_t_token(&s);
-	free_t_cmd(&s);
-	free_t_lexer(&s);
-	free_t_mother(&s);
+	free_t_token(s);
+	free_t_cmd(s);
+	free_t_lexer(s);
+	free_t_mother(s);
 	// system("leaks Minishell");
-	return(s.ret);
+	return(s->ret);
 }
 
 
 int main(int argc, char **argv, char **envp)
 {
-	//t_mother 	s;
+	t_mother 	s;
 	
 	if (envp != NULL)
 		env = envp;
@@ -86,11 +85,12 @@ int main(int argc, char **argv, char **envp)
 		printf("Whatare you trying to do exactly?????\n");
 		exit(0);
 	}
+	s.ret = 0;
 	if (argc >= 3)
 	{
 		if (!ft_strncmp(argv[1], "-c", 3))
 		{
-    		int exit_status = mainaftersignal(argv[2]);
+    		int exit_status = mainaftersignal(&s, argv[2]);
     		exit(exit_status);
 		}
 	}
@@ -100,7 +100,7 @@ int main(int argc, char **argv, char **envp)
 		// signal(SIGQUIT, signalhandler);
 		//signal(SIGINT, SIG_IGN);
 
-		mainaftersignal(NULL);
+		mainaftersignal(&s, NULL);
 	}
 	// ft_structinit(&s);
 	// s.line = readline("Minishell> ");

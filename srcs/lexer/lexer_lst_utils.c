@@ -43,7 +43,7 @@ void    dollar_tokeniser(t_mother *s, int *i, int *j)
 {
     *i = *j;
     *j = *j + 1;
-    while (s->line[*j] && (ft_isalnum(s->line[*j]) || ft_strchr("_=+-", s->line[*j])))
+    while (s->line[*j] && (ft_isalnum(s->line[*j]) || ft_strchr("_=+-?", s->line[*j])))
         *j = *j + 1;
     link_chain_elem(s, i, j, 'e');
     if (s->line[*i] == ' ')

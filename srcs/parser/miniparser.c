@@ -25,15 +25,10 @@ void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
 		ft_add_operator(s, tok, i);
-	else if (ft_strchr("wpfdE", tok->type) && s->redirect_mem == 0)
+	else if (ft_strchr("wpfdEeq", tok->type) && s->redirect_mem == 0)
 		ft_add_args(s, tok, i);
-	else if (ft_strchr("wp", tok->type) && s->redirect_mem != 0)
+	else if (ft_strchr("wpeq", tok->type) && s->redirect_mem != 0)
 		ft_cmd_blt(s, tok, i);
-	else if (ft_strchr("eq", tok->type))
-	{
-		expanding_env(s, tok);
-		ft_add_args(s, tok, i);
-	}
 }
 
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
@@ -137,7 +132,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 	{
 		if (last->cmd_status == 1)
 		{
-			if (tok->type == 'f' && !(ft_strcmp(last->command, "echo")))
+			if (ft_strchr("fq", tok->type) && !(ft_strcmp(last->command, "echo")))
 				check_echo_flag(s, tok);
 			else if (tok->type == 'f')
 				write(2, "AUCUN FLAG AUTORISÉ POUR LES BUILT-INS\n", 39);

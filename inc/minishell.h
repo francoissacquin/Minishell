@@ -93,17 +93,19 @@ typedef struct s_mother
 	int			exitret; // value for the exit command to be updated during execution
 	char		*path; //env variable value for PATH
 	t_command	*c;
-
-	
-
 }				t_mother;
+
+// typedef struct s_global
+// {
+// 		int			line_nb;
+// }
 
 //general
 int		ft_parse(t_mother *s);
 void	ft_structinit(t_mother *s);
 void	ft_end(t_mother *s);
 void	ft_error(t_mother *s, char * error, int code);
-int		mainaftersignal(char *str);
+int		mainaftersignal(t_mother *s, char *str);
 void	ft_print_parsing_results(t_mother *s);
 // initialization of structures
 void	ft_initc(t_mother *s);
@@ -116,7 +118,9 @@ void    free_t_lexer(t_mother *s);
 void	free_t_token(t_mother *s);
 void    free_t_cmd(t_mother *s);
 //builtins
-int		ft_echo(t_command *c);
+int		ft_echo(t_mother *s, t_command *c);
+int		ft_skip_spaces(char *str, int i);
+int     ft_find_equal_sign(char *str);
 
 int		ft_cd(t_mother *s);
 

@@ -24,6 +24,8 @@ void	check_echo_flag(t_mother *s, t_token *tok)
 	(void)s;
 	i = 1;
 	wrong_flag = 0;
+	if (tok->token[0] != '-')
+		return ;
 	while (tok->token[i])
 	{
 		if (tok->token[i] != 'n')

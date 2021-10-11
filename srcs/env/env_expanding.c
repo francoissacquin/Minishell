@@ -6,6 +6,7 @@ void	expanding_env(t_mother *s, t_token *tok)
 	int		end;
 	char	*temp;
 
+	//printf("pre - token = |%s| of type %c\n", tok->token, tok->type);
 	index = quote_env_finder(tok);
 	if (tok->type == 'q' && tok->token[0] == '\'')
 	{
@@ -33,6 +34,7 @@ void	expanding_env(t_mother *s, t_token *tok)
 		free(tok->token);
 		tok->token = temp;
 	}
+	//printf("post - token = |%s| of type %c\n", tok->token, tok->type);
 }
 
 void	quote_env_replacing(t_mother *s, t_token *tok, int start, int end)
@@ -41,6 +43,21 @@ void	quote_env_replacing(t_mother *s, t_token *tok, int start, int end)
 	char	*temp;
 	char	*value;
 
+	if (ft_isdigit(tok->token[start + 1]))
+	{
+		if (tok->token[start + 2] == '\'')
+			temp = ft_strdup("\'");
+		else if (tok->token[start + 2] == '\"')
+			temp = ft_strdup("\"");
+		else
+			temp = ft_substr(tok->token, start + 2, ft_strlen(tok->token) - (start + 2));
+		value = ft_substr(tok->token, 0, start);
+		value = ft_strjoin_env(value, temp);
+		free(temp);
+		free(tok->token);
+		tok->token = value;
+		return ;
+	}
 	len = ft_strlen(tok->token);
 	temp = ft_substr(tok->token, start + 1, end - start - 1);
 	value = ft_return_env_value(s, temp, 1);
@@ -58,11 +75,48 @@ void	quote_env_replacing(t_mother *s, t_token *tok, int start, int end)
 void	env_replacing(t_mother *s, t_token *tok)
 {
 	char	*temp;
+	char	*temp_2;
+	int		equal_sign;
 
-	temp = ft_substr(tok->token, 1, ft_strlen(tok->token) - 1);
-	free(tok->token);
-	tok->token = ft_return_env_value(s, temp, 1);
-	free(temp);
+	if (ft_isdigit(tok->token[1]))
+	{
+		if (tok->token[2] == '\0')
+		{
+			free(tok->token);
+			tok->token = ft_malloc(tok->token, sizeof(char));
+			tok->token[0] = '\0';
+		}
+		else
+		{
+			temp = ft_substr(tok->token, 2, ft_strlen(tok->token) - 2);
+			free(tok->token);
+			tok->token = temp;
+		}
+	}
+	else if (ft_find_equal_sign(tok->token) > -1)
+	{
+		equal_sign = ft_find_equal_sign(tok->token);
+		temp = ft_substr(tok->token, 1, equal_sign - 1);
+		temp_2 = ft_return_env_value(s, temp, 1);
+		free(temp);
+		temp = ft_substr(tok->token, equal_sign, ft_strlen(tok->token) - equal_sign);
+		free(tok->token);
+		tok->token = ft_strjoin(temp_2, temp);
+		free(temp);
+		free(temp_2);
+	}
+	else if (!(ft_strcmp("$?", tok->token)))
+	{
+		free(tok->token);
+		tok->token = ft_itoa(s->ret);
+	}
+	else
+	{
+		temp = ft_substr(tok->token, 1, ft_strlen(tok->token) - 1);
+		free(tok->token);
+		tok->token = ft_return_env_value(s, temp, 1);
+		free(temp);
+	}
 }
 
 int	quote_env_finder(t_token *tok)
