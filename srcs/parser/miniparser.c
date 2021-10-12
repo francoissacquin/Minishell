@@ -60,7 +60,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		}
 		else if (s->redirect_mem == 5)
 		{
-			fd = open(".redir_input.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
+			fd = open("redir_input.txt", O_CREAT | O_RDWR | O_APPEND | O_TRUNC, 0666);
 			if (fd < 0)
 				s->ret = 1;
 			// printf("%s", s->lex->std_input_redir);

@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/12 15:47:33 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/12 17:29:28 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		ft_child(t_command *c, t_mother *s)
 			ft_error(s, "redirect dup2", -1);
 		if (c->isprecededbypipe == 2 || c->isprecededbypipe == 3) //gestion redirection <
 		{
-			printf("caca");
+			// printf("caca\n");
 			fd = open(c->inputfile, O_RDWR|O_APPEND, 0666); //check les flegs d'open
 			//printf("%d\n", fd);
 			err = dup2(fd, 0);
@@ -45,6 +45,8 @@ int		ft_child(t_command *c, t_mother *s)
 			//write(0, "test redir dup2", 16);
 			if (err < 0)
 				ft_error(s, "pipe dup2", -1);
+			if (c->isprecededbypipe == 3)
+				unlink(c->inputfile);
 			close(fd);
 			//connect read side to stdin
 		}
@@ -64,6 +66,8 @@ int		ft_child(t_command *c, t_mother *s)
 	if(fd)
 		close(fd); //fermeture de fd apres avoir ecrit
 	ret = ft_execfind(s, s->c); //execute command in child process meme si il y'en a que une
+	// if (c->isprecededbypipe == 3)
+		// unlink(c->inputfile);
 	exit(ret);
 }
 
