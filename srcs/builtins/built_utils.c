@@ -101,6 +101,7 @@ int     ft_skip_quote_marks(char *str, int i, int end)
 
     quote = str[i];
     i++;
+    //printf("quote %c and str[i] = %c\n", quote, str[i]);
     while (str[i] && i < end && str[i] != quote)
         i++;
     i++;
