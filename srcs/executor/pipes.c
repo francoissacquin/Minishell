@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/12 17:37:34 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/12 18:03:24 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,7 +351,17 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 		// printf("ZAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
 		tmp = s;
 		if(ft_strcmp("exit", s->c->command) == 0)
-			ft_exit(s, s->c);
+		{
+			s->c->retvalue = ft_exit(s, s->c);
+			// s->c = s->c->nextpipe;
+			// i++;
+		}
+		if(ft_strcmp("cd", s->c->command) == 0)
+		{
+				s->c->retvalue = ft_cd(s);
+				// s->c = s->c->nextpipe;
+				// i++;
+		}
 		// printf("||| %s |||", s->c->command);
 		if (s->c->command == NULL) // pas sur aue ca fonctionne
 		{

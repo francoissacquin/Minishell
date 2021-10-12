@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 17:22:46 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/12 14:49:15 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/12 17:51:25 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int		ft_cd(t_mother *s)
 	char *pathhome = NULL;
 	char *previouspath = NULL; // a mettre dans la strcuture
 	
+
 	ft_memset(path, 0, sizeof(path));
 	ft_memset(targetpath, 0, sizeof(targetpath));
 	getcwd(path, sizeof(path));
@@ -45,8 +46,8 @@ int		ft_cd(t_mother *s)
 	// 	return(1);
 	// }
 		// ft_error(s, "cd: Too many arguments", -1);
-	puts("je marche\n");
-	chdir("/home/user42/Bureau/");
+	// puts("je marche\n");
+	// chdir("/home/user42/Bureau/");
 	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
 	{
 		if (pathhome == NULL)
