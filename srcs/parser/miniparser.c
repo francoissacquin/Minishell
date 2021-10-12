@@ -60,11 +60,13 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		}
 		else if (s->redirect_mem == 5)
 		{
-			fd = open("redir_input.txt", O_CREAT | O_APPEND, S_IRWXU);
+			fd = open(".redir_input.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
 			if (fd < 0)
 				s->ret = 1;
-			if (write(fd, s->lex->std_input_redir, ft_strlen(s->lex->std_input_redir)))
-				write(2, "error: failed to write input redirection to temporary file\n", 59);
+			// printf("%s", s->lex->std_input_redir);
+			// write(fd, "he;;llo", 7);
+			write(fd, s->lex->std_input_redir, ft_strlen(s->lex->std_input_redir));
+				// write(2, "error: failed to write input redirection to temporary file\n", 59);
 			close(fd);
 			last->isinputfile = 1;
 			last->inputfile = ft_strdup("redir_input.txt");
