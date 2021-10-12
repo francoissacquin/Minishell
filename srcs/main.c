@@ -35,10 +35,12 @@ int mainaftersignal(t_mother *s, char *str)
 	// signal(SIGINT, SIG_IGN);
 	ft_structinit(s);
 	if (str == NULL)
+	{
 		s->line = readline("Minishell> ");
+		ft_add_history(s);
+	}
 	else
 		s->line = str;
-	//ft_add_history(&s);
 	s->env = NULL;
 	env_init(s, env);
 
