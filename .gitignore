@@ -11,3 +11,5 @@ minishell_tester/tofix/tofix_tests.txt
 minishell_tester/minishell
 minishell_tester/minishell
 minishell_tester/tofix/tofix_tests.txt
+redir_input.txt
+.redir_input.txt

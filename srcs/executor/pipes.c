@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/07 16:52:14 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/12 15:47:33 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		ft_child(t_command *c, t_mother *s)
 	int fd = 0;
 	int ret = 1;
 
-	if (c->isfollowedbypipe > 1 || c->isprecededbypipe == 2)
+	if (c->isfollowedbypipe > 1 || c->isprecededbypipe == 2  || c->isprecededbypipe == 3)
 	{
 		//printf("hello\n");
 		//printf("%s\n", c->outfile);
@@ -35,9 +35,9 @@ int		ft_child(t_command *c, t_mother *s)
 			err = dup2(fd, 2);
 		if (err < 0)
 			ft_error(s, "redirect dup2", -1);
-		if (c->isprecededbypipe == 2) //gestion redirection <
+		if (c->isprecededbypipe == 2 || c->isprecededbypipe == 3) //gestion redirection <
 		{
-			//printf("caca");
+			printf("caca");
 			fd = open(c->inputfile, O_RDWR|O_APPEND, 0666); //check les flegs d'open
 			//printf("%d\n", fd);
 			err = dup2(fd, 0);
