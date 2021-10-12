@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 17:22:56 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/04 16:40:05 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/12 20:00:56 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,6 @@ int ft_exit(t_mother *s, t_command *c)
 		ft_clear_history();
 		exit(s->ret);
 	}
-	write(2, "exit\n", 5);
+	// write(2, "exit\n", 5);
 	return (s->ret);
 }

@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 17:23:06 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/11 19:22:44 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/12 20:10:56 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int ft_unset(t_mother *s, t_command *c)
 	if (rm_switch != 0)
 		rm_env(s, c->arg[1]);
 	else
-		ft_error(s, "unsetted arg does not exist in env\n", 0); // a modifier pour le 0 egalement
+		return (0);
+		// ft_error(s, "unsetted arg does not exist in env\n", 0); // a modifier pour le 0 egalement
 	return(ret);
 }
