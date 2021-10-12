@@ -35,6 +35,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
 	t_command	*next;
+	char		*temp;
 	int			fd;
 
 	last = ft_last_cmd(s->c);
@@ -70,7 +71,10 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 				// write(2, "error: failed to write input redirection to temporary file\n", 59);
 			close(fd);
 			last->isinputfile = 1;
-			last->inputfile = ft_strdup("redir_input.txt");
+			temp = getenv("PWD");
+			last->inputfile = ft_strjoin(temp, "/redir_input.txt");
+			//printf("%s\n", last->inputfile);
+			free(temp);
 			last->isprecededbypipe = 3;
 			s->redirect_mem = 0;
 		}
