@@ -1,2 +1,0 @@
-cd '/////' 2>/dev/null
-cd $PWD/file_tests

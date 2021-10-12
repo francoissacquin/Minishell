@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 17:22:46 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/11 18:43:17 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/12 14:49:15 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 // replace pwd
 // max size of filename is 255 bytes
 // cd - et cd ~
+//proteger contre trop d arguments
 
 int ft_updatepwd(t_mother *s)
 {
@@ -39,11 +40,13 @@ int		ft_cd(t_mother *s)
 	getcwd(path, sizeof(path));
 	pathhome = getenv("HOME");
 	// printf("chirac%schibrax", pathhome);
-	if (s->c->arg[2] != NULL)
-	{
-		return(1);
-	}
+	// if (s->c->arg[2] != NULL)
+	// {
+	// 	return(1);
+	// }
 		// ft_error(s, "cd: Too many arguments", -1);
+	puts("je marche\n");
+	chdir("/home/user42/Bureau/");
 	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
 	{
 		if (pathhome == NULL)
@@ -63,9 +66,12 @@ int		ft_cd(t_mother *s)
 		previouspath = path;
 	}
 	else
-		r = chdir(s->c->arg[1]);
+		r = chdir(s->c->arg[1]); //update oldpwd et pwd ici aussi
 	if (r == -1)
+	{
+		write(2, "bash: line 0: cd: No such file or directory\n", 44);
 		return(1);
+	}
 		//ft_error(s, "chdir failed", -1);
 	getcwd(targetpath, sizeof(targetpath));
 	// ft_pwd(s);
