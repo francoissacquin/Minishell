@@ -39,6 +39,7 @@ int	ft_echo(t_mother *s, t_command *c)
 	int		increment_spaces;
 	int		space_switch;
 	int		flag_n_switch;
+	int		quote_switch;
 	int ret = 1;
 
 	i = 1;
@@ -73,7 +74,8 @@ int	ft_echo(t_mother *s, t_command *c)
 			space_switch = 0;
 			while (increment_spaces < i)
 			{
-				//printf("i = %i, j = %i, space_switch = %i, increment_spaces = %i\n", i, j, space_switch, increment_spaces);
+				quote_switch = 0;
+				//printf("while i = %i, j = %i, space_switch = %i, increment_spaces = %i\n", i, j, space_switch, increment_spaces);
 				if (s->line[j] == '\'' || s->line[j] == '\"')
 					j = ft_skip_quote_marks(s->line, j, ft_strlen(s->line));
 				else
@@ -84,10 +86,12 @@ int	ft_echo(t_mother *s, t_command *c)
 				if (s->line[j] == ' ' && increment_spaces + 1 == i)
 					space_switch = 1;
 				j = ft_skip_spaces(s->line, j);
+				if (s->line[j] == '\'' || s->line[j] == '\"')
+					quote_switch = 1;
 				increment_spaces++;
 			}
 			//printf("i = %i, j = %i, space_switch = %i, increment_spaces = %i\n", i, j, space_switch, increment_spaces);
-			if (c->arg[i][0] == '\0')
+			if (c->arg[i][0] == '\0' && quote_switch == 0)
 				space_switch = 0;
 			if (space_switch == 1)
 				ft_putstr_fd(" ", 1);

@@ -51,7 +51,7 @@ void    minilexer_inner_loop(t_mother *s, int *i, int *j)
         ft_separator_rule(s, i, j);
     else if (*j > 0 && (ft_strchr("<>&|", s->line[*j - 1]) && !(ft_strchr("<>&|", s->line[*j]))))
         ft_new_operator_char_rule(s, i, j);
-    else if (s->lex->quote == 0 && ft_strchr("\"\'", s->line[*j]))
+    else if (s->lex->quote == 0 && ft_strchr("\"\'", s->line[*j]) && s->line[*j - 1] != '\\')
         ft_quote_aligner(s, i, j);
     else if (s->lex->quote == 0 && ft_strchr("$`", s->line[*j]))
         ft_dollar_aligner(s, i, j);
