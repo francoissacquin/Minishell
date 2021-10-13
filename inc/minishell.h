@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/04 11:36:10 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/13 17:40:10 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ char	*ft_pathfinder(t_mother *s);
 
 //exec with muliple commands
 void	multicommands(t_mother *s);
-void	ft_redirect(t_mother *s);
+// void	ft_redirect(t_mother *s);
 int		ft_pipe(t_command *c, t_mother *s);
 
 //signaux
