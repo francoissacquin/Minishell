@@ -72,9 +72,9 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 			close(fd);
 			last->isinputfile = 1;
 			temp = getenv("PWD");
-			last->inputfile = ft_strjoin(temp, "/redir_input.txt");
+			last->inputfile = ft_strdup("redir_input.txt");//ft_strjoin(temp, "/redir_input.txt");
 			//printf("%s\n", last->inputfile);
-			free(temp);
+			//free(temp);
 			last->isprecededbypipe = 3;
 			s->redirect_mem = 0;
 		}
