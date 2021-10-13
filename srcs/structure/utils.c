@@ -54,6 +54,7 @@ void    ft_lexinit(t_mother *s)
 	tok = malloc(sizeof(t_token));
 	tok->token = NULL;
 	tok->type = '\0';
+	tok->pre_space = 0;
 	tok->prev = NULL;
 	tok->next = NULL;
     lex->quote = 0;
