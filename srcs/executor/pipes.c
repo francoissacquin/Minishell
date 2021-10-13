@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/12 18:03:24 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/13 16:38:33 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		ft_parent(t_command *c, int pid)
 			close(c->pipes[0]); //si suivi par rien on close le read side
 		}
 	}
-	waitpid(pid, &status, 0); //peut etre a mettre au debut	du parent // on attends la fin du child pour etre sur d'avoir tte la sortie
+	waitpid(pid, &status, 0 //peut etre a mettre au debut	du parent // on attends la fin du child pour etre sur d'avoir tte la sortie
 	ex = WIFEXITED(status);   //get return value of child process
 	if (ex > 0)
 		ret = WEXITSTATUS(status);
@@ -141,8 +141,8 @@ int		ft_pipe(t_command *c, t_mother *s)
 	pid = fork();													//always fork to save minishell parent in case of crash
 	if(pid < 0)
 		ft_error(s, "fork", -1);
-	if (pid < 0)
-		ft_error(s, "pipe pid is shit", -1);
+	// if (pid < 0)
+	// 	ft_error(s, "pipe pid is shit", -1);
 	signal(SIGINT, killchild);										// catching signals to kill child processes
 	signal(SIGQUIT, quitchild);
 	if(pid == 0)

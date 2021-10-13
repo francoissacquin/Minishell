@@ -6,7 +6,7 @@
 #    By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/31 15:59:12 by ogenser           #+#    #+#              #
-#    Updated: 2021/10/12 20:06:00 by ogenser          ###   ########.fr        #
+#    Updated: 2021/10/12 20:57:10 by ogenser          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ TESTER = tester
 
 CC = clang
 
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address -g
+CFLAGS = -Wall -Wextra #-Werror #-g3 -fsanitize=address -g
 
 SFLAGS = -lreadline
 
