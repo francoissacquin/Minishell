@@ -44,7 +44,7 @@ void	create_env(t_mother *s, char *str)
 	pos = -1;
 	while (i < len)
 	{
-		if (ft_env_cmp(s->env[i], str) == 1)
+		if (ft_env_cmp(s->env[i], str))
 			pos = i;
 		i++;
 	}
