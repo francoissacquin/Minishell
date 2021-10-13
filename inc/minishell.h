@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/13 17:40:10 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/13 19:40:15 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,8 @@ int		ft_strstr_index(char *haystack, char *needle);
 int		ft_execfind(t_mother *s, t_command *c);
 int	ft_execnotbuiltin(t_mother *s);
 char	*ft_pathfinder(t_mother *s);
-
-//exec with muliple commands
+int		ft_redirect(t_command *c, t_mother *s);
 void	multicommands(t_mother *s);
-// void	ft_redirect(t_mother *s);
 int		ft_pipe(t_command *c, t_mother *s);
 
 //signaux
