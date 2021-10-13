@@ -20,9 +20,10 @@
 // cd - et cd ~
 //proteger contre trop d arguments
 
-int ft_updatepwd(t_mother *s)
+int ft_updatepwd(t_mother *s, char *new_path, char *old_path)
 {
-	(void)s;
+	create_env(s, ft_strjoin("PWD=", new_path));
+	create_env(s, ft_strjoin("OLPWD=", old_path));
 	return (0);
 }
 
@@ -53,7 +54,10 @@ int		ft_cd(t_mother *s)
 		if (pathhome == NULL)
 			ft_error(s, "cd: HOME not set", -1);
 		else
+		{
 			r = chdir(pathhome);
+			ft_updatepwd(s, pathhome, path);
+		}
 		return(0);
 	}
 	else if (ft_strcmp("-", s->c->arg[1]) == 0)

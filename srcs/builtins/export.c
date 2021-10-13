@@ -44,7 +44,7 @@ int ft_export(t_mother *s, t_command *cmd)
 	else
 	{
 		i = 1;
-		while (cmd->arg[i] != 0)
+		while (cmd->arg[i] != NULL)
 		{
 			temp_tok.token = cmd->arg[i];
 			ft_type_env(&temp_tok);
