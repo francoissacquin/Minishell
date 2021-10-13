@@ -41,11 +41,8 @@ int mainaftersignal(t_mother *s, char *str)
 	}
 	else
 		s->line = str;
-	s->env = NULL;
-	env_init(s, env);
-
 	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR LE BLOC SUIVANT. :D
-	if (s->line[0] != '\0')
+	if (s->line != NULL && s->line[0] != '\0')
 	{
 		minilexer(s);
 		assign_types(s);
@@ -70,7 +67,9 @@ int mainaftersignal(t_mother *s, char *str)
 	free_t_token(s);
 	free_t_cmd(s);
 	free_t_lexer(s);
-	free_t_mother(s);
+	//free_t_mother(s);
+	if (str == NULL)
+		free(s->line);
 	// system("leaks Minishell");
 	return(s->ret);
 }
@@ -84,15 +83,19 @@ int main(int argc, char **argv, char **envp)
 		env = envp;
 	else
 	{
-		printf("Whatare you trying to do exactly?????\n");
+		printf("What are you trying to do exactly?????\n");
 		exit(0);
 	}
+	s.env = NULL;
+	env_init(&s, envp);
 	s.ret = 0;
 	if (argc >= 3)
 	{
 		if (!ft_strncmp(argv[1], "-c", 3))
 		{
     		int exit_status = mainaftersignal(&s, argv[2]);
+			ft_free_array(s.env);
+			free(s.path);
     		exit(exit_status);
 		}
 	}

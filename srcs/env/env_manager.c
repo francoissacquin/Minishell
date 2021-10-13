@@ -76,7 +76,7 @@ void	change_env(t_mother *s, char *str, int pos)
 	s->env = temp;
 }
 
-// permet d'ajouter une varaible str a la liste des env
+// permet d'ajouter une variable str a la liste des env
 void	add_env(t_mother *s, char *str)
 {
 	char **temp;

@@ -74,7 +74,6 @@ void	ft_structinit(t_mother *s)
 	s->nbcmd = 0;
 	s->pipe = 0;
 	s->exitret = 0;
-	s->path = NULL;
 	s->redirect_mem = 0;
 	// s->ret = 0;
 	ft_initc(s);
