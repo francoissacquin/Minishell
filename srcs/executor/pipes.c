@@ -350,18 +350,14 @@ void		multicommands(t_mother *s) 	//sends to different functions if its a pipe r
 	{
 		// printf("ZAAAAs->ret %dAAAA s->c->retvalue %d AAAA\n", s->ret, s->c->retvalue);
 		tmp = s;
-		if(ft_strcmp("exit", s->c->command) == 0)
-		{
+		if (ft_strcmp("exit", s->c->command) == 0)
 			s->c->retvalue = ft_exit(s, s->c);
-			// s->c = s->c->nextpipe;
-			// i++;
-		}
-		if(ft_strcmp("cd", s->c->command) == 0)
-		{
+		else if (ft_strcmp("cd", s->c->command) == 0)
 				s->c->retvalue = ft_cd(s);
-				// s->c = s->c->nextpipe;
-				// i++;
-		}
+		else if (ft_strcmp("export", s->c->command) == 0)
+			s->c->retvalue = ft_export(s, s->c);
+		else if (ft_strcmp("unset", s->c->command) == 0)
+			s->c->retvalue = ft_unset(s, s->c);
 		// printf("||| %s |||", s->c->command);
 		if (s->c->command == NULL) // pas sur aue ca fonctionne
 		{

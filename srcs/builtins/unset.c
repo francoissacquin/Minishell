@@ -40,8 +40,11 @@ int ft_unset(t_mother *s, t_command *c)
 	// REGARDER POUR LE CAS OU LA VALEUR A UNSET CONTIENT DES CARACTERES NON VALABLE : ret = 1.
 	if (rm_switch != 0)
 		rm_env(s, c->arg[1]);
+	else if (ft_word_is_exportable(c->arg[1]))
+		ret = 0;
+	else if (c->arg[1][0] == '-')
+		ret = 2;
 	else
-		return (0);
-		// ft_error(s, "unsetted arg does not exist in env\n", 0); // a modifier pour le 0 egalement
+		ret = 1;
 	return(ret);
 }

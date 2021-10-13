@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-static char **env;
+//static char **env;
 
 void ft_error(t_mother *s, char * error, int code)
 {
@@ -24,7 +24,6 @@ void ft_error(t_mother *s, char * error, int code)
 
 int mainaftersignal(t_mother *s, char *str)
 {
-	
 	//int pid = getpid();
 	//printf("\noooglobal pid = %dooo\n", pid);
 	// char **envp;
@@ -79,17 +78,17 @@ int main(int argc, char **argv, char **envp)
 {
 	t_mother 	s;
 	
-	if (envp != NULL)
-		env = envp;
-	else
-	{
-		printf("What are you trying to do exactly?????\n");
-		exit(0);
-	}
+	// if (envp != NULL)
+	// 	env = envp;
+	// else
+	// {
+	// 	printf("What are you trying to do exactly?????\n");
+	// 	exit(0);
+	// }
 	s.env = NULL;
 	env_init(&s, envp);
 	s.ret = 0;
-	if (argc >= 3)
+	if (argc == 3)
 	{
 		if (!ft_strncmp(argv[1], "-c", 3))
 		{
@@ -104,34 +103,8 @@ int main(int argc, char **argv, char **envp)
 		// signal(SIGINT, signalhandler);
 		// signal(SIGQUIT, signalhandler);
 		//signal(SIGINT, SIG_IGN);
-
 		mainaftersignal(&s, NULL);
 	}
-	// ft_structinit(&s);
-	// s.line = readline("Minishell> ");
-	// ft_history(&s);
-	// env_init(&s, envp);
-
-	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR BLOC SUIVANT.
-	// minilexer(&s);
-	// assign_types(&s);
-	// redir_input_handler(&s);
-	// miniparser(&s);
-	// ft_print_parsing_results(&s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
-
-	// // ft_echo(&s);
-	// // ft_cd(&s);
-	// // ft_echo(&s);
-	// // printf("%s\n", s.line);
-	// // ft_execfind(&s);
-	// multicommands(&s);
-	// if (ft_parse(&s) == 0)
-	// {
-	// 	write(1, "Error:\n", 7);
-	// 	return(0);
-	// }
-	// ft_end(&s);
-	// system("leaks Minishell");
 	return (0);
 }
 

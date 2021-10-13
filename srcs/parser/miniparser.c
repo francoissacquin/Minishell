@@ -145,7 +145,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 			if (ft_strchr("fq", tok->type) && !(ft_strcmp(last->command, "echo")))
 				check_echo_flag(s, tok);
 			else if (tok->type == 'f')
-				write(2, "AUCUN FLAG AUTORISÉ POUR LES BUILT-INS\n", 39);
+				write(2, "AUCUN FLAG AUTORISE POUR LES BUILT-INS\n", 39);
 		}
 		last->nbarg++;
 		// if (tok->pre_space == 0)
@@ -213,16 +213,25 @@ void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 	{
 		//check that last command structure is completed and next token is actually a command
 		if (last->line == NULL || last->command == NULL || last->arg == NULL)
-			printf("wrong pipe here, last command does not exist\n");
+		{
+			write(2, "wrong pipe here, last command does not exist\n", 45);
+			s->ret = 1;
+		}
 		if (tok->next != NULL)
 		{
 			if (ft_strchr("bc", tok->next->type))
 				return ;
 			else
-				printf("pipe leads to non valid command\n"); //METTRE FT_ERROR ICI
+			{
+				write(2, "pipe leads to non valid command\n", 32); //METTRE FT_ERROR ICI
+				s->ret = 1;
+			}
 		}
 		else
-			printf("pipe is last token???\n"); //METTRE FT_ERROR ICI
+		{
+			write(2, "pipe is last token???\n", 22); //METTRE FT_ERROR ICI
+			s->ret = 1;
+		}
 		
 	}
 	else if (tok->type == 'o')

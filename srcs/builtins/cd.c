@@ -23,7 +23,7 @@
 int ft_updatepwd(t_mother *s, char *new_path, char *old_path)
 {
 	create_env(s, ft_strjoin("PWD=", new_path));
-	create_env(s, ft_strjoin("OLPWD=", old_path));
+	create_env(s, ft_strjoin("OLDPWD=", old_path));
 	return (0);
 }
 
@@ -64,11 +64,13 @@ int		ft_cd(t_mother *s)
 	{
 		r = chdir(previouspath);
 		previouspath = path;
+		//ft_updatepwd();
 	}
 	else if (ft_strcmp("--", s->c->arg[1]) == 0)
 	{
 		r = chdir(previouspath);
 		previouspath = path;
+		//ft_updatepwd();
 	}
 	else
 		r = chdir(s->c->arg[1]); //update oldpwd et pwd ici aussi
@@ -79,6 +81,7 @@ int		ft_cd(t_mother *s)
 	}
 		//ft_error(s, "chdir failed", -1);
 	getcwd(targetpath, sizeof(targetpath));
+	ft_updatepwd(s, targetpath, path);
 	// ft_pwd(s);
 	//printf("%s r = %d", targetpath, r);
 	return(0);

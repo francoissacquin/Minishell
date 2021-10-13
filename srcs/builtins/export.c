@@ -18,6 +18,7 @@ int ft_export(t_mother *s, t_command *cmd)
 	int		i;
 	int		j;
 	char	*temp;
+	char	*value;
 	t_token	temp_tok;
 
 	ret = 0;
@@ -28,16 +29,18 @@ int ft_export(t_mother *s, t_command *cmd)
 		i = 0;
 		while (s->env[i] != NULL)
 		{
-			printf("declare -x ");
+			write(1, "declare -x ", 11);
 			j = 0;
 			while(s->env[i][j] != '=')
-			{
-				printf("%c",s->env[i][j]);
 				j++;
-			}
 			temp = ft_substr(s->env[i], 0, j);
-			printf("=\"%s\"\n", getenv(temp));
+			write(1, temp, ft_strlen(temp));
+			write(1, "=\"", 2);
+			value = ft_return_env_value(s, temp, 1);
+			write(1, value, ft_strlen(value));
+			write(1, "\"\n", 2);
 			free(temp);
+			free(value);
 			i++;
 		}
 	}
