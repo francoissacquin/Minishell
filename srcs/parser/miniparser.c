@@ -141,12 +141,19 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 				write(2, "AUCUN FLAG AUTORISÉ POUR LES BUILT-INS\n", 39);
 		}
 		last->nbarg++;
-		ft_add_arg_array(last, tok->token);
+		// if (tok->pre_space == 0)
+		// 	ft_add_arg_array(last, tok->token, 1);
+		// else
+		// 	ft_add_arg_array(last, tok->token, 0);
+		ft_add_arg_array(last, tok->token, 0);
 		if (last->line == NULL)
 			last->line = ft_strdup(tok->token);
 		else
 		{
+			//if (tok->pre_space == 1)
 			temp = ft_strjoin(" ", tok->token);
+			// else
+			// 	temp = ft_strdup(tok->token);
 			temp_line = ft_strdup(last->line);
 			free(last->line);
 			last->line = ft_strjoin(temp_line, temp);
@@ -156,21 +163,35 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 	}
 }
 
-void	ft_add_arg_array(t_command *last, char *str)
+void	ft_add_arg_array(t_command *last, char *str, int type)
 {
 	char 	**temp;
+	char	*append_temp;
 	int		len;
 	int		i;
 
 	len = ft_strlen_array(last->arg);
-	temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
+	if (type == 0)
+		temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
+	else if (type == 1)
+		temp = ft_malloc(&temp, (len + 1) * sizeof(char *));
 	i = 0;
 	while (i < len)
 	{
 		temp[i] = ft_strdup(last->arg[i]);
 		i++;
 	}
-	temp[i++] = ft_strdup(str);
+	if (type == 0)
+		temp[i++] = ft_strdup(str);
+	else if (type == 1)
+	{
+		i--;
+		append_temp = ft_strdup(temp[i]);
+		free(temp[i]);
+		temp[i] = ft_strjoin(append_temp, str);
+		free(append_temp);
+		i++;
+	}
 	temp[i] = NULL;
 	ft_free_array(last->arg);
 	last->arg = temp;

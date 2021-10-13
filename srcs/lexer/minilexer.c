@@ -136,5 +136,9 @@ t_token *create_token(t_mother *s, int i, int j, char c)
             new->type = '\0';
     }
     s->lex->token_nb++;
+    if (i > 0 && s->line[i - 1] == ' ')
+        new->pre_space = 1;
+    else
+        new->pre_space = 0;
     return (new);
 }

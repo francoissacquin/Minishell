@@ -67,6 +67,7 @@ typedef struct s_token
 {
 	char		*token;
 	char		type;
+	int			pre_space;
 	t_token		*prev;
 	t_token		*next;
 }				t_token;
@@ -218,7 +219,7 @@ void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i);
 void	ft_add_args(t_mother *s, t_token *tok, int *i);
 void	check_echo_flag(t_mother *s, t_token *tok);
-void	ft_add_arg_array(t_command *last, char *str);
+void	ft_add_arg_array(t_command *last, char *str, int type);
 void	ft_add_operator(t_mother *s, t_token *tok, int *i);
 void	add_cmd_elem(t_mother *s, t_token *tok, int *i);
 t_command	*create_cmd(t_mother *s, t_token *tok, int *i);
