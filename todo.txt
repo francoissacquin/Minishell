@@ -14,3 +14,5 @@ this is pipe word for test with grep
 comment on gere les ' " ; \ $ et autres char speciaux
 http://www.zeitoun.net/articles/communication-par-tuyau/start
 http://www.rozmichelle.com/pipes-forks-dups/
+
+signaux dans les built ins
