@@ -187,7 +187,7 @@ void		multicommands(t_mother *s)
 			s->c->retvalue = ft_export(s, s->c);
 		else if (ft_strcmp("unset", s->c->command) == 0)
 			s->c->retvalue = ft_unset(s, s->c);
-		if (s->c->command == NULL)
+		else if (s->c->command == NULL)
 			s->c->retvalue = 127;
 		else
 			s->c->retvalue = ft_pipe(s->c, tmp);

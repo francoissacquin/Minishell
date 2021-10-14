@@ -24,6 +24,7 @@ void ft_error(t_mother *s, char * error, int code)
 
 int mainaftersignal(t_mother *s, char *str)
 {
+	int		parsing_res;
 	//int pid = getpid();
 	//printf("\noooglobal pid = %dooo\n", pid);
 	// char **envp;
@@ -46,11 +47,19 @@ int mainaftersignal(t_mother *s, char *str)
 		minilexer(s);
 		assign_types(s);
 		redir_input_handler(s);
-		miniparser(s);
+		parsing_res = miniparser(s);
+		if (parsing_res)
+		{
+			if (str == NULL)
+				free(s->line);
+			return (s->ret);
+		}
 		//ft_print_parsing_results(s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
 		//free(s->line);
 		//s->line = NULL;
 	}
+	else if (s->line != NULL && s->line[0] == '\0')
+		return (0);
 	// ft_end(s);
 	// ft_echo(s);
 	// ft_cd(s);
