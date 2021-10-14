@@ -1,1 +1,17 @@
 
+[echo] of type [b]
+[>] of type [o]
+[<] of type [w]
+
+
+  ||
+  ||BEFORE = 0
+  ||
+_________________________________________
+[echo] of command [echo] with cmd_status [b]
+||echo
+ with infile = (null) and outile = <
+-----------------------------------------
+  ||
+  ||AFTER = 2
+  ||

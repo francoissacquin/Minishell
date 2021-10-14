@@ -8,7 +8,9 @@ void	assign_types(t_mother *s)
 	while (temp != NULL)
 	{
 		if (temp->type == 'S')
-			ft_error(s, "Error, input should not contain a delimiter\n", 1);
+		{
+			write(2, "Error, input should not contain a separator\';\'\n", 47);
+		}
 		if (temp->type == '\0' && temp->token != NULL)
 		{
 			ft_type_flag(temp);
@@ -16,6 +18,7 @@ void	assign_types(t_mother *s)
 			ft_type_path(s, temp);
 			ft_type_cmd(s, temp);
 			ft_type_built(temp);
+			ft_type_op(temp);
 		}
 		if (temp->type == 'o')
 			ft_type_pipe(temp);
@@ -113,6 +116,18 @@ void	ft_type_pipe(t_token *tok)
 {
 	if (!(ft_strcmp(tok->token, "|")))
 		tok->type = 'P';
+}
+
+void	ft_type_op(t_token *tok)
+{
+	if (!(ft_strcmp(tok->token, "<")))
+		tok->type = 'o';
+	else if (!(ft_strcmp(tok->token, "<<")))
+		tok->type = 'o';
+	else if (!(ft_strcmp(tok->token, ">")))
+		tok->type = 'o';
+	else if (!(ft_strcmp(tok->token, ">>")))
+		tok->type = 'o';
 }
 
 
