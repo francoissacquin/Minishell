@@ -111,7 +111,7 @@ int	ft_execfind(t_mother *s, t_command *c)
 	
 	//builtins
 	if (ft_strcmp("cd", s->c->command) == 0)
-		ret = ft_cd(s);
+	 	ret = ft_cd(s);
 	else if (ft_strcmp("echo", s->c->command) == 0)
 		ret = ft_echo(s, s->c);	
 	else if (ft_strcmp("env", s->c->command) == 0)

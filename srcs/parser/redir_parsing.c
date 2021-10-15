@@ -3,6 +3,7 @@
 void	redir_input_handler(t_mother *s)
 {
 	t_token		*tok;
+	int			res;
 
 	tok = s->lex->first_token;
 	while(tok->next != NULL)
@@ -10,8 +11,10 @@ void	redir_input_handler(t_mother *s)
 		if (!(ft_strcmp(tok->token, "<<")) && tok->type == 'o')
 		{
 			//LANCER LE READLINE EN BOUCLE
+			res = ft_redir_error_check(s, tok);
+			if (res)
+				return ;
 			ft_finding_delimiter(s, tok);
-			ft_redir_error_check(s, tok);
 			ft_redir_input_activator(s);
 		}
 		tok = tok->next;
@@ -19,8 +22,10 @@ void	redir_input_handler(t_mother *s)
 	if (!(ft_strcmp(tok->token, "<<")) && tok->type == 'o')
 	{
 		//LANCER LE READLINE EN BOUCLE
+		res = ft_redir_error_check(s, tok);
+		if (res)
+			return ;
 		ft_finding_delimiter(s, tok);
-		ft_redir_error_check(s, tok);
 		ft_redir_input_activator(s);
 	}
 }
@@ -54,12 +59,15 @@ void	ft_finding_delimiter(t_mother *s, t_token *tok)
 	s->lex->delimiter = temp;
 }
 
-void	ft_redir_error_check(t_mother *s, t_token *tok)
+int	ft_redir_error_check(t_mother *s, t_token *tok)
 {
 	(void)s;
-	(void)tok;
 	if (tok->next == NULL)
-		printf("DELIMITER IS MISSING FROM << REDIR\n"); // METTRE FT_ERROR ICI
+	{
+		write(2, "DELIMITER IS MISSING FROM << REDIR\n", 35);
+		return (1);
+	}
+	return (0);
 }
 
 void	ft_redir_input_activator(t_mother *s)

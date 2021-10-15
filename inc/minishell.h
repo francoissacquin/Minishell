@@ -200,6 +200,7 @@ void	ft_type_flag(t_token *tok);
 void	ft_type_env(t_token *tok);
 void	ft_type_built(t_token *tok);
 void	ft_type_pipe(t_token *tok);
+void	ft_type_op(t_token *tok);
 void	ft_type_path(t_mother *s, t_token *tok);
 void	ft_type_cmd(t_mother *s, t_token *tok);
 int		ft_stat_check(char *path, t_token *tok);
@@ -207,22 +208,22 @@ int		ft_stat_check(char *path, t_token *tok);
 // << redirection interception for input
 void	redir_input_handler(t_mother *s);
 void	ft_finding_delimiter(t_mother *s, t_token *tok);
-void	ft_redir_error_check(t_mother *s, t_token *tok);
+int		ft_redir_error_check(t_mother *s, t_token *tok);
 void	ft_redir_input_activator(t_mother *s);
 int		ft_strnstr_index(char *haystack, char *needle, int len);
 
 // parser functions
-void	miniparser(t_mother *s);
-void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
+int		miniparser(t_mother *s);
+int		ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i);
-void	ft_add_args(t_mother *s, t_token *tok, int *i);
+int		ft_add_args(t_mother *s, t_token *tok, int *i);
 void	check_echo_flag(t_mother *s, t_token *tok);
 void	ft_add_arg_array(t_command *last, char *str, int type);
-void	ft_add_operator(t_mother *s, t_token *tok, int *i);
+int		ft_add_operator(t_mother *s, t_token *tok, int *i);
 void	add_cmd_elem(t_mother *s, t_token *tok, int *i);
 t_command	*create_cmd(t_mother *s, t_token *tok, int *i);
 t_command	*ft_last_cmd(t_command *first);
-void	ft_wrong_input(t_mother *s, t_token *tok, int *i);
+void	ft_wrong_input(t_mother *s);
 void	assign_redirect(t_mother *s, t_token *tok, int *i);
 void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok);
 

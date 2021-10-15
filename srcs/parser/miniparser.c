@@ -1,34 +1,64 @@
 #include "../../inc/minishell.h"
 
-void	miniparser(t_mother *s)
+int		miniparser(t_mother *s)
 {
 	t_token	*tok;
 	int		i;
+	int		res;
 
 	tok = s->lex->first_token;
 	i = 0;
 	while(tok->next != NULL)
 	{
-		ft_tok_conveyor_belt(s, tok, &i);
+		res = ft_tok_conveyor_belt(s, tok, &i);
+		if (res)
+		{
+			//ft_print_parsing_results(s);
+			ft_wrong_input(s);
+			return (1);
+		}
 		tok = tok->next;
 		i++;
 	}
 	if (tok->token != NULL)
-		ft_tok_conveyor_belt(s, tok, &i);
+	{
+		res = ft_tok_conveyor_belt(s, tok, &i);
+		if (res)
+		{
+			//ft_print_parsing_results(s);
+			ft_wrong_input(s);
+			return (1);
+		}
+	}
+	return (0);
 }
 
-void	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
+int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 {
-	if (i == 0 && ft_strchr("pPf", tok->type))
-		ft_wrong_input(s, tok, i);
+	int		err;
+
+	err = 0;
+	if (*i == 0 && ft_strchr("Pfo", tok->type))
+	{
+		write(2, "Error, pipe with no prior command\n", 34);
+		s->ret = 1;
+		err = 1;
+	}
+	else if (tok->type == 'p' && (*i == 0 || tok->prev->type == 'P'))
+	{
+		write(2, "Minishell: commande introuvable\n", 32);
+		s->ret = 127;
+		err = 1;
+	}
 	else if (ft_strchr("cb", tok->type))
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
-		ft_add_operator(s, tok, i);
+		err = ft_add_operator(s, tok, i);
 	else if (ft_strchr("wpfdEeq", tok->type) && s->redirect_mem == 0)
 		ft_add_args(s, tok, i);
 	else if (ft_strchr("wpeq", tok->type) && s->redirect_mem != 0)
 		ft_cmd_blt(s, tok, i);
+	return (err);
 }
 
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
@@ -129,7 +159,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	}
 }
 
-void	ft_add_args(t_mother *s, t_token *tok, int *i)
+int	ft_add_args(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
 	char		*temp;
@@ -148,11 +178,10 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 				write(2, "AUCUN FLAG AUTORISE POUR LES BUILT-INS\n", 39);
 		}
 		last->nbarg++;
-		// if (tok->pre_space == 0)
-		// 	ft_add_arg_array(last, tok->token, 1);
-		// else
-		// 	ft_add_arg_array(last, tok->token, 0);
-		ft_add_arg_array(last, tok->token, 0);
+		if (tok->pre_space == 0 && tok->type == 'p' && ft_strchr("pe", tok->prev->type))
+			ft_add_arg_array(last, tok->token, 1);
+		else
+			ft_add_arg_array(last, tok->token, 0);
 		if (last->line == NULL)
 			last->line = ft_strdup(tok->token);
 		else
@@ -168,6 +197,7 @@ void	ft_add_args(t_mother *s, t_token *tok, int *i)
 			free(temp_line);
 		}
 	}
+	return (0);
 }
 
 void	ft_add_arg_array(t_command *last, char *str, int type)
@@ -204,7 +234,7 @@ void	ft_add_arg_array(t_command *last, char *str, int type)
 	last->arg = temp;
 }
 
-void	ft_add_operator(t_mother *s, t_token *tok, int *i)
+int	ft_add_operator(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
 
@@ -216,21 +246,24 @@ void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 		{
 			write(2, "wrong pipe here, last command does not exist\n", 45);
 			s->ret = 1;
+			return (1);
 		}
 		if (tok->next != NULL)
 		{
 			if (ft_strchr("bc", tok->next->type))
-				return ;
+				return (0);
 			else
 			{
 				write(2, "pipe leads to non valid command\n", 32); //METTRE FT_ERROR ICI
 				s->ret = 1;
+				return (1);
 			}
 		}
 		else
 		{
 			write(2, "pipe is last token???\n", 22); //METTRE FT_ERROR ICI
 			s->ret = 1;
+			return (1);
 		}
 		
 	}
@@ -248,6 +281,7 @@ void	ft_add_operator(t_mother *s, t_token *tok, int *i)
 				assign_redirect(s, tok, i);
 		}
 	}
+	return (0);
 }
 
 void	assign_redirect(t_mother *s, t_token *tok, int *i)
@@ -318,10 +352,10 @@ t_command	*ft_last_cmd(t_command *first)
 	return (temp);
 }
 
-void	ft_wrong_input(t_mother *s, t_token *tok, int *i)
+void	ft_wrong_input(t_mother *s)
 {
-	(void)s;
-	(void)tok;
-	(void)i;
+	free_t_token(s);
+	free_t_cmd(s);
+	free_t_lexer(s);
 	//printf("INPUT NON VALIDE\n"); // METTRE FT_ERROR ICI
 }
