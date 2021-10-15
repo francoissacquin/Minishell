@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:00:09 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/14 17:11:33 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/15 15:49:18 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,21 +110,21 @@ int	ft_execfind(t_mother *s, t_command *c)
 	int ret = 1;
 	
 	//builtins
-	// if (ft_strcmp("cd", s->c->command) == 0)
-	// 	ret = ft_cd(s);
-	// else if (ft_strcmp("echo", s->c->command) == 0)
-	// 	ret = ft_echo(s, s->c);	
-	// else if (ft_strcmp("env", s->c->command) == 0)
-	// 	ret = ft_env(s);
-	// else if (ft_strcmp("exit", s->c->command) == 0)
-	// 	ret = ft_exit(s, c);
-	// else if (ft_strcmp("export", s->c->command) == 0)
-	// 	ret = ft_export(s, c);
-	// else if (ft_strcmp("pwd", s->c->command) == 0)
-	// 	ret = ft_pwd(s);
-	// else if (ft_strcmp("unset", s->c->command) == 0)
-	// 	ret = ft_unset(s, c);
-	// else
+	if (ft_strcmp("cd", s->c->command) == 0 && s->c->isfollowedbypipe != 1)
+		ret = ft_cd(s);
+	else if (ft_strcmp("echo", s->c->command) == 0)
+		ret = ft_echo(s, s->c);	
+	else if (ft_strcmp("env", s->c->command) == 0)
+		ret = ft_env(s);
+	else if (ft_strcmp("exit", s->c->command) == 0)
+		ret = ft_exit(s, c);
+	else if (ft_strcmp("export", s->c->command) == 0)
+		ret = ft_export(s, c);
+	else if (ft_strcmp("pwd", s->c->command) == 0)
+		ret = ft_pwd(s);
+	else if (ft_strcmp("unset", s->c->command) == 0)
+		ret = ft_unset(s, c);
+	else
 		ret = ft_execnotbuiltin(s);
 	return(ret);
 }

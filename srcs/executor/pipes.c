@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/14 19:06:37 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/15 15:50:41 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,8 +266,8 @@ void		multicommands(t_mother *s)
 			s->c->retvalue = ft_exit(s, s->c);
 		else if (ft_strcmp("cd", s->c->command) == 0)
 				s->c->retvalue = ft_cd(s);
-		else if (ft_strcmp("export", s->c->command) == 0)
-			ft_exec_builtins(s->c, s);
+		// else if (ft_strcmp("export", s->c->command) == 0)
+		// 	ft_exec_builtins(s->c, s);
 			//s->c->retvalue = ft_export(s, s->c);
 		else if (ft_strcmp("unset", s->c->command) == 0)
 			s->c->retvalue = ft_unset(s, s->c);
