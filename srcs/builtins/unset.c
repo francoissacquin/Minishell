@@ -38,8 +38,10 @@ int ft_unset(t_mother *s, t_command *c)
 	}
 	ret = 0;
 	// REGARDER POUR LE CAS OU LA VALEUR A UNSET CONTIENT DES CARACTERES NON VALABLE : ret = 1.
-	if (rm_switch != 0)
+	if (rm_switch == 1)
 		rm_env(s, c->arg[1]);
+	else if (ft_strchr(c->arg[1], ';'))
+		ret = 127;
 	else if (ft_word_is_exportable(c->arg[1]))
 		ret = 0;
 	else if (c->arg[1][0] == '-')

@@ -47,9 +47,9 @@ void    minilexer(t_mother *s)
 
 void    minilexer_inner_loop(t_mother *s, int *i, int *j)
 {
-    if (*j > 0 && s->line[*j] == ';')
-        ft_separator_rule(s, i, j);
-    else if (*j > 0 && (ft_strchr("<>&|", s->line[*j - 1]) && !(ft_strchr("<>&|", s->line[*j]))))
+    // if (*j > 0 && s->line[*j] == ';')
+    //     ft_separator_rule(s, i, j);
+    if (*j > 0 && (ft_strchr("<>&|", s->line[*j - 1]) && !(ft_strchr("<>&|", s->line[*j]))))
         ft_new_operator_char_rule(s, i, j);
     else if (s->lex->quote == 0 && ft_strchr("\"\'", s->line[*j]) && s->line[*j - 1] != '\\')
         ft_quote_aligner(s, i, j);
