@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/15 16:15:54 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/15 18:07:07 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,49 @@ int		ft_exec_builtins(t_command *c, t_mother *s)
 	return(ret);
 }
 
+
+int		ft_routeenv(t_mother *s, t_command *c)
+{
+		int ret = 1;
+	int	err = 0;
+	int fd = 0;
+
+	// write(1, "hello", 5);
+	if(c->isfollowedbypipe == 1 || c->isprecededbypipe == 1)
+		err = pipe(c->pipes);
+	// if (c->isprecededbypipe == 1)
+	// {
+	// 	err = dup2(c->previouspipe->pipes[0], 0);
+	// 	if (err < 0)
+	// 		ft_error(s, "pipe dup2", -1);
+	// }
+	fd = open("hello.txt", O_RDWR|O_CREAT, 0666);
+	write(fd, "chips", 5);
+	if (c->isfollowedbypipe == 1)
+	{
+		err = dup2(c->pipes[1], 1);
+		if (err < 0)
+			ft_error(s, "pipebuilt dup2", -1);
+	}
+	ft_env(s);
+	// close(1);
+	if (c->isprecededbypipe == 1)
+		close(c->previouspipe->pipes[0]);
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 || c->isfollowedbypipe == 2)
+	{
+		close(c->pipes[1]);
+		if (c->isfollowedbypipe == 2)
+			fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
+		if (c->nextpipe == NULL)
+		{
+			dup2(c->pipes[1], 0);
+			close(c->pipes[0]);
+		}
+	}
+	// ft_export(s, c);
+	return(ret);
+}
+
 //sends to different functions if its a pipe redirect etc
 //finds if it needs to be forked then loop for n commands
 //look for if (s->c->command == NULL) // pas sur que ca fonctionne // and used twice
@@ -267,16 +310,38 @@ void		multicommands(t_mother *s)
 		else if (ft_strcmp("cd", s->c->command) == 0)
 		{
 				s->c->retvalue = ft_cd(s);
-				s->c->nextpipe = 0; //c'est tres douteux mais ca a l'air de marcher
+				//s->c->nextpipe = 0; //c'est tres douteux mais ca a l'air de marcher
+				ft_pipe(s->c, s);
 		}
-		// else if (ft_strcmp("export", s->c->command) == 0)
-		// 	ft_exec_builtins(s->c, s);
-			//s->c->retvalue = ft_export(s, s->c);
+		else if (ft_strcmp("export", s->c->command) == 0 && s->c->nbarg > 1)
+		{// ft_exec_builtins(s->c, s);
+			printf("||%d|", s->c->nbarg);
+			if (s->c->nbarg > 0)
+			{
+			s->c->retvalue = ft_export(s, s->c);
+			//s->c->nextpipe = 0;
+			puts("export\n");
+			}
+			ft_pipe(s->c, s);
+		}
+		// else if (ft_strcmp("env", s->c->command) == 0)
+		// {// ft_exec_builtins(s->c, s);
+		// 	puts("ENV\n");
+		// 	if (s->c->isfollowedbypipe == 1)
+		// 		ft_routeenv(s, s->c);
+		// 	else
+		// 		s->c->retvalue = ft_env(s);
+		// //	s->c->nextpipe = 0;
+		// }
 		else if (ft_strcmp("unset", s->c->command) == 0)
+		{
+			puts("UNSET\n");
 			s->c->retvalue = ft_unset(s, s->c);
+		ft_pipe(s->c, s);
+		}
 		else if (s->c->command == NULL)
 			s->c->retvalue = 127;
-		else if (!(ft_strcmp("cd", s->c->command) == 0))
+		else if (!(ft_strcmp("cd", s->c->command) == 0) /*&& !(ft_strcmp("export", s->c->command) == 0)*/)
 			s->c->retvalue = ft_pipe(s->c, tmp);
 		s->ret = s->c->retvalue;
 		if(!s->c->nextpipe)

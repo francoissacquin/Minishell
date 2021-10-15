@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:00:09 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/15 15:53:42 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/15 17:57:46 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	ft_execfind(t_mother *s, t_command *c)
 {
 	s->c = c;
 	int ret = 1;
-	
+	printf("||%d|", s->c->nbarg);
 	//builtins
 	if (ft_strcmp("cd", s->c->command) == 0)
 	 	ret = ft_cd(s);
@@ -118,7 +118,7 @@ int	ft_execfind(t_mother *s, t_command *c)
 		ret = ft_env(s);
 	else if (ft_strcmp("exit", s->c->command) == 0)
 		ret = ft_exit(s, c);
-	else if (ft_strcmp("export", s->c->command) == 0)
+	else if (ft_strcmp("export", s->c->command) == 0 && s->c->nbarg == 1)
 		ret = ft_export(s, c);
 	else if (ft_strcmp("pwd", s->c->command) == 0)
 		ret = ft_pwd(s);
