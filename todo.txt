@@ -16,3 +16,9 @@ http://www.zeitoun.net/articles/communication-par-tuyau/start
 http://www.rozmichelle.com/pipes-forks-dups/
 
 signaux dans les built ins
+export > caca.txt | caca.txt < grep SHL
+export | grep SHL
+export | export
+cat Makefile | export | grep SHL
+
+cd - marche pas

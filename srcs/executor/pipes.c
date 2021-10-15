@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/13 21:57:15 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/15 15:50:41 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int		ft_child(t_command *c, t_mother *s)
 	{
 		err = dup2(c->previouspipe->pipes[0], 0);
 		if (err < 0)
-			ft_error(s, "pipe dup2", -1);
+			ft_error(s, "pipe iii dup2", -1);
 	}
 	if (c->isfollowedbypipe == 1)
 	{
 		err = dup2(c->pipes[1], 1);
 		if (err < 0)
-			ft_error(s, "pipe dup2", -1);
+			ft_error(s, "pipe in grep dup2", -1);
 	}
 	ret = ft_execfind(s, s->c);
 	exit(ret);
@@ -162,6 +162,89 @@ int		ft_pipe(t_command *c, t_mother *s)
 	return(ret);
 }
 
+int		ft_exec_builtins(t_command *c, t_mother *s)
+{
+	int ret = 1;
+	int	err = 0;
+	int fd = 0;
+
+	// write(1, "hello", 5);
+	if(c->isfollowedbypipe == 1 || c->isprecededbypipe == 1)
+		err = pipe(c->pipes);
+	// if(err != 0)
+	// 	ft_error(s, "pipe", -1);
+	// ret = ft_redirect(c, s);
+	// write(1, "cacao", 5);
+	// // if (c->isprecededbypipe == 1)
+	// // {
+	// // 	err = dup2(c->previouspipe->pipes[0], 0);
+	// // 	if (err < 0)
+	// // 		ft_error(s, "pipe dup2", -1);
+	// // }
+	// if (c->isfollowedbypipe == 1)
+	// {
+	// 	err = dup2(c->pipes[1], 1);
+	// 	if (err < 0)
+	// 		ft_error(s, "pipe dup2", -1);
+	// 	// err = dup2(c->pipes[1], 0);
+	// 	// if (err < 0)
+	// 	// 	ft_error(s, "pipe dup2", -1);
+	// }
+	// ft_export(s, c);
+	// if (c->isprecededbypipe == 1)
+	// 	close(c->previouspipe->pipes[0]);
+	// if(c->isfollowedbypipe == 1 || c->isprecededbypipe == 1 || c->isfollowedbypipe == 2)
+	// {
+	// 	// if(c->nextpipe == NULL)
+	// 	close(c->pipes[1]);
+	// 	if (c->isfollowedbypipe == 2)
+	// 		fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
+	// 	if (c->nextpipe == NULL)
+	// 	{
+	// 		dup2(c->pipes[1], 0);
+	// 		close(c->pipes[0]);
+	// 	}
+	// }
+	// if(fd)
+	// 	close(fd);
+	// dup2(c->pipes[1], 0);
+	// ft_export(s, c);
+	write(2, "hello", 5);
+	// if (c->isfollowedbypipe > 1 || c->isprecededbypipe == 2  || c->isprecededbypipe == 3)
+	// 	err = ft_redirect(c, s);
+	if (c->isprecededbypipe == 1)
+	{
+		err = dup2(c->previouspipe->pipes[0], 0);
+		if (err < 0)
+			ft_error(s, "pipe dup2", -1);
+	}
+	fd = open("hello.txt", O_RDWR|O_CREAT, 0666);
+	write(fd, "chips", 5);
+	if (c->isfollowedbypipe == 1)
+	{
+		err = dup2(c->pipes[1], 1);
+		if (err < 0)
+			ft_error(s, "pipebuilt dup2", -1);
+	}
+	ft_export(s, c);
+	// close(1);
+	if (c->isprecededbypipe == 1)
+		close(c->previouspipe->pipes[0]);
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 || c->isfollowedbypipe == 2)
+	{
+		close(c->pipes[1]);
+		if (c->isfollowedbypipe == 2)
+			fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
+		if (c->nextpipe == NULL)
+		{
+			dup2(c->pipes[1], 0);
+			close(c->pipes[0]);
+		}
+	}
+	// ft_export(s, c);
+	return(ret);
+}
+
 //sends to different functions if its a pipe redirect etc
 //finds if it needs to be forked then loop for n commands
 //look for if (s->c->command == NULL) // pas sur que ca fonctionne // and used twice
@@ -183,8 +266,9 @@ void		multicommands(t_mother *s)
 			s->c->retvalue = ft_exit(s, s->c);
 		else if (ft_strcmp("cd", s->c->command) == 0)
 				s->c->retvalue = ft_cd(s);
-		else if (ft_strcmp("export", s->c->command) == 0)
-			s->c->retvalue = ft_export(s, s->c);
+		// else if (ft_strcmp("export", s->c->command) == 0)
+		// 	ft_exec_builtins(s->c, s);
+			//s->c->retvalue = ft_export(s, s->c);
 		else if (ft_strcmp("unset", s->c->command) == 0)
 			s->c->retvalue = ft_unset(s, s->c);
 		else if (s->c->command == NULL)
