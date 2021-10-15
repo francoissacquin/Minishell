@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/15 15:50:41 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/15 16:15:54 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,10 @@ void		multicommands(t_mother *s)
 		if (ft_strcmp("exit", s->c->command) == 0)
 			s->c->retvalue = ft_exit(s, s->c);
 		else if (ft_strcmp("cd", s->c->command) == 0)
+		{
 				s->c->retvalue = ft_cd(s);
+				s->c->nextpipe = 0; //c'est tres douteux mais ca a l'air de marcher
+		}
 		// else if (ft_strcmp("export", s->c->command) == 0)
 		// 	ft_exec_builtins(s->c, s);
 			//s->c->retvalue = ft_export(s, s->c);
@@ -273,7 +276,7 @@ void		multicommands(t_mother *s)
 			s->c->retvalue = ft_unset(s, s->c);
 		else if (s->c->command == NULL)
 			s->c->retvalue = 127;
-		else
+		else if (!(ft_strcmp("cd", s->c->command) == 0))
 			s->c->retvalue = ft_pipe(s->c, tmp);
 		s->ret = s->c->retvalue;
 		if(!s->c->nextpipe)
