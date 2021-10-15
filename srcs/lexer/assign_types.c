@@ -8,9 +8,7 @@ void	assign_types(t_mother *s)
 	while (temp != NULL)
 	{
 		if (temp->type == 'S')
-		{
 			write(2, "Error, input should not contain a separator\';\'\n", 47);
-		}
 		if (temp->type == '\0' && temp->token != NULL)
 		{
 			ft_type_flag(temp);
@@ -19,9 +17,8 @@ void	assign_types(t_mother *s)
 			ft_type_cmd(s, temp);
 			ft_type_built(temp);
 			ft_type_op(temp);
-		}
-		if (temp->type == 'o')
 			ft_type_pipe(temp);
+		}
 		if (temp->type == '\0')
 			temp->type = 'w';
 		if (temp->type == 'q' || temp->type == 'e')
@@ -127,6 +124,8 @@ void	ft_type_op(t_token *tok)
 	else if (!(ft_strcmp(tok->token, ">")))
 		tok->type = 'o';
 	else if (!(ft_strcmp(tok->token, ">>")))
+		tok->type = 'o';
+	else if (ft_is_op_redir(tok->token))
 		tok->type = 'o';
 }
 
