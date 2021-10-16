@@ -25,7 +25,7 @@ void ft_error(t_mother *s, char * error, int code)
 int mainaftersignal(t_mother *s, char *str)
 {
 	int		parsing_res;
-	//int pid = getpid();
+
 	//printf("\noooglobal pid = %dooo\n", pid);
 	// char **envp;
 	// envp = env;
@@ -97,6 +97,7 @@ int main(int argc, char **argv, char **envp)
 	s.env = NULL;
 	env_init(&s, envp);
 	s.ret = 0;
+	g_pid.pid = getpid();
 	if (argc == 3)
 	{
 		if (!ft_strncmp(argv[1], "-c", 3))

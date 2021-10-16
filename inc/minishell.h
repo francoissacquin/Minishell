@@ -96,10 +96,12 @@ typedef struct s_mother
 	t_command	*c;
 }				t_mother;
 
-// typedef struct s_global
-// {
-// 		int			line_nb;
-// }
+typedef struct s_global_pid
+{
+	pid_t		pid;
+}				t_global_pid;
+
+t_global_pid	g_pid;
 
 //general
 int		ft_parse(t_mother *s);
@@ -150,6 +152,7 @@ int		ft_pipe(t_command *c, t_mother *s);
 
 //signaux
 void	signalhandler(int c); //for ctrl-c ctrl-v
+void	quithandler(void);
 
 // history
 void	ft_add_history(t_mother *s);

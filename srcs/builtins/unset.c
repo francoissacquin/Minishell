@@ -19,10 +19,8 @@ int ft_unset(t_mother *s, t_command *c)
 	int		ret;
 
 	if (ft_strlen_array(c->arg) != 2)
-		{
 			return(0);
-		}
-		//ft_error(s, "unset arg number invalid\n", 0); // a modifier pour la return value, c'est pas la bonne.
+	//ft_error(s, "unset arg number invalid\n", 0); // a modifier pour la return value, c'est pas la bonne.
 	i = 0;
 	rm_switch = 0;
 	// if (s->c->arg[1] == NULL)
