@@ -17,8 +17,9 @@ void	assign_types(t_mother *s)
 			ft_type_cmd(s, temp);
 			ft_type_built(temp);
 			ft_type_op(temp);
-			ft_type_pipe(temp);
 		}
+		if (temp->type == 'o')
+			ft_type_pipe(temp);
 		if (temp->type == '\0')
 			temp->type = 'w';
 		if (temp->type == 'q' || temp->type == 'e')
