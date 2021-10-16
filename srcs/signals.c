@@ -27,6 +27,11 @@ void	sighandl(void)
 	// TUER LES ENFANTS ICI
 }
 
+void	quithandler(void)
+{
+	kill(g_pid.pid, SIGQUIT);
+	write(1, "Minishell quit, core dumped\n", 28);
+}
 
 void	signalhandler(int c)
 {
@@ -40,7 +45,13 @@ void	signalhandler(int c)
 	// 	return;
 	// 	// mainaftersignal();
 	// 
-	if (c == SIGINT)
+	if (c == SIGQUIT)
+	{
+		printf("cool\n");
+		quithandler();
+		return;
+	}
+	else if (c == SIGINT)
 	{
 		//printf("\n");
 		// signal(SIGINT, signalhandler);

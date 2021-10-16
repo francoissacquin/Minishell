@@ -117,14 +117,12 @@ int		ft_parent(t_command *c, int pid)
 	return(ret);
 }
 
-int pid = -1; //move to global
-
 //ctrl-c handler in child process //move to signals
 
 void	killchild(int signal)
 {
 	(void)signal;
-	kill(pid, SIGTERM);
+	kill(g_pid.pid, SIGTERM);
 }
 
 //ctrl-\ handler in child process
@@ -132,8 +130,8 @@ void	killchild(int signal)
 void	quitchild(int signal)
 {
 	(void)signal;
-	if (pid != -1)
-		kill(pid, SIGTERM);
+	if (g_pid.pid != -1)
+		kill(g_pid.pid, SIGTERM);
 }
 
 //always fork to save minishell parent in case of crash
@@ -150,15 +148,15 @@ int		ft_pipe(t_command *c, t_mother *s)
 		err = pipe(c->pipes);
 	if(err != 0)
 		ft_error(s, "pipe", -1);
-	pid = fork();
-	if(pid < 0)
+	g_pid.pid = fork();
+	if(g_pid.pid < 0)
 		ft_error(s, "fork", -1);
 	signal(SIGINT, killchild);
 	signal(SIGQUIT, quitchild);
-	if(pid == 0)
+	if(g_pid.pid == 0)
 		ret = ft_child(c, s);
 	else
-		ret = ft_parent(c, pid);
+		ret = ft_parent(c, g_pid.pid);
 	return(ret);
 }
 
@@ -209,7 +207,7 @@ int		ft_exec_builtins(t_command *c, t_mother *s)
 	// 	close(fd);
 	// dup2(c->pipes[1], 0);
 	// ft_export(s, c);
-	write(2, "hello", 5);
+	//write(2, "hello", 5);
 	// if (c->isfollowedbypipe > 1 || c->isprecededbypipe == 2  || c->isprecededbypipe == 3)
 	// 	err = ft_redirect(c, s);
 	if (c->isprecededbypipe == 1)
@@ -219,7 +217,7 @@ int		ft_exec_builtins(t_command *c, t_mother *s)
 			ft_error(s, "pipe dup2", -1);
 	}
 	fd = open("hello.txt", O_RDWR|O_CREAT, 0666);
-	write(fd, "chips", 5);
+	//write(fd, "chips", 5);
 	if (c->isfollowedbypipe == 1)
 	{
 		err = dup2(c->pipes[1], 1);
@@ -262,7 +260,7 @@ int		ft_routeenv(t_mother *s, t_command *c)
 	// 		ft_error(s, "pipe dup2", -1);
 	// }
 	fd = open("hello.txt", O_RDWR|O_CREAT, 0666);
-	write(fd, "chips", 5);
+	//write(fd, "chips", 5);
 	if (c->isfollowedbypipe == 1)
 	{
 		err = dup2(c->pipes[1], 1);
@@ -315,12 +313,12 @@ void		multicommands(t_mother *s)
 		}
 		else if (ft_strcmp("export", s->c->command) == 0 && s->c->nbarg > 1)
 		{// ft_exec_builtins(s->c, s);
-			printf("||%d|", s->c->nbarg);
+			//printf("||%d|", s->c->nbarg);
 			if (s->c->nbarg > 0)
 			{
 			s->c->retvalue = ft_export(s, s->c);
 			//s->c->nextpipe = 0;
-			puts("export\n");
+			//puts("export\n");
 			}
 			ft_pipe(s->c, s);
 		}
@@ -335,7 +333,7 @@ void		multicommands(t_mother *s)
 		// }
 		else if (ft_strcmp("unset", s->c->command) == 0)
 		{
-			puts("UNSET\n");
+			//puts("UNSET\n");
 			s->c->retvalue = ft_unset(s, s->c);
 		ft_pipe(s->c, s);
 		}

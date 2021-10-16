@@ -99,8 +99,8 @@ int	ft_execnotbuiltin(t_mother *s)
 	error = execve(path, s->c->arg, s->env);
 	// char *test = " -la";
 	// error = execve(path, &test, NULL); //this is a test
-	if(error < 0)
-		ft_error(s, "execve, binary may be corrupted", error);
+	//if(error < 0)
+		//ft_error(s, "execve, binary may be corrupted", error);
 	return(error);
 }
 
@@ -108,7 +108,7 @@ int	ft_execfind(t_mother *s, t_command *c)
 {
 	s->c = c;
 	int ret = 1;
-	printf("||%d|", s->c->nbarg);
+	//printf("||%d|", s->c->nbarg);
 	//builtins
 	if (ft_strcmp("cd", s->c->command) == 0)
 	 	ret = ft_cd(s);
