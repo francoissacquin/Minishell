@@ -273,7 +273,12 @@ int	ft_add_operator(t_mother *s, t_token *tok, int *i)
 		{
 			if (ft_strchr("bcwep", tok->next->type))
 				assign_redirect(s, tok, i);
-			
+			else
+			{
+				write(2, "Error, operator cannot take this argument\n", 42);
+				s->ret = 1;
+				return (1);
+			}
 		}
 		if (tok->prev != NULL)
 		{

@@ -201,6 +201,7 @@ void	ft_type_env(t_token *tok);
 void	ft_type_built(t_token *tok);
 void	ft_type_pipe(t_token *tok);
 void	ft_type_op(t_token *tok);
+int     ft_is_op_redir(char *str);
 void	ft_type_path(t_mother *s, t_token *tok);
 void	ft_type_cmd(t_mother *s, t_token *tok);
 int		ft_stat_check(char *path, t_token *tok);

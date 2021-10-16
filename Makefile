@@ -45,6 +45,7 @@ srcs/env/env_expanding_utils.c \
 srcs/lexer/minilexer.c \
 srcs/lexer/lexer_lst_utils.c \
 srcs/lexer/assign_types.c \
+srcs/lexer/type_utils.c \
 srcs/lexer/mini_lexer_rules.c \
 srcs/lexer/mini_lexer_rules_2.c \
 srcs/executor/exec.c \
