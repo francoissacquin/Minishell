@@ -59,13 +59,15 @@ int mainaftersignal(t_mother *s, char *str)
 		//free(s->line);
 		//s->line = NULL;
 	}
-	else if (s->line != NULL && s->line[0] == '\0')
+	else if (s->line != NULL && (s->line[0] == '\0' || ft_input_is_spaces(s->line)))
 	{
 		free_t_token(s);
 		free_t_cmd(s);
 		free_t_lexer(s);
-		free(s->line);
-		return (0);
+		if (str == NULL)
+			free(s->line);
+		s->ret = 0;
+		return (s->ret);
 	}
 	// ft_end(s);
 	// ft_echo(s);
@@ -126,6 +128,31 @@ int main(int argc, char **argv, char **envp)
 	return (0);
 }
 
+int		ft_input_is_spaces(char *str)
+{
+	int		i;
+	int		len;
+	char	*temp;
+
+	len = ft_strlen(str);
+	if (len < 1)
+		return (0);
+	temp = ft_malloc(&temp, (len + 1) * sizeof(char));
+	i = 0;
+	while (i < len)
+	{
+		temp[i] = ' ';
+		i++;
+	}
+	temp[i] = '\0';
+	i = ft_strcmp(temp, str);
+	free(temp);
+	if (i == 0)
+		return (1);
+	else
+		return (0);
+
+}
 
 void	ft_print_parsing_results(t_mother *s)
 {
