@@ -29,8 +29,12 @@ void	sighandl(void)
 
 void	quithandler(void)
 {
-	kill(g_pid.pid, SIGQUIT);
-	write(1, "Minishell quit, core dumped\n", 28);
+	//printf("g_pid = %i\n", g_pid.pid);
+	if (g_pid.pid != 0)
+	{
+		kill(g_pid.pid, SIGQUIT);
+		write(1, "Minishell quit, core dumped\n", 28);
+	}
 }
 
 void	signalhandler(int c)
@@ -44,10 +48,9 @@ void	signalhandler(int c)
 	// 	sighandl();
 	// 	return;
 	// 	// mainaftersignal();
-	// 
 	if (c == SIGQUIT)
 	{
-		printf("cool\n");
+		write(1, "\b\b  \b\b", 6);
 		quithandler();
 		return;
 	}

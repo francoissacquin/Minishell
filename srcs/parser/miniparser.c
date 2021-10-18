@@ -50,6 +50,12 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 		s->ret = 127;
 		err = 1;
 	}
+	else if (*i == 0 && tok->type == 'w')
+	{
+		write(2, "Error, weird input\n", 19);
+		s->ret = 127;
+		err = 1;
+	}
 	else if (ft_strchr("cb", tok->type))
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))

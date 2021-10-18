@@ -30,7 +30,7 @@ int mainaftersignal(t_mother *s, char *str)
 	// char **envp;
 	// envp = env;
 	// signal(SIGINT, SIG_IGN);
-	signal(SIGINT, signalhandler);
+	//signal(SIGINT, signalhandler);
 	// signal(SIGQUIT, signalhandler);
 	// signal(SIGINT, SIG_IGN);
 	ft_structinit(s);
@@ -52,14 +52,23 @@ int mainaftersignal(t_mother *s, char *str)
 		{
 			if (str == NULL)
 				free(s->line);
+			g_pid.pid = 0;
 			return (s->ret);
 		}
 		//ft_print_parsing_results(s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
 		//free(s->line);
 		//s->line = NULL;
 	}
-	else if (s->line != NULL && s->line[0] == '\0')
-		return (0);
+	else if (s->line != NULL && (s->line[0] == '\0' || ft_input_is_spaces(s->line)))
+	{
+		free_t_token(s);
+		free_t_cmd(s);
+		free_t_lexer(s);
+		if (str == NULL)
+			free(s->line);
+		s->ret = 0;
+		return (s->ret);
+	}
 	// ft_end(s);
 	// ft_echo(s);
 	// ft_cd(s);
@@ -72,6 +81,7 @@ int mainaftersignal(t_mother *s, char *str)
 		write(1, "Error:\n", 7);
 		return(s->ret);
 	}
+	g_pid.pid = 0;
 	free_t_token(s);
 	free_t_cmd(s);
 	free_t_lexer(s);
@@ -97,7 +107,9 @@ int main(int argc, char **argv, char **envp)
 	s.env = NULL;
 	env_init(&s, envp);
 	s.ret = 0;
-	g_pid.pid = getpid();
+	g_pid.pid = 0;
+	signal(SIGINT, signalhandler);
+	signal(SIGQUIT, signalhandler);
 	if (argc == 3)
 	{
 		if (!ft_strncmp(argv[1], "-c", 3))
@@ -110,14 +122,37 @@ int main(int argc, char **argv, char **envp)
 	}
 	while (1)
 	{
-		// signal(SIGINT, signalhandler);
-		// signal(SIGQUIT, signalhandler);
 		//signal(SIGINT, SIG_IGN);
 		mainaftersignal(&s, NULL);
 	}
 	return (0);
 }
 
+int		ft_input_is_spaces(char *str)
+{
+	int		i;
+	int		len;
+	char	*temp;
+
+	len = ft_strlen(str);
+	if (len < 1)
+		return (0);
+	temp = ft_malloc(&temp, (len + 1) * sizeof(char));
+	i = 0;
+	while (i < len)
+	{
+		temp[i] = ' ';
+		i++;
+	}
+	temp[i] = '\0';
+	i = ft_strcmp(temp, str);
+	free(temp);
+	if (i == 0)
+		return (1);
+	else
+		return (0);
+
+}
 
 void	ft_print_parsing_results(t_mother *s)
 {

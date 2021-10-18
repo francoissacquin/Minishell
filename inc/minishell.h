@@ -109,6 +109,7 @@ void	ft_structinit(t_mother *s);
 void	ft_end(t_mother *s);
 void	ft_error(t_mother *s, char * error, int code);
 int		mainaftersignal(t_mother *s, char *str);
+int		ft_input_is_spaces(char *str);
 void	ft_print_parsing_results(t_mother *s);
 // initialization of structures
 void	ft_initc(t_mother *s);
