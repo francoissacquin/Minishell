@@ -151,8 +151,8 @@ int		ft_pipe(t_command *c, t_mother *s)
 	g_pid.pid = fork();
 	if(g_pid.pid < 0)
 		ft_error(s, "fork", -1);
-	signal(SIGINT, killchild);
-	signal(SIGQUIT, quitchild);
+	// signal(SIGINT, killchild);
+	// signal(SIGQUIT, quitchild);
 	if(g_pid.pid == 0)
 		ret = ft_child(c, s);
 	else
@@ -347,4 +347,5 @@ void		multicommands(t_mother *s)
 		s->c = s->c->nextpipe;
 		i++;
 	}
+	g_pid.pid = 0;
 }
