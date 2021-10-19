@@ -106,6 +106,7 @@ int ft_exit(t_mother *s, t_command *c)
 		free_t_cmd(s);
 		free_t_mother(s);
 		ft_clear_history();
+		tcsetattr(0, TCSANOW, &g_pid.old_termios);
 		exit(s->ret);
 	}
 	else if (ft_strlen_array(s->c->arg) == 1)
@@ -114,8 +115,10 @@ int ft_exit(t_mother *s, t_command *c)
 		free_t_cmd(s);
 		free_t_mother(s);
 		ft_clear_history();
+		tcsetattr(0, TCSANOW, &g_pid.old_termios);
 		exit(s->ret);
 	}
+	tcsetattr(0, TCSANOW, &g_pid.old_termios);
 	// write(2, "exit\n", 5);
 	return (s->ret);
 }

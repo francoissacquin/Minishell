@@ -41,7 +41,6 @@ int mainaftersignal(t_mother *s, char *str)
 	}
 	else
 		s->line = str;
-	// SI TU VEUX LANCER LE LEXER ET PARSER, ENLEVE LES COMMENTAIRES SUR LE BLOC SUIVANT. :D
 	if (s->line != NULL && s->line[0] != '\0')
 	{
 		minilexer(s);
@@ -55,9 +54,7 @@ int mainaftersignal(t_mother *s, char *str)
 			g_pid.pid = 0;
 			return (s->ret);
 		}
-		//ft_print_parsing_results(s); // FONCTION POUR AFFICHER LES RESULTATS DU LEXER ET PARSER.
-		//free(s->line);
-		//s->line = NULL;
+		//ft_print_parsing_results(s);
 	}
 	else if (s->line != NULL && (s->line[0] == '\0' || ft_input_is_spaces(s->line)))
 	{
@@ -69,12 +66,14 @@ int mainaftersignal(t_mother *s, char *str)
 		s->ret = 0;
 		return (s->ret);
 	}
-	// ft_end(s);
-	// ft_echo(s);
-	// ft_cd(s);
-	// ft_echo(s);
-	// printf("%s\n", s->line);
-	// ft_execfind(s);
+	else if (s->line == NULL)
+	{
+		free_t_token(s);
+		free_t_cmd(s);
+		free_t_lexer(s);
+		write(1, "exit\n", 5);
+		exit(s->ret);
+	}
 	multicommands(s);
 	if (ft_parse(s) == 0)
 	{
@@ -110,6 +109,9 @@ int main(int argc, char **argv, char **envp)
 	g_pid.pid = 0;
 	signal(SIGINT, signalhandler);
 	signal(SIGQUIT, signalhandler);
+	signal(SIGUSR1, signalhandler);
+	tcgetattr(0, &g_pid.old_termios);
+	//ft_signal_magic();
 	if (argc == 3)
 	{
 		if (!ft_strncmp(argv[1], "-c", 3))
@@ -117,6 +119,7 @@ int main(int argc, char **argv, char **envp)
     		int exit_status = mainaftersignal(&s, argv[2]);
 			ft_free_array(s.env);
 			free(s.path);
+			tcsetattr(0, TCSANOW, &g_pid.old_termios);
     		exit(exit_status);
 		}
 	}
@@ -126,6 +129,19 @@ int main(int argc, char **argv, char **envp)
 		mainaftersignal(&s, NULL);
 	}
 	return (0);
+}
+
+void	ft_signal_magic(void)
+{
+	struct termios	old_termios;
+	struct termios	new_termios;
+
+	tcgetattr(0, &old_termios);
+	new_termios = old_termios;
+	new_termios.c_cc[VEOF] = SIGUSR1;
+	new_termios.c_cc[SIGUSR1] = 4;
+	tcsetattr(0, TCSANOW, &new_termios);
+	g_pid.old_termios = old_termios;
 }
 
 int		ft_input_is_spaces(char *str)
