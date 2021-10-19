@@ -90,7 +90,6 @@ typedef struct s_mother
 	int			nbcmd; //number of commands
 	int			pipe; //number of pipes
 	int			ret;
-	struct termios	old_termios;
 	// int			pipes[2];
 	int			redirect_mem; //an int I need to ensure compatibility between different s_command elements when redireciton is involved;
 	int			exitret; // value for the exit command to be updated during execution
@@ -101,7 +100,6 @@ typedef struct s_mother
 typedef struct s_global_pid
 {
 	pid_t		pid;
-	struct termios	old_termios;
 }				t_global_pid;
 
 t_global_pid	g_pid;
@@ -206,6 +204,7 @@ void    dollar_tokeniser(t_mother *s, int *i, int *j);
 void	assign_types(t_mother *s);
 void	ft_type_flag(t_token *tok);
 void	ft_type_env(t_token *tok);
+int		ft_env_char_check(char c);
 void	ft_env_tok_overflow(t_token *tok, int limiter);
 void	ft_type_built(t_token *tok);
 void	ft_type_pipe(t_token *tok);

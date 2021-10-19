@@ -186,6 +186,8 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 		last->nbarg++;
 		if (tok->pre_space == 0 && tok->type == 'p' && ft_strchr("pe", tok->prev->type))
 			ft_add_arg_array(last, tok->token, 1);
+		else if (tok->pre_space == 0 && !(ft_strcmp(last->command, "export")))
+			ft_add_arg_array(last, tok->token, 1);
 		else
 			ft_add_arg_array(last, tok->token, 0);
 		if (last->line == NULL)

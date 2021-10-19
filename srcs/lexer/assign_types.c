@@ -104,7 +104,7 @@ void	ft_type_env(t_token *tok)
 		{
 			if (ft_isdigit(tok->token[i]) && i == 0)
 				return ;
-			else if (!(ft_isalnum(tok->token[i]) || tok->token[i] == '_'))
+			else if (ft_env_char_check(tok->token[i]))
 				return ;
 			i++;
 		}
@@ -123,6 +123,18 @@ void	ft_type_env(t_token *tok)
 		}
 		tok->type = 'E';
 	}
+}
+
+int		ft_env_char_check(char c)
+{
+	if (ft_isalnum(c))
+		return (0);
+	else if (c == '_')
+		return (0);
+	else if (c == '\\')
+		return (0);
+	else
+		return (1);
 }
 
 void	ft_type_built(t_token *tok)

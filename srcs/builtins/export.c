@@ -76,7 +76,7 @@ int		ft_word_is_exportable(char *str)
 			return (0);
 		if (!(ft_isalnum(str[i])))
 		{
-			if (!(ft_strchr("_", str[i])))
+			if (!(ft_strchr("_\\", str[i])))
 				return (0);
 		}
 		i++;

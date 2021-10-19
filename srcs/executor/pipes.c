@@ -330,20 +330,20 @@ void		multicommands(t_mother *s)
 			s->c->retvalue = ft_exit(s, s->c);
 		else if (ft_strcmp("cd", s->c->command) == 0)
 		{
-				s->c->retvalue = ft_cd(s);
-				//s->c->nextpipe = 0; //c'est tres douteux mais ca a l'air de marcher
-				ft_pipe(s->c, s);
+			ft_pipe(s->c, s);
+			s->c->retvalue = ft_cd(s);
+			//s->c->nextpipe = 0; //c'est tres douteux mais ca a l'air de marcher
 		}
 		else if (ft_strcmp("export", s->c->command) == 0 && s->c->nbarg > 1)
 		{// ft_exec_builtins(s->c, s);
 			//printf("||%d|", s->c->nbarg);
+			ft_pipe(s->c, s);
 			if (s->c->nbarg > 0)
 			{
 			s->c->retvalue = ft_export(s, s->c);
 			//s->c->nextpipe = 0;
 			//puts("export\n");
 			}
-			ft_pipe(s->c, s);
 		}
 		// else if (ft_strcmp("env", s->c->command) == 0)
 		// {// ft_exec_builtins(s->c, s);

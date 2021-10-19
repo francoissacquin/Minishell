@@ -9,7 +9,7 @@ int     ft_is_op_redir(char *str)
         return (0);
     while (str[i])
     {
-        if (!(ft_strchr("<>", str[i])))
+        if (!(ft_strchr("<>|", str[i])))
             return (0);
         i++;
     }

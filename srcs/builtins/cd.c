@@ -22,33 +22,34 @@
 
 int ft_updatepwd(t_mother *s, char *new_path, char *old_path)
 {
-	create_env(s, ft_strjoin("PWD=", new_path));
-	create_env(s, ft_strjoin("OLDPWD=", old_path));
+	char	*temp;
+
+	temp = ft_strjoin("PWD=", new_path);
+	create_env(s, temp);
+	free(temp);
+	temp = ft_strjoin("OLDPWD=", old_path);
+	create_env(s, temp);
+	free(temp);
 	return (0);
 }
 
 int		ft_cd(t_mother *s)
 {
 	// char *arg = "../minishell/srcs"; //received as argument after parsing
-	char path[1000];
-	char targetpath[1000];
+	char *path;
+	char *targetpath;
 	int		r = 0;
 	char *pathhome = NULL;
 	char *previouspath = NULL; // a mettre dans la strcuture
 	
-
+	path = NULL;
+	path = ft_malloc(&path, 400 * sizeof(char));
+	targetpath = NULL;
+	targetpath = ft_malloc(&targetpath, 400 * sizeof(char));
 	ft_memset(path, 0, sizeof(path));
 	ft_memset(targetpath, 0, sizeof(targetpath));
 	getcwd(path, sizeof(path));
 	pathhome = getenv("HOME");
-	// printf("chirac%schibrax", pathhome);
-	// if (s->c->arg[2] != NULL)
-	// {
-	// 	return(1);
-	// }
-		// ft_error(s, "cd: Too many arguments", -1);
-	// puts("je marche\n");
-	// chdir("/home/user42/Bureau/");
 	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
 	{
 		if (pathhome == NULL)
@@ -58,12 +59,14 @@ int		ft_cd(t_mother *s)
 			r = chdir(pathhome);
 			ft_updatepwd(s, pathhome, path);
 		}
+		free(path);
+		free(targetpath);
 		return(0);
 	}
 	else if (ft_strcmp("-", s->c->arg[1]) == 0)
 	{
+		previouspath = ft_return_env_value(s, "OLDPWD", 1);
 		r = chdir(previouspath);
-		previouspath = path;
 		//ft_updatepwd();
 	}
 	else if (ft_strcmp("--", s->c->arg[1]) == 0)
@@ -76,12 +79,16 @@ int		ft_cd(t_mother *s)
 		r = chdir(s->c->arg[1]); //update oldpwd et pwd ici aussi
 	if (r == -1)
 	{
+		free(path);
+		free(targetpath);
 		write(2, "bash: line 0: cd: No such file or directory\n", 44);
 		return(1);
 	}
 		//ft_error(s, "chdir failed", -1);
 	getcwd(targetpath, sizeof(targetpath));
 	ft_updatepwd(s, targetpath, path);
+	free(path);
+	free(targetpath);
 	// ft_pwd(s);
 	//printf("%s r = %d", targetpath, r);
 	return(0);

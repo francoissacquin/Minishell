@@ -110,16 +110,13 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT, signalhandler);
 	signal(SIGQUIT, signalhandler);
 	signal(SIGUSR1, signalhandler);
-	tcgetattr(0, &g_pid.old_termios);
 	//ft_signal_magic();
 	if (argc == 3)
 	{
 		if (!ft_strncmp(argv[1], "-c", 3))
 		{
     		int exit_status = mainaftersignal(&s, argv[2]);
-			ft_free_array(s.env);
-			free(s.path);
-			tcsetattr(0, TCSANOW, &g_pid.old_termios);
+			free_t_mother(&s);
     		exit(exit_status);
 		}
 	}
