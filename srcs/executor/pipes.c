@@ -90,7 +90,7 @@ int		ft_child(t_command *c, t_mother *s)
 // on attends la fin du child pour etre sur d'avoir tte la sortie : waitpid(pid, &status, 0);
 // get return value of child process : ex = WIFEXITED(status);
 
-void	ft_waitpid(t_mother *s, int status)
+int		ft_parent(t_command *c, int *pid)
 {
 	t_mother *tmp;
 	int i = 0;
@@ -127,12 +127,7 @@ int		ft_parent(t_command *c, t_mother *s)
 			close(c->pipes[0]);
 		}
 	}
-	if(c->isfollowedbypipe == 0)
-	{
-		printf("%d\n", c->cpid);
-		ft_waitpid(s, status);
-	}
-	//	waitpid(c->cpid, &status, 0);
+	waitpid(*pid, &status, 0);
 	ex = WIFEXITED(status);
 	if (ex > 0)
 		ret = WEXITSTATUS(status);
@@ -143,17 +138,23 @@ int		ft_parent(t_command *c, t_mother *s)
 
 void	killchild(int signal)
 {
+	pid_t	*pid;
+
 	(void)signal;
-	kill(g_pid.pid, SIGTERM);
+	pid = ft_return_global_pid();
+	kill(*pid, SIGTERM);
 }
 
 //ctrl-\ handler in child process
 
 void	quitchild(int signal)
 {
+	pid_t	*pid;
+
 	(void)signal;
-	if (g_pid.pid != -1)
-		kill(g_pid.pid, SIGTERM);
+	pid = ft_return_global_pid();
+	if (*pid != -1)
+		kill(*pid, SIGTERM);
 }
 
 //always fork to save minishell parent in case of crash
@@ -165,20 +166,22 @@ int		ft_pipe(t_command *c, t_mother *s)
 {
 	int err = 0;
 	int ret = 1;
+	pid_t	*pid;
 
 	if(c->isfollowedbypipe == 1 || c->isprecededbypipe == 1)
 		err = pipe(c->pipes);
 	if(err != 0)
 		ft_error(s, "pipe", -1);
-	c->cpid = fork();
-	if(c->cpid < 0)
+	pid = ft_return_global_pid();
+	*pid = fork();
+	if(*pid < 0)
 		ft_error(s, "fork", -1);
 	// signal(SIGINT, killchild);
 	// signal(SIGQUIT, quitchild);
-	if(c->cpid == 0)
+	if(*pid == 0)
 		ret = ft_child(c, s);
 	else
-		ret = ft_parent(c, s);
+		ret = ft_parent(c, pid);
 	return(ret);
 }
 
@@ -317,6 +320,7 @@ void		multicommands(t_mother *s)
 {	
 	t_mother *tmp;
 	int i = 0;
+	pid_t	*pid;
 	
 	if (s->c->command == NULL)
 	{
@@ -357,8 +361,8 @@ void		multicommands(t_mother *s)
 		else if (ft_strcmp("unset", s->c->command) == 0)
 		{
 			//puts("UNSET\n");
+			ft_pipe(s->c, s);
 			s->c->retvalue = ft_unset(s, s->c);
-		ft_pipe(s->c, s);
 		}
 		else if (s->c->command == NULL)
 			s->c->retvalue = 127;
@@ -370,5 +374,6 @@ void		multicommands(t_mother *s)
 		s->c = s->c->nextpipe;
 		i++;
 	}
-	s->c->cpid = 0;
+	pid = ft_return_global_pid();
+	*pid = 0;
 }

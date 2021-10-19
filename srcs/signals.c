@@ -29,10 +29,12 @@ void	sighandl(void)
 
 void	quithandler(void)
 {
-	//printf("g_pid = %i\n", g_pid.pid);
-	if (g_pid.pid != 0)
+	pid_t	*pid;
+
+	pid = ft_return_global_pid();
+	if (*pid != 0)
 	{
-		kill(g_pid.pid, SIGQUIT);
+		kill(*pid, SIGQUIT);
 		write(1, "Minishell quit, core dumped\n", 28);
 	}
 }

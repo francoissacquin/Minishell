@@ -12,7 +12,13 @@
 
 #include "../inc/minishell.h"
 
-//static char **env;
+
+pid_t		g_pid;
+
+pid_t	*ft_return_global_pid(void)
+{
+	return (&g_pid);
+}
 
 void ft_error(t_mother *s, char * error, int code)
 {
@@ -51,7 +57,7 @@ int mainaftersignal(t_mother *s, char *str)
 		{
 			if (str == NULL)
 				free(s->line);
-			g_pid.pid = 0;
+			g_pid = 0;
 			return (s->ret);
 		}
 		//ft_print_parsing_results(s);
@@ -80,7 +86,7 @@ int mainaftersignal(t_mother *s, char *str)
 		write(1, "Error:\n", 7);
 		return(s->ret);
 	}
-	g_pid.pid = 0;
+	g_pid = 0;
 	free_t_token(s);
 	free_t_cmd(s);
 	free_t_lexer(s);
@@ -106,7 +112,7 @@ int main(int argc, char **argv, char **envp)
 	s.env = NULL;
 	env_init(&s, envp);
 	s.ret = 0;
-	g_pid.pid = 0;
+	g_pid = 0;
 	signal(SIGINT, signalhandler);
 	signal(SIGQUIT, signalhandler);
 	signal(SIGUSR1, signalhandler);
@@ -138,7 +144,7 @@ void	ft_signal_magic(void)
 	new_termios.c_cc[VEOF] = SIGUSR1;
 	new_termios.c_cc[SIGUSR1] = 4;
 	tcsetattr(0, TCSANOW, &new_termios);
-	g_pid.old_termios = old_termios;
+	//g_pid.old_termios = old_termios;
 }
 
 int		ft_input_is_spaces(char *str)
