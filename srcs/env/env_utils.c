@@ -63,11 +63,18 @@ int		ft_env_cmp_arg(char *env1, char *var)
 	while (env1[i] && var[i])
 	{
 		if (env1[i] != var[i])
+		{
+			//printf("arg returned %i\n", 0);
 			return (0);
+		}
 		i++;
 	}
 	if (env1[i] == '=')
-			return (i);
+	{
+		//printf("arg returned %i\n", i);
+		return (i);
+	}
+	//printf("arg returned %i\n", 0);
 	return (0);
 }
 

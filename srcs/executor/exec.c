@@ -26,13 +26,14 @@ char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
 {
 	int i = 0;
 	int j;
-	char *testpath;
+	char	*testpath;
+	char	*testpath2;
 	int pathsize = 0;
 	char *addcmd;
 	int	pathfound = -1;
 
 	(void)s;
-	testpath = ft_strjoin(minipath[i][0], "/");
+	//testpath = ft_strjoin(minipath[i][0], "/");
 	while(i < minisize && pathfound == -1)
 	{
 		while (minipath[i][pathsize])
@@ -41,14 +42,21 @@ char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
 		j = 0;
 		while(j < pathsize && pathfound == -1)
 		{
-			testpath = ft_strjoin(testpath, minipath[i][j]);
-			testpath = ft_strjoin(testpath, "/");
-			addcmd = ft_strjoin(testpath, s->c->command); //replace by s->c->command after parse
+			testpath2 = ft_strjoin(testpath, minipath[i][j]);
+			free(testpath);
+			testpath = ft_strjoin(testpath2, "/");
+			free(testpath2);
+			addcmd = ft_strjoin(testpath, s->c->command);
 			if(ft_fileexits(addcmd) == 0)
 				pathfound = 1;
 			j++;
+			if (j < pathsize && pathfound == -1)
+				free(addcmd);
 		}
+		free(testpath);
 		i++;
+		if (i < minisize && pathfound == -1)
+			free(addcmd);
 		pathsize = 0;
 	}
 	//tester pour file at /
@@ -75,7 +83,7 @@ char	*ft_pathfinder(t_mother *s)
 	}
 	minipathsize++;
 	// printf("||%d||", minipathsize);
-	minipath = malloc(sizeof(char **) * minipathsize);
+	minipath = ft_malloc(&minipath, sizeof(char **) * minipathsize);
 	i = 0;
 	while(i < minipathsize)
 	{
@@ -84,6 +92,14 @@ char	*ft_pathfinder(t_mother *s)
 	}
 	// printf("||%s||||\n", s->c->command);
 	rightpath = ft_pathtester(s, minipath, minipathsize);
+	i = 0;
+	while (i < minipathsize)
+	{
+		ft_free_array(minipath[i]);
+		i++;
+	}
+	free(minipath);
+	ft_free_array(path);
 	return(rightpath);
 }
 
@@ -101,6 +117,7 @@ int	ft_execnotbuiltin(t_mother *s)
 	// error = execve(path, &test, NULL); //this is a test
 	//if(error < 0)
 		//ft_error(s, "execve, binary may be corrupted", error);
+	free(path);
 	return(error);
 }
 

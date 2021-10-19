@@ -16,7 +16,7 @@ void	ft_initc(t_mother *s)
 {
 	t_command	*c;
 
-	c = (t_command *)ft_malloc(&c, sizeof(c) * 1000);
+	c = ft_malloc(&c, sizeof(t_command));
 	c->line = NULL;
 	c->command = NULL;
 	c->retvalue = 0;
