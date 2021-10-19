@@ -90,21 +90,22 @@ int		ft_child(t_command *c, t_mother *s)
 // on attends la fin du child pour etre sur d'avoir tte la sortie : waitpid(pid, &status, 0);
 // get return value of child process : ex = WIFEXITED(status);
 
-int		ft_parent(t_command *c, int *pid)
+void	ft_waitpid(t_mother *s, int status)
 {
-	t_mother *tmp;
-	int i = 0;
+	t_mother	*tmp;
+	int			i;
+	pid_t		*pid;
 
+	i = 0;
 	tmp = s;
 	while (i < s->nbcmd)
 	{
-		printf("%d\n", tmp->c->cpid);
-		waitpid(tmp->c->cpid, &status, 0);
-		if(i < s->nbcmd - 1)
+		pid = ft_return_global_pid();
+		waitpid(*pid, &status, 0);
+		if (i < s->nbcmd - 1)
 			tmp->c = tmp->c->previouspipe;
 		i++;
 	}
-	
 }
 
 int		ft_parent(t_command *c, t_mother *s)
@@ -113,6 +114,7 @@ int		ft_parent(t_command *c, t_mother *s)
 	int ret = 1;
 	int ex = 0;
 	int fd;
+
 
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]);
@@ -127,7 +129,8 @@ int		ft_parent(t_command *c, t_mother *s)
 			close(c->pipes[0]);
 		}
 	}
-	waitpid(*pid, &status, 0);
+	if (c->isfollowedbypipe == 0)
+		ft_waitpid(s, status);
 	ex = WIFEXITED(status);
 	if (ex > 0)
 		ret = WEXITSTATUS(status);
@@ -153,7 +156,7 @@ void	quitchild(int signal)
 
 	(void)signal;
 	pid = ft_return_global_pid();
-	if (*pid != -1)
+	if (*pid != -1 && *pid > 0)
 		kill(*pid, SIGTERM);
 }
 
@@ -181,7 +184,7 @@ int		ft_pipe(t_command *c, t_mother *s)
 	if(*pid == 0)
 		ret = ft_child(c, s);
 	else
-		ret = ft_parent(c, pid);
+		ret = ft_parent(c, s);
 	return(ret);
 }
 
