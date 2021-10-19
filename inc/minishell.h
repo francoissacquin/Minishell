@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/13 19:40:15 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/19 14:04:43 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_command
 	int			iserrofile; //check if necessary with subject
 	char		*errorfile;
 	int			pipes[2];
+	int			cpid;
 
 }				t_command;
 
