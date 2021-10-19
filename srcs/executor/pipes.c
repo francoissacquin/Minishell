@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/15 18:07:07 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/19 14:25:26 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,26 @@ int		ft_child(t_command *c, t_mother *s)
 // on attends la fin du child pour etre sur d'avoir tte la sortie : waitpid(pid, &status, 0);
 // get return value of child process : ex = WIFEXITED(status);
 
-int		ft_parent(t_command *c, int pid)
+void	ft_waitpid(t_mother *s, int status)
 {
-	int status;
+	t_mother *tmp;
+	int i = 0;
+
+	tmp = s;
+	while (i < s->nbcmd)
+	{
+		printf("%d\n", tmp->c->cpid);
+		waitpid(tmp->c->cpid, &status, 0);
+		if(i < s->nbcmd - 1)
+			tmp->c = tmp->c->previouspipe;
+		i++;
+	}
+	
+}
+
+int		ft_parent(t_command *c, t_mother *s)
+{
+	int status = 0;
 	int ret = 1;
 	int ex = 0;
 	int fd;
@@ -110,7 +127,12 @@ int		ft_parent(t_command *c, int pid)
 			close(c->pipes[0]);
 		}
 	}
-	waitpid(pid, &status, 0);
+	if(c->isfollowedbypipe == 0)
+	{
+		printf("%d\n", c->cpid);
+		ft_waitpid(s, status);
+	}
+	//	waitpid(c->cpid, &status, 0);
 	ex = WIFEXITED(status);
 	if (ex > 0)
 		ret = WEXITSTATUS(status);
@@ -148,17 +170,18 @@ int		ft_pipe(t_command *c, t_mother *s)
 		err = pipe(c->pipes);
 	if(err != 0)
 		ft_error(s, "pipe", -1);
-	g_pid.pid = fork();
-	if(g_pid.pid < 0)
+	c->cpid = fork();
+	if(c->cpid < 0)
 		ft_error(s, "fork", -1);
 	// signal(SIGINT, killchild);
 	// signal(SIGQUIT, quitchild);
-	if(g_pid.pid == 0)
+	if(c->cpid == 0)
 		ret = ft_child(c, s);
 	else
-		ret = ft_parent(c, g_pid.pid);
+		ret = ft_parent(c, s);
 	return(ret);
 }
+
 
 int		ft_exec_builtins(t_command *c, t_mother *s)
 {
@@ -347,5 +370,5 @@ void		multicommands(t_mother *s)
 		s->c = s->c->nextpipe;
 		i++;
 	}
-	g_pid.pid = 0;
+	s->c->cpid = 0;
 }
