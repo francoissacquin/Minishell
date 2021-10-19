@@ -205,6 +205,7 @@ void    dollar_tokeniser(t_mother *s, int *i, int *j);
 void	assign_types(t_mother *s);
 void	ft_type_flag(t_token *tok);
 void	ft_type_env(t_token *tok);
+void	ft_env_tok_overflow(t_token *tok, int limiter);
 void	ft_type_built(t_token *tok);
 void	ft_type_pipe(t_token *tok);
 void	ft_type_op(t_token *tok);

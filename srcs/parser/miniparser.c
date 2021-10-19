@@ -192,10 +192,10 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 			last->line = ft_strdup(tok->token);
 		else
 		{
-			//if (tok->pre_space == 1)
-			temp = ft_strjoin(" ", tok->token);
-			// else
-			// 	temp = ft_strdup(tok->token);
+			if (!(ft_strcmp(last->command, "export")) && tok->pre_space == 0)
+				temp = ft_strdup(tok->token);
+			else
+				temp = ft_strjoin(" ", tok->token);
 			temp_line = ft_strdup(last->line);
 			free(last->line);
 			last->line = ft_strjoin(temp_line, temp);

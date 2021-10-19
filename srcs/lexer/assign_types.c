@@ -18,6 +18,10 @@ void	assign_types(t_mother *s)
 			ft_type_built(temp);
 			ft_type_op(temp);
 		}
+		if (temp->type == 'e' && temp->token[1] == '?')
+		{
+			ft_env_tok_overflow(temp, 2);
+		}
 		if (temp->type == 'o')
 			ft_type_pipe(temp);
 		if (temp->type == '\0')
@@ -43,6 +47,37 @@ void	ft_type_flag(t_token *tok)
 		}
 		tok->type = 'f';
 	}
+}
+
+void	ft_env_tok_overflow(t_token *tok, int limiter)
+{
+	t_token	*new;
+	char	*temp;
+	char	*temp2;
+
+	temp = ft_substr(tok->token, limiter, ft_strlen(tok->token) - 2);
+	if (tok->next != NULL)
+	{
+		temp2 = ft_strdup(tok->next->token);
+		free(tok->next->token);
+		tok->next->token = ft_strjoin(temp, temp2);
+		tok->next->pre_space = 0;
+		free(temp);
+		free(temp2);
+	}
+	else
+	{
+		new = ft_malloc(&new, sizeof(t_token));
+		new->token = temp;
+		new->type = '\0';
+		new->pre_space = 0;
+		new->prev = tok;
+		new->next = NULL;
+		tok->next = new;
+	}
+	temp2 = ft_substr(tok->token, 0, 2);
+	free(tok->token);
+	tok->token = temp2;
 }
 
 //Using POSIX standards on shells section of IEEE Std 1003.1-2008 / IEEE POSIX P1003.2/ISO 9945.2 Shell and Tools standard
