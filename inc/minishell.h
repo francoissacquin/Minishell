@@ -96,14 +96,8 @@ typedef struct s_mother
 	t_command	*c;
 }				t_mother;
 
-typedef struct s_global_pid
-{
-	pid_t		pid;
-}				t_global_pid;
-
-t_global_pid	g_pid;
-
 //general
+pid_t	*ft_return_global_pid(void);
 int		ft_parse(t_mother *s);
 void	ft_structinit(t_mother *s);
 void	ft_end(t_mother *s);
