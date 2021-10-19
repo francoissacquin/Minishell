@@ -53,6 +53,8 @@ int ft_export(t_mother *s, t_command *cmd)
 			ft_type_env(&temp_tok);
 			if (temp_tok.type == 'E')
 				create_env(s, cmd->arg[i]);
+			else if (cmd->arg[i][0] == '-')
+				ret = 2;
 			else if (ft_word_is_exportable(cmd->arg[i]))
 				ret = 0;
 			else
@@ -70,12 +72,16 @@ int		ft_word_is_exportable(char *str)
 	i = 0;
 	while (str[i])
 	{
+		if (i == 0 && (ft_isdigit(str[i]) || str[i] == '='))
+			return (0);
 		if (!(ft_isalnum(str[i])))
 		{
-			if (str[i] != '_')
+			if (!(ft_strchr("_", str[i])))
 				return (0);
 		}
 		i++;
 	}
+	if (i == 0)
+		return (0);
 	return (1);
 }

@@ -67,9 +67,5 @@ void	signalhandler(int c)
 		//mainaftersignal();
 		return ;
 	}
-	else if (c == SIGUSR1)
-	{
-		printf("WOW\n");
-	}
 	// signal(SIGINT, SIG_DFL);
 }
