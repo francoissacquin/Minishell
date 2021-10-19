@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/15 18:07:07 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/19 14:25:26 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,24 @@ int		ft_child(t_command *c, t_mother *s)
 
 int		ft_parent(t_command *c, int *pid)
 {
-	int status;
+	t_mother *tmp;
+	int i = 0;
+
+	tmp = s;
+	while (i < s->nbcmd)
+	{
+		printf("%d\n", tmp->c->cpid);
+		waitpid(tmp->c->cpid, &status, 0);
+		if(i < s->nbcmd - 1)
+			tmp->c = tmp->c->previouspipe;
+		i++;
+	}
+	
+}
+
+int		ft_parent(t_command *c, t_mother *s)
+{
+	int status = 0;
 	int ret = 1;
 	int ex = 0;
 	int fd;
@@ -167,6 +184,7 @@ int		ft_pipe(t_command *c, t_mother *s)
 		ret = ft_parent(c, pid);
 	return(ret);
 }
+
 
 int		ft_exec_builtins(t_command *c, t_mother *s)
 {
