@@ -38,7 +38,7 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	int		err;
 
 	err = 0;
-	if (*i == 0 && ft_strchr("Pfo", tok->type))
+	if (*i == 0 && ft_strchr("Pfo", tok->type) && ft_strcmp(tok->token, "<<"))
 	{
 		write(2, "Error, pipe with no prior command\n", 34);
 		s->ret = 1;
@@ -70,50 +70,32 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
-	t_command	*next;
-	char		*temp;
-	int			fd;
 
 	last = ft_last_cmd(s->c);
 	//printf("pour passage %i on a s->redir = %i\n", *i, s->redirect_mem);
-	if (tok->prev != NULL && last->line != NULL)
+	if (s->redirect_mem == 5 && tok->next != NULL)
+	{
+		if (ft_strchr("bc", tok->next->type) && last == s->c)
+		{
+			fill_first_command(s, tok);
+			plug_redir_5(s, s->c);
+		}
+		else if (ft_strchr("bc", tok->next->type) && last != s->c)
+		{
+			fill_next_command(s, last, tok, i);
+			last = ft_last_cmd(s->c);
+			plug_redir_5(s, last);
+		}
+	}
+	else if (tok->prev != NULL && last->line != NULL)
 	{
 		if (tok->prev->type == 'P')
 		{
 			//printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
-			last->isfollowedbypipe = 1;
-			add_cmd_elem(s, tok, i);
-			next = ft_last_cmd(s->c);
-			last->nextpipe = next;
-			next->previouspipe = last;
-			next->nextpipe = NULL;
-			next->isprecededbypipe = 1;
-			next->isfollowedbypipe = 0;
-			next->isinputfile = 0;
-			next->inputfile = NULL;
-			next->isoutfile = 0;
-			next->outfile = NULL;
-			s->pipe++;
+			fill_next_command(s, last, tok, i);
 		}
 		else if (s->redirect_mem == 5)
-		{
-			fd = open("redir_input.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
-			//fd = open("redir_input.txt", O_CREAT | O_RDWR | O_APPEND | O_TRUNC, 0666); // ca faius aussi le job a la place d un path absolu mais c'est lus sale
-			if (fd < 0)
-				s->ret = 1;
-			// printf("%s", s->lex->std_input_redir);
-			// write(fd, "he;;llo", 7);
-			write(fd, s->lex->std_input_redir, ft_strlen(s->lex->std_input_redir));
-				// write(2, "error: failed to write input redirection to temporary file\n", 59);
-			close(fd);
-			last->isinputfile = 1;
-			temp = getenv("PWD");
-			last->inputfile = ft_strdup("redir_input.txt");//ft_strjoin(temp, "/redir_input.txt");
-			//printf("%s\n", last->inputfile);
-			//free(temp);
-			last->isprecededbypipe = 3;
-			s->redirect_mem = 0;
-		}
+			plug_redir_5(s, last);
 		else if (s->redirect_mem == 2)
 		{
 			last->isinputfile = 1;
@@ -140,34 +122,76 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	else
 	{
 		//printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
-		s->c->command = ft_strdup(tok->token);
-		s->c->line = ft_strdup(tok->token);
-		s->c->retvalue = 0;
-		s->c->nbarg = 1;
-		s->c->arg = ft_malloc(&s->c->arg, sizeof(char *) * 2);
-		s->c->arg[0] = ft_strdup(tok->token);
-		s->c->arg[1] = NULL;
-		s->c->cmd_status = tok->type - 97;
-		s->nbcmd++;
-		s->c->isfollowedbypipe = 0;
-		s->c->nextpipe = NULL;
-		s->c->isprecededbypipe = 0;
-		s->c->previouspipe = NULL;
-		s->c->isinputfile = 0;
-		s->c->inputfile = NULL;
-		s->c->isoutfile = 0;
-		s->c->outfile = NULL;
-		if (s->redirect_mem != 0)
-		{
-			s->c->isprecededbypipe = s->redirect_mem;
-			s->redirect_mem = 0;
-		}
+		fill_first_command(s, tok);
+	}
+}
+
+void	plug_redir_5(t_mother *s, t_command *last)
+{
+	char	*temp;
+	int			fd;
+
+	fd = open("redir_input.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
+	if (fd < 0)
+		s->ret = 1;
+	write(fd, s->lex->std_input_redir, ft_strlen(s->lex->std_input_redir));
+	close(fd);
+	last->isinputfile = 1;
+	temp = getenv("PWD");
+	last->inputfile = ft_strdup("redir_input.txt");
+	last->isprecededbypipe = 3;
+	s->redirect_mem = 0;
+}
+
+void	fill_next_command(t_mother *s, t_command *last, t_token *tok, int *i)
+{
+	t_command	*next;
+
+	last->isfollowedbypipe = 1;
+	add_cmd_elem(s, tok, i);
+	next = ft_last_cmd(s->c);
+	last->nextpipe = next;
+	next->previouspipe = last;
+	next->nextpipe = NULL;
+	next->isprecededbypipe = 1;
+	next->isfollowedbypipe = 0;
+	next->isinputfile = 0;
+	next->inputfile = NULL;
+	next->isoutfile = 0;
+	next->outfile = NULL;
+	s->pipe++;
+}
+
+void	fill_first_command(t_mother *s, t_token *tok)
+{
+	s->c->command = ft_strdup(tok->token);
+	s->c->line = ft_strdup(tok->token);
+	s->c->retvalue = 0;
+	s->c->nbarg = 1;
+	s->c->arg = ft_malloc(&s->c->arg, sizeof(char *) * 2);
+	s->c->arg[0] = ft_strdup(tok->token);
+	s->c->arg[1] = NULL;
+	s->c->cmd_status = tok->type - 97;
+	s->nbcmd++;
+	s->c->isfollowedbypipe = 0;
+	s->c->nextpipe = NULL;
+	s->c->isprecededbypipe = 0;
+	s->c->previouspipe = NULL;
+	s->c->isinputfile = 0;
+	s->c->inputfile = NULL;
+	s->c->isoutfile = 0;
+	s->c->outfile = NULL;
+	if (s->redirect_mem != 0)
+	{
+		s->c->isprecededbypipe = s->redirect_mem;
+		s->redirect_mem = 0;
 	}
 }
 
 int	ft_add_args(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
+	t_token		*temp_tok;
 	char		*temp;
 	char		*temp_line;
 
@@ -182,6 +206,25 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 				check_echo_flag(s, tok);
 			else if (tok->type == 'f')
 				write(2, "AUCUN FLAG AUTORISE POUR LES BUILT-INS\n", 39);
+		}
+		if (last->command == NULL && tok->type == 'E')
+		{
+			create_var(s, tok->token);
+			temp = ft_strdup(tok->token);
+			temp_tok = tok->next;
+			while (temp_tok != NULL)
+			{
+				if (ft_strchr("cb", temp_tok->type))
+				{
+					create_env(s, temp);
+					create_var(s, temp);
+					return (0);
+				}
+				else if (temp_tok->type == 'E')
+					temp_tok = temp_tok->next;
+				else
+					return (0);
+			}
 		}
 		last->nbarg++;
 		if (tok->pre_space == 0 && tok->type == 'p' && ft_strchr("pe", tok->prev->type))

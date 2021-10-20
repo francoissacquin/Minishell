@@ -110,7 +110,9 @@ int main(int argc, char **argv, char **envp)
 	// 	exit(0);
 	// }
 	s.env = NULL;
+	s.var = NULL;
 	env_init(&s, envp);
+	var_init(&s);
 	s.ret = 0;
 	g_pid = 0;
 	signal(SIGINT, signalhandler);
