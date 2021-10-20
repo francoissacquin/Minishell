@@ -87,6 +87,7 @@ typedef struct s_mother
 	char 		*line; //whole string received
 	t_lexer		*lex; // pointer to the structure of tokens for input;
 	char		**env; //char ** containing environment variables (useful for env and execve() PATHS)
+	char		**var; // char ** containing non exported env declarations;
 	int			nbcmd; //number of commands
 	int			pipe; //number of pipes
 	int			ret;
@@ -174,6 +175,13 @@ int		ft_env_cmp(char *env1, char *var);
 int		ft_env_cmp_arg(char *env1, char *var);
 char	*ft_return_env_value(t_mother *s, char *var, int type);
 
+//var
+void    var_init(t_mother *s);
+void	create_var(t_mother *s, char *str);
+void	change_var(t_mother *s, char *str, int pos);
+void	add_var(t_mother *s, char *str);
+void	rm_var(t_mother *s, char *str);
+
 //lexer functions
 void    minilexer(t_mother *s);
 void    minilexer_inner_loop(t_mother *s, int *i, int *j);
@@ -230,5 +238,9 @@ void	ft_wrong_input(t_mother *s);
 void	assign_redirect(t_mother *s, t_token *tok, int *i);
 void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok);
 
+// filling c
+void	fill_first_command(t_mother *s, t_token *tok);
+void	plug_redir_5(t_mother *s, t_command *last);
+void	fill_next_command(t_mother *s, t_command *last, t_token *tok, int *i);
 
 #endif

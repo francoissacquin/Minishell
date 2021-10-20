@@ -17,11 +17,9 @@ void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok)
 void	check_echo_flag(t_mother *s, t_token *tok)
 {
 	int		i;
-	int		wrong_flag;
 
 	(void)s;
 	i = 1;
-	wrong_flag = 0;
 	if (tok->token[0] != '-')
 		return ;
 	while (tok->token[i])
@@ -29,13 +27,13 @@ void	check_echo_flag(t_mother *s, t_token *tok)
 		if (tok->token[i] != 'n')
 		{
 			//printf("flag non-valide pour le built-in echo\n"); //METTRE FT_ERROR ICI
-			wrong_flag = 1;
+			tok->type = 'w';
+			return ;
 		}
 		i++;
 	}
-	if (!wrong_flag)
+	if (i > 2)
 	{
-		free(tok->token);
 		tok->token = ft_strdup("-n");
 	}
 }
