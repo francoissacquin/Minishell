@@ -1,10 +1,10 @@
 total 104
 -rw-rw-r-- 1 user42 user42   276 oct.  19 13:28 <
 drwxrwxr-x 4 user42 user42  4096 oct.  20 16:02 .
-drwxrwxr-x 7 user42 user42  4096 oct.  20 17:38 ..
+drwxrwxr-x 7 user42 user42  4096 oct.  20 20:05 ..
 drwxrwxr-x 2 user42 user42  4096 oct.  19 13:28 file_tests
--rwxrwxr-x 1 user42 user42 61720 oct.  20 17:38 minishell
+-rwxrwxr-x 1 user42 user42 61720 oct.  20 20:06 minishell
 -rw-rw-r-- 1 user42 user42  3094 oct.  19 13:28 README.md
--rw-rw-r-- 1 user42 user42    42 oct.  20 17:38 test
+-rw-rw-r-- 1 user42 user42    42 oct.  20 20:06 test
 -rwxrwxr-x 1 user42 user42  8985 oct.  19 13:28 test.sh
-drwxrwxr-x 2 user42 user42  4096 oct.  20 17:38 tmp
+drwxrwxr-x 2 user42 user42  4096 oct.  20 20:06 tmp
