@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/19 14:25:26 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/20 17:38:22 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,17 @@ void	ft_waitpid(t_mother *s, int status)
 	while (i < s->nbcmd)
 	{
 		pid = ft_return_global_pid();
-		waitpid(*pid, &status, 0);
+		waitpid(s->c->cpid, &status, 0);
 		if (i < s->nbcmd - 1)
 			tmp->c = tmp->c->previouspipe;
 		i++;
+		// 	int ex = 0;
+		// 	int ret = 1;
+		// 	ex = WIFEXITED(status);
+		// if (ex > 0)
+		// 	ret = WEXITSTATUS(status);
+		// printf("||status %d| ex %d| ret %d||\n", status, ex, ret);
+
 	}
 }
 
@@ -129,11 +136,19 @@ int		ft_parent(t_command *c, t_mother *s)
 			close(c->pipes[0]);
 		}
 	}
-	if (c->isfollowedbypipe == 0)
-		ft_waitpid(s, status);
+	// if (c->isfollowedbypipe == 0)
+	// 	{
+	// 		ft_waitpid(s, status);
+	// // //		printf("||%d||", status);
+		(void)s;
+	// 	// waitpid(c->cpid, &status, 0);
+	// 	}
+	// printf("pid%d", c->cpid);
+	waitpid(c->cpid, &status, 0);
 	ex = WIFEXITED(status);
 	if (ex > 0)
 		ret = WEXITSTATUS(status);
+	// printf("||lo status %d| ex %d| ret %d||\n", status, ex, ret);
 	return(ret);
 }
 
@@ -177,6 +192,7 @@ int		ft_pipe(t_command *c, t_mother *s)
 		ft_error(s, "pipe", -1);
 	pid = ft_return_global_pid();
 	*pid = fork();
+	c->cpid = *pid;
 	if(*pid < 0)
 		ft_error(s, "fork", -1);
 	// signal(SIGINT, killchild);
