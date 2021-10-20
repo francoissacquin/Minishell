@@ -22,3 +22,6 @@ export | export
 cat Makefile | export | grep SHL
 
 cd - marche pas
+
+cat | grep 
+cat | cat | ls
