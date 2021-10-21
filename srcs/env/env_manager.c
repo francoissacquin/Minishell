@@ -16,6 +16,8 @@ void	env_init(t_mother *s, char **envp)
 {
 	int		i;
 	int		len;
+	char	*temp;
+	int		shlvl;
 
 	len = ft_strlen_array(envp);
 	s->env = malloc((len + 1) * sizeof(char *));
@@ -25,7 +27,16 @@ void	env_init(t_mother *s, char **envp)
 		if (ft_env_cmp_arg(envp[i], "PATH"))
 			s->path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
 		if (ft_env_cmp_arg(envp[i], "SHLVL"))
-			s->env[i] = ft_strdup("SHLVL=3");
+		{
+			temp = getenv("SHLVL");
+			shlvl = ft_atoi(temp);
+			shlvl++;
+			if (shlvl > 999)
+				shlvl = 1;
+			temp = ft_itoa(shlvl);
+			s->env[i] = ft_strjoin("SHLVL=", temp);
+			free(temp);
+		}
 		else
 			s->env[i] = ft_strdup(envp[i]);
 		// if (ft_env_cmp_arg(envp[i], "_"))

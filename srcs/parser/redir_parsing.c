@@ -73,6 +73,7 @@ int	ft_redir_error_check(t_mother *s, t_token *tok)
 void	ft_redir_input_activator(t_mother *s)
 {
 	char	*temp;
+	char	*redir;
 
 	if (s->lex->std_input_redir != NULL)
 	{
@@ -86,11 +87,14 @@ void	ft_redir_input_activator(t_mother *s)
 			s->lex->std_input_redir = ft_strdup(temp);
 		else
 		{
-			s->lex->std_input_redir = ft_strjoin_env(s->lex->std_input_redir, ft_strjoin("\n", temp));
+			redir = ft_strjoin("\n", temp);
+			s->lex->std_input_redir = ft_strjoin_env(s->lex->std_input_redir, redir);
+			free(redir);
 		}
 		free(temp);
 		temp = readline("> ");
 	}
+	free(temp);
 }
 
 int		ft_strnstr_index(char *haystack, char *needle, int len)

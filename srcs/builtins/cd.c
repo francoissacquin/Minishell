@@ -84,8 +84,9 @@ int		ft_cd(t_mother *s)
 		write(2, "bash: line 0: cd: No such file or directory\n", 44);
 		return(1);
 	}
-		//ft_error(s, "chdir failed", -1);
 	getcwd(targetpath, sizeof(targetpath));
+	if (ft_strcmp("-", s->c->arg[1]) == 0)
+		printf("%s\n", targetpath);
 	ft_updatepwd(s, targetpath, path);
 	free(path);
 	free(targetpath);
