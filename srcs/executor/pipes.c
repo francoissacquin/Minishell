@@ -6,52 +6,11 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/21 16:48:07 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/21 18:34:52 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-//check les flags d'open
-//gestion, branchement de > et >> : c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3
-//gestion redirection < et << : c->isprecededbypipe == 2 || c->isprecededbypipe == 3
-//connect read side to stdin : dup2(fd, 0);
-//fermeture du fd
-
-// int		ft_redirect(t_command *c, t_mother *s)
-// {
-// 	int	err;
-// 	int	fd;
-
-// 	err = 0;
-// 	fd = 0;
-// 	if (c->isfollowedbypipe == 2)
-// 		fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
-// 	if (c->isfollowedbypipe == 3)
-// 		fd = open(c->outfile, O_RDWR|O_APPEND|O_CREAT, 0666);
-// 	if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3)
-// 		err = dup2(fd, 1);
-// 	if (err < 0)
-// 		ft_error(s, "redirect dup2", -1);
-// 	if (c->isfollowedbypipe == 2 || c->isfollowedbypipe == 3)
-// 		err = dup2(fd, 2);
-// 	if (err < 0)
-// 		ft_error(s, "redirect dup2", -1);
-// 	if (c->isprecededbypipe == 2 || c->isprecededbypipe == 3)
-// 	{
-// 		fd = open(c->inputfile, O_RDWR|O_APPEND, 0666);
-// 		err = dup2(fd, 0);
-// 		close(c->pipes[1]);
-// 		if (err < 0)
-// 			ft_error(s, "pipe dup2", -1);
-// 		if (c->isprecededbypipe == 3)
-// 			unlink(c->inputfile);
-// 		close(fd);
-// 	}
-// 	if(fd)
-// 		close(fd);
-// 	return(err);
-// }
 
 //on branche les redirections
 //si y'a un pipe avant on connecte la sortie du pipe au stdin : dup2(c->previouspipe->pipes[0], 0);
@@ -146,7 +105,7 @@ int		ft_parent(t_command *c, t_mother *s)
 
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]);
-	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 || c->isfollowedbypipe == 2)
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1)// || c->isfollowedbypipe == 2)
 	{
 		close(c->pipes[1]);
 		if (c->isfollowedbypipe == 2)
@@ -210,7 +169,7 @@ int		ft_pipe(t_command *c, t_mother *s)
 	int ret = 1;
 	pid_t	*pid;
 
-	if(c->isfollowedbypipe == 1 || c->isprecededbypipe == 1)
+	if(c->isfollowedbypipe <= 1 || c->isprecededbypipe <= 1)
 		err = pipe(c->pipes);
 	if(err != 0)
 		ft_error(s, "pipe", -1);
@@ -228,6 +187,8 @@ int		ft_pipe(t_command *c, t_mother *s)
 			// int status = 0;
 			// waitpid(*pid, &status, 0);
 			// printf("pid = %d\n", *pid);
+					printf("%s", c->outfile);
+
 			ret = ft_parent(c, s);
 			// printf("||in pipe before %d| ex | ret %d||\n", status, ret);
 
@@ -249,7 +210,7 @@ int		ft_pipe(t_command *c, t_mother *s)
 					int ex = 0;
 			if(s->c->isfollowedbypipe == 0 && s->nbcmd > 1)
 			 ret = ft_waitpid(s, status);
-			else if (s->nbcmd == 1)
+			else if (s->nbcmd == 1 || s->c->isfollowedbypipe == 2 || s->c->isfollowedbypipe == 3)
 			{
 				waitpid(*pid, &status, 0);
 				ex = WIFEXITED(status);
@@ -328,7 +289,7 @@ int		ft_exec_builtins(t_command *c, t_mother *s)
 	// close(1);
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]);
-	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 || c->isfollowedbypipe == 2)
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 )//|| c->isfollowedbypipe == 2)
 	{
 		close(c->pipes[1]);
 		if (c->isfollowedbypipe == 2)
@@ -371,7 +332,7 @@ int		ft_routeenv(t_mother *s, t_command *c)
 	// close(1);
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]);
-	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 || c->isfollowedbypipe == 2)
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1 )//|| c->isfollowedbypipe == 2)
 	{
 		close(c->pipes[1]);
 		if (c->isfollowedbypipe == 2)
