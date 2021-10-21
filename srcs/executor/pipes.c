@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/20 20:05:50 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/21 15:08:22 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -425,6 +425,12 @@ void		multicommands(t_mother *s)
 		// 		s->c->retvalue = ft_env(s);
 		// //	s->c->nextpipe = 0;
 		// }
+		else if (ft_strcmp("echo", s->c->command) == 0)
+		{
+			//puts("echo\n");
+			ft_pipe(s->c, s);
+			s->c->retvalue = ft_unset(s, s->c);
+		}
 		else if (ft_strcmp("unset", s->c->command) == 0)
 		{
 			//puts("UNSET\n");
