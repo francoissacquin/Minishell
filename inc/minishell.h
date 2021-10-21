@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/19 14:04:43 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/21 20:35:16 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,10 @@ int		ft_pipe(t_command *c, t_mother *s);
 //signaux
 void	signalhandler(int c); //for ctrl-c ctrl-v
 void	quithandler(void);
+void	quitchild(int signal);
+void	killchild(int signal);
+
+
 
 // history
 void	ft_add_history(t_mother *s);
