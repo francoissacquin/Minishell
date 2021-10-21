@@ -38,7 +38,7 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	int		err;
 
 	err = 0;
-	if (*i == 0 && ft_strchr("Pfo", tok->type) && ft_strcmp(tok->token, "<<"))
+	if (*i == 0 && ft_strchr("Pfo", tok->type) && (!(ft_strcmp(tok->token, "<<")) && s->lex->delimiter == NULL))
 	{
 		write(2, "Error, pipe with no prior command\n", 34);
 		s->ret = 1;
@@ -75,16 +75,23 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 	//printf("pour passage %i on a s->redir = %i\n", *i, s->redirect_mem);
 	if (s->redirect_mem == 5 && tok->next != NULL)
 	{
-		if (ft_strchr("bc", tok->next->type) && last == s->c)
+		if (tok->next != NULL && ft_strchr("bc", tok->next->type) && last == s->c)
 		{
-			fill_first_command(s, tok);
+			fill_first_command(s, tok->next);
 			plug_redir_5(s, s->c);
 		}
-		else if (ft_strchr("bc", tok->next->type) && last != s->c)
+		else if (tok->next != NULL && ft_strchr("bc", tok->next->type) && last != s->c)
 		{
-			fill_next_command(s, last, tok, i);
+			fill_next_command(s, last, tok->next, i);
 			last = ft_last_cmd(s->c);
 			plug_redir_5(s, last);
+		}
+		else
+		{
+			if (last->inputfile == NULL)
+				plug_redir_5(s, last);
+			s->redirect_mem = 0;
+
 		}
 	}
 	else if (tok->prev != NULL && last->line != NULL)
@@ -140,7 +147,6 @@ void	plug_redir_5(t_mother *s, t_command *last)
 	temp = getenv("PWD");
 	last->inputfile = ft_strdup("redir_input.txt");
 	last->isprecededbypipe = 3;
-	s->redirect_mem = 0;
 }
 
 void	fill_next_command(t_mother *s, t_command *last, t_token *tok, int *i)
@@ -153,10 +159,13 @@ void	fill_next_command(t_mother *s, t_command *last, t_token *tok, int *i)
 	last->nextpipe = next;
 	next->previouspipe = last;
 	next->nextpipe = NULL;
-	next->isprecededbypipe = 1;
+	if (next->isprecededbypipe != 3)
+		next->isprecededbypipe = 1;
 	next->isfollowedbypipe = 0;
-	next->isinputfile = 0;
-	next->inputfile = NULL;
+	if (next->isinputfile != 1)
+		next->isinputfile = 0;
+	if (next->inputfile != NULL)
+		next->inputfile = NULL;
 	next->isoutfile = 0;
 	next->outfile = NULL;
 	s->pipe++;
@@ -173,19 +182,6 @@ void	fill_first_command(t_mother *s, t_token *tok)
 	s->c->arg[1] = NULL;
 	s->c->cmd_status = tok->type - 97;
 	s->nbcmd++;
-	s->c->isfollowedbypipe = 0;
-	s->c->nextpipe = NULL;
-	s->c->isprecededbypipe = 0;
-	s->c->previouspipe = NULL;
-	s->c->isinputfile = 0;
-	s->c->inputfile = NULL;
-	s->c->isoutfile = 0;
-	s->c->outfile = NULL;
-	if (s->redirect_mem != 0)
-	{
-		s->c->isprecededbypipe = s->redirect_mem;
-		s->redirect_mem = 0;
-	}
 }
 
 int	ft_add_args(t_mother *s, t_token *tok, int *i)
@@ -229,7 +225,7 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 		last->nbarg++;
 		if (tok->pre_space == 0 && tok->type == 'p' && ft_strchr("pe", tok->prev->type))
 			ft_add_arg_array(last, tok->token, 1);
-		else if (tok->pre_space == 0 && !(ft_strcmp(last->command, "export")))
+		else if (last->command != NULL && tok->pre_space == 0 && !(ft_strcmp(last->command, "export")))
 			ft_add_arg_array(last, tok->token, 1);
 		else
 			ft_add_arg_array(last, tok->token, 0);
@@ -237,7 +233,7 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 			last->line = ft_strdup(tok->token);
 		else
 		{
-			if (!(ft_strcmp(last->command, "export")) && tok->pre_space == 0)
+			if (last->command != NULL && !(ft_strcmp(last->command, "export")) && tok->pre_space == 0)
 				temp = ft_strdup(tok->token);
 			else
 				temp = ft_strjoin(" ", tok->token);
