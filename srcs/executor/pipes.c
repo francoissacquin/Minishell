@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/21 15:08:22 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/21 16:48:07 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,9 +246,16 @@ int		ft_pipe(t_command *c, t_mother *s)
 			
 		}
 					int status = 0;
-
-			if(s->c->isfollowedbypipe == 0)
+					int ex = 0;
+			if(s->c->isfollowedbypipe == 0 && s->nbcmd > 1)
 			 ret = ft_waitpid(s, status);
+			else if (s->nbcmd == 1)
+			{
+				waitpid(*pid, &status, 0);
+				ex = WIFEXITED(status);
+				if (ex > 0)
+					ret = WEXITSTATUS(status);
+			}
 	return(ret);
 }
 
@@ -428,8 +435,8 @@ void		multicommands(t_mother *s)
 		else if (ft_strcmp("echo", s->c->command) == 0)
 		{
 			//puts("echo\n");
-			ft_pipe(s->c, s);
-			s->c->retvalue = ft_unset(s, s->c);
+			s->c->retvalue =ft_pipe(s->c, s);
+			//s->c->retvalue = ft_unset(s, s->c);
 		}
 		else if (ft_strcmp("unset", s->c->command) == 0)
 		{
