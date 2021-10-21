@@ -6,48 +6,51 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:00:09 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/15 17:57:46 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/21 20:15:40 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int		ft_fileexits(char *testpath)
+int	ft_fileexits(char *testpath)
 {
-	struct stat s_buf;
-	int ret = -1;
+	struct stat	s_buf;
+	int			ret;
 
+	ret = -1;
 	if (stat(testpath, &s_buf) == 0)
 		ret = 0;
-	return(ret);
+	return (ret);
 }
 
 char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
 {
-	int i = 0;
-	int j;
-	char	*testpath;
-	char	*testpath2;
-	int pathsize = 0;
-	char *addcmd;
-	int	pathfound = -1;
+	int			i;
+	int			j;
+	char		*testpath;
+	char		*testpath2;
+	int			pathsize;
+	char		*addcmd;
+	int			pathfound;
 
 	(void)s;
-	//testpath = ft_strjoin(minipath[i][0], "/");
-	while(i < minisize && pathfound == -1)
+	pathfound = -1;
+	pathsize = 0;
+	i = 0;
+	while (i < minisize && pathfound == -1)
 	{
 		while (minipath[i][pathsize])
 			pathsize++;
 		testpath = ft_strjoin("", "/");
 		j = 0;
-		while(j < pathsize && pathfound == -1)
+		while (j < pathsize && pathfound == -1)
 		{
 			testpath2 = ft_strjoin(testpath, minipath[i][j]);
 			free(testpath);
 			testpath = ft_strjoin(testpath2, "/");
 			free(testpath2);
 			addcmd = ft_strjoin(testpath, s->c->command);
-			if(ft_fileexits(addcmd) == 0)
+			if (ft_fileexits(addcmd) == 0)
 				pathfound = 1;
 			j++;
 			if (j < pathsize && pathfound == -1)
@@ -59,21 +62,22 @@ char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
 			free(addcmd);
 		pathsize = 0;
 	}
-	//tester pour file at /
-	//printf("||%s\n||", addcmd);
-	return(addcmd);
+	return (addcmd);
 }
 
 char	*ft_pathfinder(t_mother *s)
 {
-	char *rightpath;
-	char **path;
-	char ***minipath = NULL;
-	int 	i = 0;
-	int minipathsize = 0;
+	char		*rightpath;
+	char		**path;
+	char		***minipath;
+	int			i;
+	int			minipathsize;
 
+	minipathsize = 0;
+	i = 0;
+	minipath = NULL;
 	path = ft_split(s->path, ':');
-	while(path[i])
+	while (path[i])
 		i++;
 	while (s->path[i])
 	{
@@ -82,15 +86,13 @@ char	*ft_pathfinder(t_mother *s)
 		i++;
 	}
 	minipathsize++;
-	// printf("||%d||", minipathsize);
 	minipath = ft_malloc(&minipath, sizeof(char **) * minipathsize);
 	i = 0;
-	while(i < minipathsize)
+	while (i < minipathsize)
 	{
 		minipath[i] = ft_split(path[i], '/');
 		i++;
 	}
-	// printf("||%s||||\n", s->c->command);
 	rightpath = ft_pathtester(s, minipath, minipathsize);
 	i = 0;
 	while (i < minipathsize)
@@ -100,37 +102,31 @@ char	*ft_pathfinder(t_mother *s)
 	}
 	free(minipath);
 	ft_free_array(path);
-	return(rightpath);
+	return (rightpath);
 }
 
 int	ft_execnotbuiltin(t_mother *s)
 {
-	int	error;
-	char *path;
+	int		error;
+	char	*path;
 
 	path = ft_pathfinder(s);
 	error = 0;
-	//  printf("%s , %s", path, s->c->arg[0]);
-	 //dprintf(1,"fghm");
 	error = execve(path, s->c->arg, s->env);
-	// char *test = " -la";
-	// error = execve(path, &test, NULL); //this is a test
-	//if(error < 0)
-		//ft_error(s, "execve, binary may be corrupted", error);
 	free(path);
-	return(error);
+	return (error);
 }
 
 int	ft_execfind(t_mother *s, t_command *c)
 {
+	int	ret;
+
+	ret = 1;
 	s->c = c;
-	int ret = 1;
-	//printf("||%d|", s->c->nbarg);
-	//builtins
 	if (ft_strcmp("cd", s->c->command) == 0)
-	 	ret = ft_cd(s);
+		ret = ft_cd(s);
 	else if (ft_strcmp("echo", s->c->command) == 0)
-		ret = ft_echo(s, s->c);	
+		ret = ft_echo(s, s->c);
 	else if (ft_strcmp("env", s->c->command) == 0)
 		ret = ft_env(s);
 	else if (ft_strcmp("exit", s->c->command) == 0)
@@ -143,5 +139,5 @@ int	ft_execfind(t_mother *s, t_command *c)
 		ret = ft_unset(s, c);
 	else
 		ret = ft_execnotbuiltin(s);
-	return(ret);
+	return (ret);
 }
