@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipes.c                                            :+:      :+:    :+:   */
+/*   pipesredir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/22 16:04:31 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/22 16:05:02 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int		ft_parent(t_command *c, t_mother *s)
 	int ret;
 	int fd;
 
+
 	(void)s;
 	ret = 0;
 	if (c->isprecededbypipe == 1)
@@ -155,6 +156,41 @@ void		multicommands(t_mother *s)
 	int			i;
 	pid_t		*pid;
 	
+
+//test with 2
+	t_command test;
+
+	test.previouspipe = s->c;
+	test.line = "cat < caca.txt";
+	test.command = "cat";
+	test.arg = ft_malloc(test.arg, sizeof(char **) * 10);
+	test.arg[0] = test.command;
+	test.arg[1] = "cat";
+	test.arg[2] = NULL;
+	test.isfollowedbypipe = 0;
+	test.nextpipe = NULL;
+	test.isprecededbypipe = 1;
+	test.isprecededbyche = 1;
+	test.isinputfile = 1;
+
+	test.previouspipe = s->c;
+
+	s->pipe = 1;	
+	s->c->line = "cat Makefile > caca.txt";
+	s->c->nbarg = 1;
+	s->c->command = "cat";
+	s->c->arg = ft_malloc(s->c->arg, sizeof(char **) * 4);
+	s->c->arg[0] = s->c->command;
+	s->c->arg[1] = "Makefile";
+	s->c->arg[2] = NULL;
+	s->c->arg[3] = NULL; 
+	s->c->isfollowedbypipe = 1;
+	s->c->isfollowedbyche = 1;
+	s->c->isoutfile = 1;
+	s->c->outfile = "caca.txt";
+	s->c->isprecededbypipe = 0;
+	s->c->nextpipe = &test;
+
 	i = 0;
 	if (s->c->command == NULL)
 	{
