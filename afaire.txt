@@ -1,0 +1,38 @@
+Todo oscar:
+built ins out of forks with pipe and ctrl c
+
+Todo Francois:
+
+
+Done:
+
+this is pipe word for test with grep
+
+comment on gere les ' " ; \ $ et autres char speciaux
+http://www.zeitoun.net/articles/communication-par-tuyau/start
+http://www.rozmichelle.com/pipes-forks-dups/
+
+signaux dans les built ins
+export > caca.txt | caca.txt < grep SHL
+export > caca.txt | grep SHL < caca.txt
+cat Makefile > caca.txt | grep all < caca.txt
+cat Makefile > caca.txt | cat < caca.txt
+
+cat Makefile > caca.txt | grep SHL < caca.txt
+
+export | grep SHL
+export | export
+cat Makefile | export | grep SHL
+
+cd - marche pas]
+export > caca.txt
+
+cat | grep 
+cat | cat | ls
+
+ctrl z kills
+
+cat Makefile > caca.txt | cat < caca.txt		fonctionne si fichier existe ok plante a "pipe dup 2" cree le fichier
+cat Makefile > caca.txt | grep SHL < caca.txt fonctionne pas ok plante a pipe dup 2 devrais creer caca.txt a clean au parsing
+cat Makefile > caca.txt | cat Makefile      fonctionne pour les deux ne cree pas le fichier dans le minishell
+cat Makefile >> caca.txt | sort < caca.txt fonctionne pas en bash mais cree le fichier minishell ne cree pas le fichier
