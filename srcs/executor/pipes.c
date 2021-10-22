@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/22 16:04:31 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/22 21:50:30 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_child(t_command *c, t_mother *s)
 
 	err = 0;
 	ret = 1;
-	if (c->isfollowedbypipe > 1 || c->isprecededbypipe == 2  || c->isprecededbypipe == 3)
+	if (c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1|| c->isprecededbyche == 1  || c->isprecededbydoubleche == 1)
 		err = ft_redirect(c, s);
 	if (c->isprecededbypipe == 1)
 	{
@@ -47,7 +47,7 @@ int	ft_child(t_command *c, t_mother *s)
 // peut etre a mettre a la fin 
 // on ferme le pipe d'avant : close(c->previouspipe->pipes[0]);
 // si suivi ou apres par un pipe on close write side : close(c->pipes[1])
-// gestion de la redirection > : (c->isfollowedbypipe == 2)
+// gestion de la redirection > : (c->isfollowedbyche == 1)
 // si c'est le dernier "pipe"
 // on branche la sortie du pipe sur stdin pour imprimer : dup2(c->pipes[1], 0);
 // si suivi par rien on close le read side : close(c->pipes[0]);
@@ -89,10 +89,10 @@ int		ft_parent(t_command *c, t_mother *s)
 	ret = 0;
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]);
-	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1)// || c->isfollowedbypipe == 2)
+	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1)// || c->isfollowedbyche == 1)
 	{
 		close(c->pipes[1]);
-		if (c->isfollowedbypipe == 2)
+		if (c->isfollowedbyche == 1)
 			fd = open(c->outfile, O_RDWR|O_CREAT, 0666);
 		if (c->nextpipe == NULL)
 		{
@@ -135,7 +135,7 @@ int		ft_pipe(t_command *c, t_mother *s)
 	int ex = 0;
 	if(s->c->isfollowedbypipe == 0 && s->nbcmd > 1)
 		ret = ft_waitpid(s, status);
-	else if (s->nbcmd == 1 || s->c->isfollowedbypipe == 2 || s->c->isfollowedbypipe == 3)
+	else if (s->nbcmd == 1 || s->c->isfollowedbyche == 1 || s->c->isfollowedbydoubleche == 1)
 	{
 		waitpid(*pid, &status, 0);
 		ex = WIFEXITED(status);

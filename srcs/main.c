@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:19 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/20 18:00:17 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/22 21:53:04 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int mainaftersignal(t_mother *s, char *str)
 			g_pid = 0;
 			return (s->ret);
 		}
-		ft_print_parsing_results(s);
+		// ft_print_parsing_results(s);
 	}
 	else if (s->line != NULL && (s->line[0] == '\0' || ft_input_is_spaces(s->line)))
 	{
