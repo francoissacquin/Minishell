@@ -23,8 +23,12 @@ void	ft_initc(t_mother *s)
 	c->nbarg = 0;
 	c->arg = NULL;
 	c->isfollowedbypipe = 0;
+	c->isfollowedbyche = 0;
+	c->isfollowedbydoubleche = 0;
 	c->nextpipe = 0;
 	c->isprecededbypipe = 0;
+	c->isprecededbyche = 0;
+	c->isprecededbydoubleche = 0;
 	c->previouspipe = NULL;
 	c->isinputfile = 0;
 	c->outfile = NULL;

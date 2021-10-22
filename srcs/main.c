@@ -60,7 +60,7 @@ int mainaftersignal(t_mother *s, char *str)
 			g_pid = 0;
 			return (s->ret);
 		}
-		//ft_print_parsing_results(s);
+		ft_print_parsing_results(s);
 	}
 	else if (s->line != NULL && (s->line[0] == '\0' || ft_input_is_spaces(s->line)))
 	{
@@ -192,7 +192,7 @@ void	ft_print_parsing_results(t_mother *s)
     printf("\n\n");
     while (cmd->nextpipe != NULL)
     {
-		printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
+		printf("  ||\n  ||BEFORE = %i or %i or %i\n  ||\n", cmd->isprecededbypipe, cmd->isprecededbyche, cmd->isprecededbydoubleche);
 		printf("_________________________________________\n");
 		if (cmd->line != NULL)
         	printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
@@ -207,10 +207,10 @@ void	ft_print_parsing_results(t_mother *s)
 		}
 		printf(" with infile = %s and outile = %s\n", cmd->inputfile, cmd->outfile);
 		printf("-----------------------------------------\n");
-		printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
+		printf("  ||\n  ||AFTER = %i or %i or %i\n  ||\n", cmd->isfollowedbypipe, cmd->isfollowedbyche, cmd->isfollowedbydoubleche);
         cmd = cmd->nextpipe;
     }
-	printf("  ||\n  ||BEFORE = %i\n  ||\n", cmd->isprecededbypipe);
+	printf("  ||\n  ||BEFORE = %i or %i or %i\n  ||\n", cmd->isprecededbypipe,  cmd->isprecededbyche, cmd->isprecededbydoubleche);
 	printf("_________________________________________\n");
     printf("[%s] of command [%s] with cmd_status [%c]\n", cmd->line, cmd->command, cmd->cmd_status + 97);
 	i = 0;
@@ -221,7 +221,7 @@ void	ft_print_parsing_results(t_mother *s)
 	}
 	printf(" with infile = %s and outile = %s\n", cmd->inputfile, cmd->outfile);
 	printf("-----------------------------------------\n");
-	printf("  ||\n  ||AFTER = %i\n  ||\n", cmd->isfollowedbypipe);
+	printf("  ||\n  ||AFTER = %i or %i or %i\n  ||\n", cmd->isfollowedbypipe, cmd->isfollowedbyche, cmd->isfollowedbydoubleche);
 	if (s->lex->std_input_redir != NULL)
 		printf("<< input was :\n%s\n", s->lex->std_input_redir);
 }

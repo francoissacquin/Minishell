@@ -107,7 +107,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		{
 			last->isinputfile = 1;
 			last->inputfile = ft_strdup(tok->token);
-			last->isprecededbypipe = 2;
+			last->isprecededbyche = 1;
 			s->redirect_mem = 0;
 		}
 		else if (s->redirect_mem == 3 || s->redirect_mem == 4)
@@ -115,9 +115,9 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 			last->isoutfile = 1;
 			last->outfile = ft_strdup(tok->token);
 			if (s->redirect_mem == 3)
-				last->isfollowedbypipe = 2;
+				last->isfollowedbyche = 1;
 			else if (s->redirect_mem == 4)
-				last->isfollowedbypipe = 3;
+				last->isfollowedbydoubleche = 1;
 			s->redirect_mem = 0;
 		}
 		else
@@ -146,7 +146,7 @@ void	plug_redir_5(t_mother *s, t_command *last)
 	last->isinputfile = 1;
 	temp = getenv("PWD");
 	last->inputfile = ft_strdup("redir_input.txt");
-	last->isprecededbypipe = 3;
+	last->isprecededbydoubleche = 1;
 }
 
 void	fill_next_command(t_mother *s, t_command *last, t_token *tok, int *i)
