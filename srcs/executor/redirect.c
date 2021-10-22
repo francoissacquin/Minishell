@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/22 21:50:34 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/22 23:48:17 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@ int	ft_redirect(t_command *c, t_mother *s)
 	{
 		fd = open(c->inputfile, O_RDWR | O_APPEND, 0666);
 		err = dup2(fd, 0);
-		close(c->pipes[1]);
+		if(!(c->isfollowedbypipe))
+			close(c->pipes[1]);
 		if (err < 0)
 			ft_error(s, "pipe dup2", -1);
-		if (c->isprecededbydoubleche == 2)
+		if (c->isprecededbydoubleche == 1)
 			unlink(c->inputfile);
 		close(fd);
 	}
