@@ -31,7 +31,8 @@ void	ft_free_array(char **array)
 	len = ft_strlen_array(array);
 	while (len > 0)
 	{
-		free(array[len - 1]);
+		if (array[len - 1] != NULL)
+			free(array[len - 1]);
 		array[len - 1] = NULL;
 		len--;
 	}

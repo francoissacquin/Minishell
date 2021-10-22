@@ -85,6 +85,7 @@ int		ft_parent(t_command *c, t_mother *s)
 	int ret;
 	int fd;
 
+	(void)s;
 	ret = 0;
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]);

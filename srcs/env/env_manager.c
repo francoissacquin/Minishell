@@ -116,18 +116,23 @@ void	rm_env(t_mother *s, char *str)
 {
 	char	**temp;
 	int		i;
+	int		j;
 	int		len;
 
 	len = ft_strlen_array(s->env);
-	temp = ft_malloc(&temp, (len + 1) * sizeof(char *));
+	temp = ft_malloc(&temp, len * sizeof(char *));
 	i = 0;
+	j = 0;
 	while (i < len)
 	{
 		if (!(ft_env_cmp_arg(s->env[i], str)))
-			temp[i] = ft_strdup(s->env[i]);
+		{
+			temp[j] = ft_strdup(s->env[i]);
+			j++;
+		}
 		i++;
 	}
-	temp[i] = NULL;
+	temp[j] = NULL;
 	ft_free_array(s->env);
 	s->env = temp;
 }
