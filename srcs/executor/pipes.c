@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/22 21:50:30 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/22 23:49:17 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 //: dup2(c->pipes[1], 1);
 //execute command in child process meme si il y'en a que une
 
+#define REDIR (c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1 || c->isprecededbyche == 1  || c->isprecededbydoubleche == 1)
+#define REDIRBEFORE (c->isprecededbyche == 1  || c->isprecededbydoubleche == 1)
+#define REDIRAFTER (c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1)
 int	ft_child(t_command *c, t_mother *s)
 {
 	int	err;
@@ -26,21 +29,39 @@ int	ft_child(t_command *c, t_mother *s)
 
 	err = 0;
 	ret = 1;
-	if (c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1|| c->isprecededbyche == 1  || c->isprecededbydoubleche == 1)
+	// printf("%s %d\n", s->c->command, s->c->isprecededbydoubleche);
+	if (c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1|| c->isprecededbyche == 1  )//|| c->isprecededbydoubleche == 1)
 		err = ft_redirect(c, s);
-	if (c->isprecededbypipe == 1)
+	if (c->isprecededbypipe == 1 && !REDIRBEFORE)
 	{
 		err = dup2(c->previouspipe->pipes[0], 0);
 		if (err < 0)
 			ft_error(s, "pipe iii dup2", -1);
 	}
-	if (c->isfollowedbypipe == 1)
+	if(REDIRAFTER)
+		ret = ft_execfind(s, s->c);
+	if(REDIRAFTER && !(c->isfollowedbypipe == 1))
+	{
+		// puts("chibrax");
+	exit(ret);
+	}
+	if(s->c->isprecededbydoubleche)
+		err = ft_redirect(c, s);
+	if (c->isfollowedbypipe == 1 )//|| (REDIRBEFORE))
 	{
 		err = dup2(c->pipes[1], 1);
 		if (err < 0)
 			ft_error(s, "pipe in grep dup2", -1);
 	}
-	ret = ft_execfind(s, s->c);
+	// printf("%s\n", s->c->command);
+	// if (c->isprecededbydoubleche == 1 && c->inputfile != NULL)
+	// {
+	// 	puts("lol");
+	// 	unlink(c->inputfile);
+	// 	c->inputfile = NULL;
+	// }
+	if(!REDIRAFTER)
+		ret = ft_execfind(s, s->c);
 	exit(ret);
 }
 
