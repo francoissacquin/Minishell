@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/21 20:35:16 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/22 15:39:35 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,12 @@ typedef struct s_command
 	char		**arg; //arg[0] must be the command! and arg[last] must be null sinon bug de execve
 	
 	int			isfollowedbypipe;	//pipe handling 1 for a pipe, 2 for >, 3 for >>, 6 for &, etc
+	int			isfollowedbyche;
+	int			isfollowedbydoubleche;
 	t_command	*nextpipe;
 	int			isprecededbypipe; //1 for a pipe, 2 for <, 3 for <<
+	int			isprecededbyche;
+	int			isprecededbydoubleche;
 	t_command	*previouspipe;
 
 	int			isoutfile; //boolean checking for a specific output default is stdout
