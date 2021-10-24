@@ -212,7 +212,10 @@ void		multicommands(t_mother *s)
 		else if (s->c->command == NULL)
 			s->c->retvalue = 127;
 		else if (!(ft_strcmp("cd", s->c->command) == 0))
+		{
+			printf("entering pipes\n");
 			s->c->retvalue = ft_pipe(s->c, tmp);
+		}
 		s->ret = s->c->retvalue;
 		if(!s->c->nextpipe)
 			break; 

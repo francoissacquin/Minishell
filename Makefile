@@ -27,6 +27,7 @@ srcs/parser/parse.c \
 srcs/parser/miniparser.c \
 srcs/parser/redir_parsing.c \
 srcs/parser/arg_checking.c \
+srcs/parser/post_parsing.c \
 srcs/structure/utils.c \
 srcs/structure/mem_utils.c \
 srcs/history_handler.c \
@@ -42,7 +43,6 @@ srcs/env/env_manager.c \
 srcs/env/env_utils.c \
 srcs/env/env_expanding.c \
 srcs/env/env_expanding_utils.c \
-srcs/env/var_manager.c \
 srcs/lexer/minilexer.c \
 srcs/lexer/lexer_lst_utils.c \
 srcs/lexer/assign_types.c \
