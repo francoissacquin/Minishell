@@ -110,6 +110,7 @@ int	ft_execnotbuiltin(t_mother *s)
 	int		error;
 	char	*path;
 
+	printf("passage par les erreurs\n");
 	path = ft_pathfinder(s);
 	error = 0;
 	error = execve(path, s->c->arg, s->env);

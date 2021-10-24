@@ -70,6 +70,7 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
+	int			fd;
 
 	last = ft_last_cmd(s->c);
 	//printf("pour passage %i on a s->redir = %i\n", *i, s->redirect_mem);
@@ -106,6 +107,11 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		else if (s->redirect_mem == 2)
 		{
 			last->isinputfile = 1;
+			if (last->inputfile != NULL)
+			{
+				free(last->inputfile);
+				last->isprecededbydoubleche = 0;
+			}
 			last->inputfile = ft_strdup(tok->token);
 			last->isprecededbyche = 1;
 			s->redirect_mem = 0;
@@ -113,11 +119,24 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		else if (s->redirect_mem == 3 || s->redirect_mem == 4)
 		{
 			last->isoutfile = 1;
+			fd = open(tok->token, O_CREAT | O_RDWR | O_APPEND, 0666);
+			close(fd);
+			if (last->outfile != NULL)
+			{
+				free (last->outfile);
+				last->outfile = NULL;
+			}
 			last->outfile = ft_strdup(tok->token);
 			if (s->redirect_mem == 3)
+			{
+				last->isfollowedbydoubleche = 0;
 				last->isfollowedbyche = 1;
+			}
 			else if (s->redirect_mem == 4)
+			{
+				last->isfollowedbyche = 0;
 				last->isfollowedbydoubleche = 1;
+			}
 			s->redirect_mem = 0;
 		}
 		else
@@ -138,6 +157,9 @@ void	plug_redir_5(t_mother *s, t_command *last)
 	char	*temp;
 	int			fd;
 
+	if (last->inputfile != NULL)
+		free(last->inputfile);
+	last->isprecededbyche = 0;
 	fd = open("redir_input.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
 	if (fd < 0)
 		s->ret = 1;
@@ -159,13 +181,14 @@ void	fill_next_command(t_mother *s, t_command *last, t_token *tok, int *i)
 	last->nextpipe = next;
 	next->previouspipe = last;
 	next->nextpipe = NULL;
-	if (next->isprecededbypipe != 3)
-		next->isprecededbypipe = 1;
+	next->isprecededbypipe = 1;
+	next->isprecededbyche = 0;
+	next->isprecededbydoubleche = 0;
 	next->isfollowedbypipe = 0;
-	if (next->isinputfile != 1)
-		next->isinputfile = 0;
-	if (next->inputfile != NULL)
-		next->inputfile = NULL;
+	next->isfollowedbyche = 0;
+	next->isfollowedbydoubleche = 0;
+	next->isinputfile = 0;
+	next->inputfile = NULL;
 	next->isoutfile = 0;
 	next->outfile = NULL;
 	s->pipe++;
@@ -187,7 +210,6 @@ void	fill_first_command(t_mother *s, t_token *tok)
 int	ft_add_args(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
-	t_token		*temp_tok;
 	char		*temp;
 	char		*temp_line;
 
@@ -202,25 +224,6 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 				check_echo_flag(s, tok);
 			else if (tok->type == 'f')
 				write(2, "AUCUN FLAG AUTORISE POUR LES BUILT-INS\n", 39);
-		}
-		if (last->command == NULL && tok->type == 'E')
-		{
-			create_var(s, tok->token);
-			temp = ft_strdup(tok->token);
-			temp_tok = tok->next;
-			while (temp_tok != NULL)
-			{
-				if (ft_strchr("cb", temp_tok->type))
-				{
-					create_env(s, temp);
-					create_var(s, temp);
-					return (0);
-				}
-				else if (temp_tok->type == 'E')
-					temp_tok = temp_tok->next;
-				else
-					return (0);
-			}
 		}
 		last->nbarg++;
 		if (tok->pre_space == 0 && tok->type == 'p' && ft_strchr("pe", tok->prev->type))
@@ -255,6 +258,13 @@ void	ft_add_arg_array(t_command *last, char *str, int type)
 	int		i;
 
 	len = ft_strlen_array(last->arg);
+	i = 0;
+	while(last->arg[i] != NULL)
+	{
+		printf("pre-arg:%s\n", last->arg[i]);
+		i++;
+	}
+	printf("type of add_arg = %i and len = %i\nchar is ||%s||\n", type, len, str);
 	if (type == 0)
 		temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
 	else if (type == 1)
@@ -263,20 +273,27 @@ void	ft_add_arg_array(t_command *last, char *str, int type)
 	while (i < len)
 	{
 		temp[i] = ft_strdup(last->arg[i]);
+		printf(">>%s<<\n", temp[i]);
 		i++;
 	}
 	if (type == 0)
-		temp[i++] = ft_strdup(str);
+	{
+		temp[i] = ft_strdup(str);
+		printf(">>%s<<\n", temp[i]);
+		i++;
+	}
 	else if (type == 1)
 	{
 		i--;
 		append_temp = ft_strdup(temp[i]);
 		free(temp[i]);
 		temp[i] = ft_strjoin(append_temp, str);
+		printf(">>%s<<\n", temp[i]);
 		free(append_temp);
 		i++;
 	}
 	temp[i] = NULL;
+	printf("len after adding %zu\n", ft_strlen_array(temp));
 	ft_free_array(last->arg);
 	last->arg = temp;
 }

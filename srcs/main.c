@@ -60,7 +60,8 @@ int mainaftersignal(t_mother *s, char *str)
 			g_pid = 0;
 			return (s->ret);
 		}
-		// ft_print_parsing_results(s);
+		input_output_checker(s);
+		//ft_print_parsing_results(s);
 	}
 	else if (s->line != NULL && (s->line[0] == '\0' || ft_input_is_spaces(s->line)))
 	{
@@ -110,9 +111,7 @@ int main(int argc, char **argv, char **envp)
 	// 	exit(0);
 	// }
 	s.env = NULL;
-	s.var = NULL;
 	env_init(&s, envp);
-	var_init(&s);
 	s.ret = 0;
 	g_pid = 0;
 	signal(SIGINT, signalhandler);

@@ -57,24 +57,17 @@ void    free_t_cmd(t_mother *s)
     {
         if (temp->nextpipe != NULL)
             next = temp->nextpipe;
-        if (temp->line != NULL)
-            free(temp->line);
-        if (temp->command != NULL)
-            free(temp->command);
-        if (ft_strlen_array(temp->arg) > 0)
-            ft_free_array(temp->arg);
-        if (temp->previouspipe != NULL)
-            temp->previouspipe = NULL;
-        if (temp->outfile != NULL)
-            free(temp->outfile);
-        if (temp->inputfile != NULL)
-            free(temp->inputfile);
-        if (temp != NULL)
-            free(temp);
+        free_one_cmd(s, temp);
         temp = next;
     }
-    if (temp->nextpipe != NULL)
-        next = temp->nextpipe;
+    free_one_cmd(s, temp);
+    //free(s->c);
+    //printf("free_t_command activated\n");
+}
+
+void    free_one_cmd(t_mother *s, t_command *temp)
+{
+    (void)s;
     if (temp->line != NULL)
         free(temp->line);
     if (temp->command != NULL)
@@ -89,5 +82,5 @@ void    free_t_cmd(t_mother *s)
         free(temp->inputfile);
     if (temp != NULL)
         free(temp);
-    //printf("free_t_command activated\n");
+    temp = NULL;
 }
