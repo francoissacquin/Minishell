@@ -61,7 +61,7 @@ int mainaftersignal(t_mother *s, char *str)
 			return (s->ret);
 		}
 		input_output_checker(s);
-		//ft_print_parsing_results(s);
+		ft_print_parsing_results(s);
 	}
 	else if (s->line != NULL && (s->line[0] == '\0' || ft_input_is_spaces(s->line)))
 	{

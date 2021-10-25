@@ -46,7 +46,7 @@ void	ft_delimiter(t_mother *s, int *i, int *j, int o)
 	}
 	else if (o == 2)
 	{
-		j--;
+		*j = *j + 1;;
         link_chain_elem(s, i, j, 43);
 	}
 }

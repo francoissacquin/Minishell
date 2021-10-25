@@ -38,7 +38,7 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	int		err;
 
 	err = 0;
-	if (*i == 0 && ft_strchr("Pfo", tok->type) && (!(ft_strcmp(tok->token, "<<")) && s->lex->delimiter == NULL))
+	if (*i == 0 && ft_strchr("Pfo", tok->type) && ft_strcmp(tok->token, "<<") != 0 && s->lex->delimiter == NULL)
 	{
 		write(2, "Error, pipe with no prior command\n", 34);
 		s->ret = 1;
@@ -258,13 +258,6 @@ void	ft_add_arg_array(t_command *last, char *str, int type)
 	int		i;
 
 	len = ft_strlen_array(last->arg);
-	i = 0;
-	while(last->arg[i] != NULL)
-	{
-		printf("pre-arg:%s\n", last->arg[i]);
-		i++;
-	}
-	printf("type of add_arg = %i and len = %i\nchar is ||%s||\n", type, len, str);
 	if (type == 0)
 		temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
 	else if (type == 1)
@@ -273,13 +266,11 @@ void	ft_add_arg_array(t_command *last, char *str, int type)
 	while (i < len)
 	{
 		temp[i] = ft_strdup(last->arg[i]);
-		printf(">>%s<<\n", temp[i]);
 		i++;
 	}
 	if (type == 0)
 	{
 		temp[i] = ft_strdup(str);
-		printf(">>%s<<\n", temp[i]);
 		i++;
 	}
 	else if (type == 1)
@@ -288,12 +279,10 @@ void	ft_add_arg_array(t_command *last, char *str, int type)
 		append_temp = ft_strdup(temp[i]);
 		free(temp[i]);
 		temp[i] = ft_strjoin(append_temp, str);
-		printf(">>%s<<\n", temp[i]);
 		free(append_temp);
 		i++;
 	}
 	temp[i] = NULL;
-	printf("len after adding %zu\n", ft_strlen_array(temp));
 	ft_free_array(last->arg);
 	last->arg = temp;
 }

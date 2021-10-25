@@ -29,7 +29,6 @@ int	ft_child(t_command *c, t_mother *s)
 
 	err = 0;
 	ret = 1;
-	// printf("%s %d\n", s->c->command, s->c->isprecededbydoubleche);
 	if (c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1|| c->isprecededbyche == 1  )//|| c->isprecededbydoubleche == 1)
 		err = ft_redirect(c, s);
 	if (c->isprecededbypipe == 1 && !REDIRBEFORE)
@@ -39,11 +38,11 @@ int	ft_child(t_command *c, t_mother *s)
 			ft_error(s, "pipe iii dup2", -1);
 	}
 	if(REDIRAFTER)
-		ret = ft_execfind(s, s->c);
+		ret = ft_execfind(s, c);
 	if(REDIRAFTER && !(c->isfollowedbypipe == 1))
 	{
 		// puts("chibrax");
-	exit(ret);
+		exit(ret);
 	}
 	if(s->c->isprecededbydoubleche)
 		err = ft_redirect(c, s);
@@ -61,7 +60,7 @@ int	ft_child(t_command *c, t_mother *s)
 	// 	c->inputfile = NULL;
 	// }
 	if(!REDIRAFTER)
-		ret = ft_execfind(s, s->c);
+		ret = ft_execfind(s, c);
 	exit(ret);
 }
 
@@ -76,7 +75,7 @@ int	ft_child(t_command *c, t_mother *s)
 //: waitpid(pid, &status, 0);
 // get return value of child process : ex = WIFEXITED(status);
 
-int	ft_waitpid(t_mother *s, int status)
+int	ft_waitpid(t_mother *s, t_command *c, int status)
 {
 	t_mother	*tmp;
 	int			i;
@@ -89,14 +88,13 @@ int	ft_waitpid(t_mother *s, int status)
 	ret = 1;
 	while (i < s->nbcmd)
 	{
-		waitpid(tmp->c->cpid, &status, 0);
-		if(tmp->c->isfollowedbypipe == 0)
+		waitpid(c->cpid, &status, 0);
+		if(c->isfollowedbypipe == 0)
 		{	ex = WIFEXITED(status);
 			if (ex > -1)
 				ret = WEXITSTATUS(status);
 		}
 		i++;
-			tmp->c = tmp->c->previouspipe;
 	}
 	return (ret);
 }
@@ -110,7 +108,7 @@ int		ft_parent(t_command *c, t_mother *s)
 	ret = 0;
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]);
-	if(c->isfollowedbypipe == 1|| c->isprecededbypipe == 1)// || c->isfollowedbyche == 1)
+	if(c->isfollowedbypipe == 1 || c->isprecededbypipe == 1)// || c->isfollowedbyche == 1)
 	{
 		close(c->pipes[1]);
 		if (c->isfollowedbyche == 1)
@@ -147,16 +145,18 @@ int		ft_pipe(t_command *c, t_mother *s)
 	// signal(SIGINT, killchild);
 	// signal(SIGQUIT, quitchild);
 	if(*pid == 0)
+	{
 		ret = ft_child(c, s);
+	}
 	else
 	{
 		ret = ft_parent(c, s);
 	}
 	int status = 0;
 	int ex = 0;
-	if(s->c->isfollowedbypipe == 0 && s->nbcmd > 1)
-		ret = ft_waitpid(s, status);
-	else if (s->nbcmd == 1 || s->c->isfollowedbyche == 1 || s->c->isfollowedbydoubleche == 1)
+	if(c->isfollowedbypipe == 0 && s->nbcmd > 1)
+		ret = ft_waitpid(s, c, status);
+	if (s->nbcmd == 1 || c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1)
 	{
 		waitpid(*pid, &status, 0);
 		ex = WIFEXITED(status);
@@ -171,55 +171,53 @@ int		ft_pipe(t_command *c, t_mother *s)
 //look for if (s->c->command == NULL) // pas sur que ca fonctionne // and used twice
 
 void		multicommands(t_mother *s)
-{	
-	t_mother	*tmp;
+{
 	int			i;
 	pid_t		*pid;
+	t_command	*cmd;
 	
 	i = 0;
-	if (s->c->command == NULL)
+	cmd = s->c;
+	if (cmd->command == NULL)
 	{
-		s->c->retvalue = 127;
-		s->ret = s->c->retvalue;
+		cmd->retvalue = 127;
+		s->ret = cmd->retvalue;
 	}
 	while(i < s->nbcmd)
 	{
-		tmp = s;
-		if (ft_strcmp("exit", s->c->command) == 0)
-			s->c->retvalue = ft_exit(s, s->c);
-		else if (ft_strcmp("cd", s->c->command) == 0)
+		if (ft_strcmp("exit", cmd->command) == 0)
+			cmd->retvalue = ft_exit(s, cmd);
+		else if (ft_strcmp("cd", cmd->command) == 0)
 		{
-			ft_pipe(s->c, s);
-			s->c->retvalue = ft_cd(s);
+			if (s->nbcmd > 1)
+				ft_pipe(cmd, s);
+			cmd->retvalue = ft_cd(s);
 		}
-		else if (ft_strcmp("export", s->c->command) == 0 && s->c->nbarg > 1)
+		else if (ft_strcmp("export", cmd->command) == 0 && cmd->nbarg > 1)
 		{
-			ft_pipe(s->c, s);
-			if (s->c->nbarg > 0)
-			{
-			s->c->retvalue = ft_export(s, s->c);
-			}
+			ft_pipe(cmd, s);
+			if (cmd->nbarg > 0)
+				cmd->retvalue = ft_export(s, cmd);
 		}
-		else if (ft_strcmp("echo", s->c->command) == 0)
+		else if (ft_strcmp("echo", cmd->command) == 0)
 		{
-			s->c->retvalue =ft_pipe(s->c, s);
+			cmd->retvalue = ft_pipe(cmd, s);
 		}
-		else if (ft_strcmp("unset", s->c->command) == 0)
+		else if (ft_strcmp("unset", cmd->command) == 0)
 		{
-			ft_pipe(s->c, s);
-			s->c->retvalue = ft_unset(s, s->c);
+			ft_pipe(cmd, s);
+			cmd->retvalue = ft_unset(s, cmd);
 		}
-		else if (s->c->command == NULL)
-			s->c->retvalue = 127;
-		else if (!(ft_strcmp("cd", s->c->command) == 0))
+		else if (cmd->command == NULL)
+			cmd->retvalue = 127;
+		else if (!(ft_strcmp("cd", cmd->command) == 0))
 		{
-			printf("entering pipes\n");
-			s->c->retvalue = ft_pipe(s->c, tmp);
+			cmd->retvalue = ft_pipe(cmd, s);
 		}
-		s->ret = s->c->retvalue;
-		if(!s->c->nextpipe)
-			break; 
-		s->c = s->c->nextpipe;
+		s->ret = cmd->retvalue;
+		if(!cmd->nextpipe)
+			break;
+		cmd = cmd->nextpipe;
 		i++;
 	}
 	pid = ft_return_global_pid();
