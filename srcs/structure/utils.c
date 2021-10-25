@@ -14,30 +14,27 @@
 
 void	ft_initc(t_mother *s)
 {
-	t_command	*c;
-
-	c = ft_malloc(&c, sizeof(t_command));
-	c->line = NULL;
-	c->command = NULL;
-	c->retvalue = 0;
-	c->nbarg = 0;
-	c->arg = NULL;
-	c->isfollowedbypipe = 0;
-	c->isfollowedbyche = 0;
-	c->isfollowedbydoubleche = 0;
-	c->nextpipe = 0;
-	c->isprecededbypipe = 0;
-	c->isprecededbyche = 0;
-	c->isprecededbydoubleche = 0;
-	c->previouspipe = NULL;
-	c->isinputfile = 0;
-	c->outfile = NULL;
-	c->isinputfile = 0;
-	c->inputfile = 0;
-	c->iserrofile = 0;
-	c->errorfile = NULL;
-	c->cmd_status = 0;
-	s->c = c;
+	s->c = ft_malloc(&s->c, sizeof(t_command));
+	s->c->line = NULL;
+	s->c->command = NULL;
+	s->c->retvalue = 0;
+	s->c->nbarg = 0;
+	s->c->arg = NULL;
+	s->c->isfollowedbypipe = 0;
+	s->c->isfollowedbyche = 0;
+	s->c->isfollowedbydoubleche = 0;
+	s->c->nextpipe = 0;
+	s->c->isprecededbypipe = 0;
+	s->c->isprecededbyche = 0;
+	s->c->isprecededbydoubleche = 0;
+	s->c->previouspipe = NULL;
+	s->c->isinputfile = 0;
+	s->c->outfile = NULL;
+	s->c->isinputfile = 0;
+	s->c->inputfile = 0;
+	s->c->iserrofile = 0;
+	s->c->errorfile = NULL;
+	s->c->cmd_status = 0;
 
 	//puts("CACACACCA");
 		//printf("s.command %s\n", s->c->command);

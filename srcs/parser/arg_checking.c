@@ -34,6 +34,7 @@ void	check_echo_flag(t_mother *s, t_token *tok)
 	}
 	if (i > 2)
 	{
+		free(tok->token);
 		tok->token = ft_strdup("-n");
 	}
 }

@@ -146,11 +146,13 @@ int		ft_strstr_index(char *haystack, char *needle);
 
 //exec
 int		ft_execfind(t_mother *s, t_command *c);
-int	ft_execnotbuiltin(t_mother *s);
-char	*ft_pathfinder(t_mother *s);
+int	ft_execnotbuiltin(t_mother *s, t_command *c);
+char	*ft_pathfinder(t_mother *s, t_command *c);
+char	*ft_pathtester(t_mother *s, t_command *c, char ***minipath, int minisize);
 int		ft_redirect(t_command *c, t_mother *s);
 void	multicommands(t_mother *s);
 int		ft_pipe(t_command *c, t_mother *s);
+int		ft_waitpid(t_mother *s, t_command *c, int status);
 
 //signaux
 void	signalhandler(int c); //for ctrl-c ctrl-v
@@ -221,7 +223,7 @@ int		ft_stat_check(char *path, t_token *tok);
 void	redir_input_handler(t_mother *s);
 void	ft_finding_delimiter(t_mother *s, t_token *tok);
 int		ft_redir_error_check(t_mother *s, t_token *tok);
-void	ft_redir_input_activator(t_mother *s);
+int		ft_redir_input_activator(t_mother *s);
 int		ft_strnstr_index(char *haystack, char *needle, int len);
 
 // parser functions

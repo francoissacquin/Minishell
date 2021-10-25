@@ -4,6 +4,7 @@ void	redir_input_handler(t_mother *s)
 {
 	t_token		*tok;
 	int			res;
+	int			ctrl;
 
 	tok = s->lex->first_token;
 	while(tok->next != NULL)
@@ -15,7 +16,9 @@ void	redir_input_handler(t_mother *s)
 			if (res)
 				return ;
 			ft_finding_delimiter(s, tok);
-			ft_redir_input_activator(s);
+			ctrl = ft_redir_input_activator(s);
+			if (ctrl)
+				write(2, "Warning, using EOF as delimiter is not advised\n", 47);
 		}
 		tok = tok->next;
 	}
@@ -26,7 +29,9 @@ void	redir_input_handler(t_mother *s)
 		if (res)
 			return ;
 		ft_finding_delimiter(s, tok);
-		ft_redir_input_activator(s);
+		ctrl = ft_redir_input_activator(s);
+		if (ctrl)
+			write(2, "Warning, using EOF as delimiter is not advised\n", 47);
 	}
 }
 
@@ -70,7 +75,7 @@ int	ft_redir_error_check(t_mother *s, t_token *tok)
 	return (0);
 }
 
-void	ft_redir_input_activator(t_mother *s)
+int		ft_redir_input_activator(t_mother *s)
 {
 	char	*temp;
 	char	*redir;
@@ -81,6 +86,8 @@ void	ft_redir_input_activator(t_mother *s)
 		s->lex->std_input_redir = NULL;
 	}
 	temp = readline("> ");
+	if (temp == NULL)
+		return (1);
 	while (ft_strcmp(temp, s->lex->delimiter))
 	{
 		if (s->lex->std_input_redir == NULL)
@@ -93,8 +100,11 @@ void	ft_redir_input_activator(t_mother *s)
 		}
 		free(temp);
 		temp = readline("> ");
+		if (temp == NULL)
+			return (1);
 	}
 	free(temp);
+	return (0);
 }
 
 int		ft_strnstr_index(char *haystack, char *needle, int len)

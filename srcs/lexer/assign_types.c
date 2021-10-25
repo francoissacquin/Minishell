@@ -228,6 +228,7 @@ void	ft_type_path(t_mother *s, t_token *tok)
 {
 	int		i;
 	char	*temp;
+	char	*value;
 	char	*inter;
 
 	(void)s; // A ENLEVER
@@ -242,7 +243,11 @@ void	ft_type_path(t_mother *s, t_token *tok)
 			{
 				temp = ft_strdup(tok->token);
 				free(tok->token);
-				inter = ft_strjoin(ft_substr(temp, 0, i), ft_return_env_value(s, "HOME", 1));
+				value = ft_return_env_value(s, "HOME", 1);
+				tok->token = ft_substr(temp, 0, i);
+				inter = ft_strjoin(tok->token, value);
+				free(tok->token);
+				free(value);
 				tok->token = ft_strjoin(inter, &temp[i + 1]);
 				free(inter);
 				free(temp);

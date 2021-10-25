@@ -23,7 +23,7 @@ int	ft_fileexits(char *testpath)
 	return (ret);
 }
 
-char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
+char	*ft_pathtester(t_mother *s, t_command *c, char ***minipath, int minisize)
 {
 	int			i;
 	int			j;
@@ -49,7 +49,7 @@ char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
 			free(testpath);
 			testpath = ft_strjoin(testpath2, "/");
 			free(testpath2);
-			addcmd = ft_strjoin(testpath, s->c->command);
+			addcmd = ft_strjoin(testpath, c->command);
 			if (ft_fileexits(addcmd) == 0)
 				pathfound = 1;
 			j++;
@@ -65,7 +65,7 @@ char	*ft_pathtester(t_mother *s, char ***minipath, int minisize)
 	return (addcmd);
 }
 
-char	*ft_pathfinder(t_mother *s)
+char	*ft_pathfinder(t_mother *s, t_command *c)
 {
 	char		*rightpath;
 	char		**path;
@@ -93,7 +93,7 @@ char	*ft_pathfinder(t_mother *s)
 		minipath[i] = ft_split(path[i], '/');
 		i++;
 	}
-	rightpath = ft_pathtester(s, minipath, minipathsize);
+	rightpath = ft_pathtester(s, c, minipath, minipathsize);
 	i = 0;
 	while (i < minipathsize)
 	{
@@ -105,15 +105,14 @@ char	*ft_pathfinder(t_mother *s)
 	return (rightpath);
 }
 
-int	ft_execnotbuiltin(t_mother *s)
+int	ft_execnotbuiltin(t_mother *s, t_command *c)
 {
 	int		error;
 	char	*path;
 
-	printf("passage par les erreurs\n");
-	path = ft_pathfinder(s);
+	path = ft_pathfinder(s, c);
 	error = 0;
-	error = execve(path, s->c->arg, s->env);
+	error = execve(path, c->arg, s->env);
 	free(path);
 	return (error);
 }
@@ -123,22 +122,21 @@ int	ft_execfind(t_mother *s, t_command *c)
 	int	ret;
 
 	ret = 1;
-	s->c = c;
-	if (ft_strcmp("cd", s->c->command) == 0)
+	if (ft_strcmp("cd", c->command) == 0)
 		ret = ft_cd(s);
-	else if (ft_strcmp("echo", s->c->command) == 0)
+	else if (ft_strcmp("echo", c->command) == 0)
 		ret = ft_echo(s, s->c);
-	else if (ft_strcmp("env", s->c->command) == 0)
+	else if (ft_strcmp("env", c->command) == 0)
 		ret = ft_env(s);
-	else if (ft_strcmp("exit", s->c->command) == 0)
+	else if (ft_strcmp("exit", c->command) == 0)
 		ret = ft_exit(s, c);
-	else if (ft_strcmp("export", s->c->command) == 0 && s->c->nbarg == 1)
+	else if (ft_strcmp("export", c->command) == 0 && s->c->nbarg == 1)
 		ret = ft_export(s, c);
-	else if (ft_strcmp("pwd", s->c->command) == 0)
+	else if (ft_strcmp("pwd", c->command) == 0)
 		ret = ft_pwd(s);
-	else if (ft_strcmp("unset", s->c->command) == 0)
+	else if (ft_strcmp("unset", c->command) == 0)
 		ret = ft_unset(s, c);
 	else
-		ret = ft_execnotbuiltin(s);
+		ret = ft_execnotbuiltin(s, c);
 	return (ret);
 }
