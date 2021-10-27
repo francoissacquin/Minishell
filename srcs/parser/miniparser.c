@@ -40,7 +40,7 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	err = 0;
 	if (*i == 0 && ft_strchr("Pfo", tok->type) && ft_strcmp(tok->token, "<<") != 0 && s->lex->delimiter == NULL)
 	{
-		write(2, "Error, pipe or operator with no command\n", 34);
+		write(2, "Error, pipe or operator with no command\n", 40);
 		s->ret = 1;
 		err = 1;
 	}

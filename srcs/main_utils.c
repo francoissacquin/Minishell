@@ -3,16 +3,20 @@
 int	ft_lexer_handler(t_mother *s)
 {
 	int		parse_ret;
+	pid_t	*pid;
 
 	parse_ret = 0;
+	pid = ft_return_global_pid();
 	minilexer(s);
 	assign_types(s);
 	redir_input_handler(s);
 	parse_ret = miniparser(s);
+	if (parse_ret == 1)
+		*pid = 0;
 	return (parse_ret);
 }
 
-int	ft_weird_readline(t_mother *s, char *str)
+int	ft_weird_readline(t_mother *s)
 {
 	free_t_loop(s);
 	free(s->line);
@@ -30,8 +34,11 @@ void	ft_control_d(t_mother *s)
 
 void	exec_and_repeat(t_mother *s)
 {
+	pid_t	*pid;
+
+	pid = ft_return_global_pid();
 	multicommands(s);
-	g_pid = 0;
+	*pid = 0;
 	free_t_loop(s);
 	free(s->line);
 }

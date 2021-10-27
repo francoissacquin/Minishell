@@ -40,6 +40,7 @@ srcs/builtins/export.c \
 srcs/builtins/pwd.c \
 srcs/builtins/unset.c \
 srcs/builtins/built_utils.c \
+srcs/builtins/built_utils_2.c \
 srcs/env/env_manager.c \
 srcs/env/env_utils.c \
 srcs/env/env_expanding.c \

@@ -19,7 +19,7 @@ void	ft_new_operator_char_rule(t_mother *s, int *i, int *j)
 {
 	link_chain_elem(s, i, j, 'o');
     if (s->line[*j] == ' ')
-        *i = *i + 1;;
+        *i = *i + 1;
 }
 
 void	ft_quote_aligner(t_mother *s, int *i, int *j)

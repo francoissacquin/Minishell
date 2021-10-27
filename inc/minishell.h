@@ -109,7 +109,7 @@ int			mainaftersignal(t_mother *s, char *str);
 //mainaftersignals utils
 void		exec_and_repeat(t_mother *s);
 int			ft_lexer_handler(t_mother *s);
-int			ft_weird_readline(t_mother *s, char *str);
+int			ft_weird_readline(t_mother *s);
 void		ft_control_d(t_mother *s);
 int			ft_input_is_spaces(char *str);
 
@@ -146,6 +146,12 @@ int			ft_check_exit_arg(char *str);
 void		ft_linking_args(t_mother *s, t_command *cmd);
 int			ft_skip_quote_marks(char *str, int i, int end);
 int			ft_strstr_index(char *haystack, char *needle);
+int			ft_exit_arg_spaces(t_mother *s, int i, int end);
+void		resolve_exit_spaces(t_command *cmd, char *built_in, int nb_args);
+char		*exit_join_args_one(t_command *cmd, int *i, int *nb_args);
+void		exit_join_arg_temp(char **temp, char **temp2, t_command *cmd, int *i);
+void		exit_join_arg_temp2(char **temp, char **temp2, t_command *cmd, int *i);
+void		exit_join_args(t_command *cmd, char *built_in, char *temp, char *temp2);
 
 //exec
 int			ft_execfind(t_mother *s, t_command *c);
