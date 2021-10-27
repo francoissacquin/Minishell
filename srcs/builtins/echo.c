@@ -12,20 +12,7 @@
 
 #include "../../inc/minishell.h"
 
-
-//on postule que la chaine arrive parsee aka debarasse de echo
-// check for qotes simple and double
-
-void ft_parserecho(t_mother *s)
-{
-	(void)s;
-	// int simplequote = 0;
-	// int doublequote = 0;
-
-
-}
-
-int		ft_skip_spaces(char *str, int i)
+int	ft_skip_spaces(char *str, int i)
 {
 	while (str[i] == ' ')
 		i++;
@@ -59,19 +46,17 @@ int	ft_echo(t_mother *s, t_command *c)
 	while (c->arg[i])
 	{
 		if (!(ft_strcmp(c->arg[i], "$?")))
-		{
 			ft_putnbr_fd(s->ret, 1);
-		}
 		else
 			ft_putstr_fd(c->arg[i], 1);
 		i++;
 		if (c->arg[i] != NULL)
 		{
-			j = ft_strstr_index(s->line, "echo");
-			j = j + 4;
-			j = ft_skip_spaces(s->line, j);
-			increment_spaces = 1;
-			space_switch = 0;
+			// j = ft_strstr_index(s->line, "echo");
+			// j = j + 4;
+			// j = ft_skip_spaces(s->line, j);
+			// increment_spaces = 1;
+			// space_switch = 0;
 			while (increment_spaces < i)
 			{
 				quote_switch = 0;
@@ -102,4 +87,20 @@ int	ft_echo(t_mother *s, t_command *c)
 		write(1, "\n", 1);
 	ret = 0;
 	return(ret);
+}
+
+int		echo_space_loop(t_mother *s, int *i,)
+{
+	int		quote_switch;
+	int		increment_spaces;
+	int		space_switch;
+	int		j;
+
+	j = ft_strstr_index(s->line, "echo");
+	j = j + 4;
+	j = ft_skip_spaces(s->line, j);
+	increment_spaces = 1;
+	space_switch = 0;
+	
+
 }

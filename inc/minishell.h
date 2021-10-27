@@ -149,9 +149,12 @@ int			ft_strstr_index(char *haystack, char *needle);
 int			ft_exit_arg_spaces(t_mother *s, int i, int end);
 void		resolve_exit_spaces(t_command *cmd, char *built_in, int nb_args);
 char		*exit_join_args_one(t_command *cmd, int *i, int *nb_args);
-void		exit_join_arg_temp(char **temp, char **temp2, t_command *cmd, int *i);
-void		exit_join_arg_temp2(char **temp, char **temp2, t_command *cmd, int *i);
-void		exit_join_args(t_command *cmd, char *built_in, char *temp, char *temp2);
+void		exit_join_arg_temp(char **temp, char **temp2, t_command *cmd,
+				int *i);
+void		exit_join_arg_temp2(char **temp, char **temp2, t_command *cmd,
+				int *i);
+void		exit_join_args(t_command *cmd, char *built_in, char *temp, char
+				*temp2);
 
 //exec
 int			ft_execfind(t_mother *s, t_command *c);
