@@ -6,7 +6,7 @@ void	ft_add_history(t_mother *s)
 		add_history(s->line);
 }
 
-void	ft_clear_history()
+void	ft_clear_history(void)
 {
 	clear_history();
 }

@@ -117,7 +117,7 @@ void	ft_type_env(t_token *tok)
 		i++;
 		while (tok->token[i] && tok->token[i] != '=')
 		{
-			if (!(ft_isalnum(tok->token[i]) || tok->token[i] == '_'))
+			if (!(ft_isalnum(tok->token[i]) || tok->token[i] == '_' || tok->token[i] == ' '))
 				return ;
 			i++;
 		}

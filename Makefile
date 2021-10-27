@@ -23,6 +23,7 @@ SFLAGS = -lreadline
 HEADER = /inc/minishell.h
 
 SRC = srcs/main.c \
+srcs/main_utils.c \
 srcs/parser/parse.c \
 srcs/parser/miniparser.c \
 srcs/parser/redir_parsing.c \
