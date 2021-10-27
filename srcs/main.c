@@ -42,14 +42,13 @@ int	mainaftersignal(t_mother *s, char *str)
 		if (ft_lexer_handler(s))
 		{
 			free(s->line);
-			g_pid = 0;
 			return (s->ret);
 		}
 		input_output_checker(s);
 	}
 	else if (s->line != NULL && (s->line[0] == '\0'
 			|| ft_input_is_spaces(s->line)))
-		return (ft_weird_readline(s, str));
+		return (ft_weird_readline(s));
 	else if (s->line == NULL)
 		ft_control_d(s);
 	exec_and_repeat(s);
