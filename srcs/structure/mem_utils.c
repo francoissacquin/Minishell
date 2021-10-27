@@ -84,3 +84,10 @@ void    free_one_cmd(t_mother *s, t_command *temp)
         free(temp);
     temp = NULL;
 }
+
+void	free_t_loop(t_mother *s)
+{
+	free_t_token(s);
+	free_t_cmd(s);
+	free_t_lexer(s);
+}
