@@ -10,7 +10,7 @@ void	pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok)
 	else if (cmd->cmd_status == 1)
 	{
 		if (!(ft_strcmp(cmd->command, "env")) && cmd->nbarg == 1)
-			write(2, "error, env takes no flag or argument\n", 37); // METTRE FT_ERROR ICI
+			write(2, "error, env takes no flag or argument\n", 37);
 	}
 }
 
@@ -26,7 +26,6 @@ void	check_echo_flag(t_mother *s, t_token *tok)
 	{
 		if (tok->token[i] != 'n')
 		{
-			//printf("flag non-valide pour le built-in echo\n"); //METTRE FT_ERROR ICI
 			tok->type = 'w';
 			return ;
 		}

@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-int		miniparser(t_mother *s)
+int	miniparser(t_mother *s)
 {
 	t_token	*tok;
 	int		i;
@@ -8,12 +8,11 @@ int		miniparser(t_mother *s)
 
 	tok = s->lex->first_token;
 	i = 0;
-	while(tok->next != NULL)
+	while (tok->next != NULL)
 	{
 		res = ft_tok_conveyor_belt(s, tok, &i);
 		if (res)
 		{
-			//ft_print_parsing_results(s);
 			ft_wrong_input(s);
 			return (1);
 		}
@@ -25,7 +24,6 @@ int		miniparser(t_mother *s)
 		res = ft_tok_conveyor_belt(s, tok, &i);
 		if (res)
 		{
-			//ft_print_parsing_results(s);
 			ft_wrong_input(s);
 			return (1);
 		}
@@ -38,7 +36,8 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	int		err;
 
 	err = 0;
-	if (*i == 0 && ft_strchr("Pfo", tok->type) && ft_strcmp(tok->token, "<<") != 0 && s->lex->delimiter == NULL)
+	if (*i == 0 && ft_strchr("Pfo", tok->type)
+		&& ft_strcmp(tok->token, "<<") != 0 && s->lex->delimiter == NULL)
 	{
 		write(2, "Error, pipe or operator with no command\n", 40);
 		s->ret = 1;
@@ -72,146 +71,6 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	return (err);
 }
 
-void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
-{
-	t_command	*last;
-	int			fd;
-
-	last = ft_last_cmd(s->c);
-	//printf("pour passage %i on a s->redir = %i\n", *i, s->redirect_mem);
-	if (s->redirect_mem == 5 && tok->next != NULL)
-	{
-		if (tok->next != NULL && ft_strchr("bc", tok->next->type) && last == s->c)
-		{
-			fill_first_command(s, tok->next);
-			plug_redir_5(s, s->c);
-		}
-		else if (tok->next != NULL && ft_strchr("bc", tok->next->type) && last != s->c)
-		{
-			fill_next_command(s, last, tok->next, i);
-			last = ft_last_cmd(s->c);
-			plug_redir_5(s, last);
-		}
-		else
-		{
-			if (last->inputfile == NULL)
-				plug_redir_5(s, last);
-			s->redirect_mem = 0;
-
-		}
-	}
-	else if (tok->prev != NULL && last->line != NULL)
-	{
-		if (tok->prev->type == 'P')
-		{
-			//printf("--creation post pipe avec s->redir = %i\n", s->redirect_mem);
-			fill_next_command(s, last, tok, i);
-		}
-		else if (s->redirect_mem == 5)
-			plug_redir_5(s, last);
-		else if (s->redirect_mem == 2)
-		{
-			last->isinputfile = 1;
-			if (last->inputfile != NULL)
-			{
-				free(last->inputfile);
-				last->isprecededbydoubleche = 0;
-			}
-			last->inputfile = ft_strdup(tok->token);
-			last->isprecededbyche = 1;
-			s->redirect_mem = 0;
-		}
-		else if (s->redirect_mem == 3 || s->redirect_mem == 4)
-		{
-			last->isoutfile = 1;
-			fd = open(tok->token, O_CREAT | O_RDWR | O_APPEND, 0666);
-			close(fd);
-			if (last->outfile != NULL)
-			{
-				free (last->outfile);
-				last->outfile = NULL;
-			}
-			last->outfile = ft_strdup(tok->token);
-			if (s->redirect_mem == 3)
-			{
-				last->isfollowedbydoubleche = 0;
-				last->isfollowedbyche = 1;
-			}
-			else if (s->redirect_mem == 4)
-			{
-				last->isfollowedbyche = 0;
-				last->isfollowedbydoubleche = 1;
-			}
-			s->redirect_mem = 0;
-		}
-		else
-		{
-			tok->type = 'w';
-			ft_add_args(s, tok, i);
-		}
-	}
-	else
-	{
-		//printf("--creation premier element avec s->redir = %i\n", s->redirect_mem);
-		fill_first_command(s, tok);
-	}
-}
-
-void	plug_redir_5(t_mother *s, t_command *last)
-{
-	char	*temp;
-	int			fd;
-
-	if (last->inputfile != NULL)
-		free(last->inputfile);
-	last->isprecededbyche = 0;
-	fd = open("redir_input.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
-	if (fd < 0)
-		s->ret = 1;
-	write(fd, s->lex->std_input_redir, ft_strlen(s->lex->std_input_redir));
-	close(fd);
-	last->isinputfile = 1;
-	temp = getenv("PWD");
-	last->inputfile = ft_strdup("redir_input.txt");
-	last->isprecededbydoubleche = 1;
-}
-
-void	fill_next_command(t_mother *s, t_command *last, t_token *tok, int *i)
-{
-	t_command	*next;
-
-	last->isfollowedbypipe = 1;
-	add_cmd_elem(s, tok, i);
-	next = ft_last_cmd(s->c);
-	last->nextpipe = next;
-	next->previouspipe = last;
-	next->nextpipe = NULL;
-	next->isprecededbypipe = 1;
-	next->isprecededbyche = 0;
-	next->isprecededbydoubleche = 0;
-	next->isfollowedbypipe = 0;
-	next->isfollowedbyche = 0;
-	next->isfollowedbydoubleche = 0;
-	next->isinputfile = 0;
-	next->inputfile = NULL;
-	next->isoutfile = 0;
-	next->outfile = NULL;
-	s->pipe++;
-}
-
-void	fill_first_command(t_mother *s, t_token *tok)
-{
-	s->c->command = ft_strdup(tok->token);
-	s->c->line = ft_strdup(tok->token);
-	s->c->retvalue = 0;
-	s->c->nbarg = 1;
-	s->c->arg = ft_malloc(&s->c->arg, sizeof(char *) * 2);
-	s->c->arg[0] = ft_strdup(tok->token);
-	s->c->arg[1] = NULL;
-	s->c->cmd_status = tok->type - 97;
-	s->nbcmd++;
-}
-
 int	ft_add_args(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
@@ -225,15 +84,18 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 	{
 		if (last->cmd_status == 1)
 		{
-			if (ft_strchr("fq", tok->type) && !(ft_strcmp(last->command, "echo")))
+			if (ft_strchr("fq", tok->type)
+				&& !(ft_strcmp(last->command, "echo")))
 				check_echo_flag(s, tok);
 			else if (tok->type == 'f')
 				write(2, "AUCUN FLAG AUTORISE POUR LES BUILT-INS\n", 39);
 		}
 		last->nbarg++;
-		if (tok->pre_space == 0 && tok->type == 'p' && ft_strchr("pe", tok->prev->type))
+		if (tok->pre_space == 0 && tok->type == 'p'
+			&& ft_strchr("pe", tok->prev->type))
 			ft_add_arg_array(last, tok->token, 1);
-		else if (last->command != NULL && tok->pre_space == 0 && !(ft_strcmp(last->command, "export")))
+		else if (last->command != NULL && tok->pre_space == 0
+			&& !(ft_strcmp(last->command, "export")))
 			ft_add_arg_array(last, tok->token, 1);
 		else
 			ft_add_arg_array(last, tok->token, 0);
@@ -241,7 +103,8 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 			last->line = ft_strdup(tok->token);
 		else
 		{
-			if (last->command != NULL && !(ft_strcmp(last->command, "export")) && tok->pre_space == 0)
+			if (last->command != NULL && !(ft_strcmp(last->command, "export"))
+				&& tok->pre_space == 0)
 				temp = ft_strdup(tok->token);
 			else
 				temp = ft_strjoin(" ", tok->token);
@@ -257,7 +120,7 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 
 void	ft_add_arg_array(t_command *last, char *str, int type)
 {
-	char 	**temp;
+	char	**temp;
 	char	*append_temp;
 	int		len;
 	int		i;
@@ -299,7 +162,6 @@ int	ft_add_operator(t_mother *s, t_token *tok, int *i)
 	last = ft_last_cmd(s->c);
 	if (tok->type == 'P')
 	{
-		//check that last command structure is completed and next token is actually a command
 		if (last->line == NULL || last->command == NULL || last->arg == NULL)
 		{
 			write(2, "wrong pipe here, last command does not exist\n", 45);
@@ -312,18 +174,17 @@ int	ft_add_operator(t_mother *s, t_token *tok, int *i)
 				return (0);
 			else
 			{
-				write(2, "pipe leads to non valid command\n", 32); //METTRE FT_ERROR ICI
+				write(2, "pipe leads to non valid command\n", 32);
 				s->ret = 1;
 				return (1);
 			}
 		}
 		else
 		{
-			write(2, "pipe is last token???\n", 22); //METTRE FT_ERROR ICI
+			write(2, "pipe is last token???\n", 22);
 			s->ret = 1;
 			return (1);
 		}
-		
 	}
 	else if (tok->type == 'o')
 	{
@@ -345,80 +206,4 @@ int	ft_add_operator(t_mother *s, t_token *tok, int *i)
 		}
 	}
 	return (0);
-}
-
-void	assign_redirect(t_mother *s, t_token *tok, int *i)
-{
-	t_command	*last;
-
-	(void)i;
-	last = ft_last_cmd(s->c);
-	if (!(ft_strcmp(tok->token, "<")))
-		s->redirect_mem = 2;
-	else if (!(ft_strcmp(tok->token, ">")))
-		s->redirect_mem = 3;
-	else if (!(ft_strcmp(tok->token, ">>")))
-		s->redirect_mem = 4;
-	else if (!(ft_strcmp(tok->token, "<<")))
-		s->redirect_mem = 5;
-}
-
-void	add_cmd_elem(t_mother *s, t_token *tok, int *i)
-{
-	t_command	*next;
-	t_command	*prev;
-
-	//printf("creating new cmd element with i = %i\n", *i);
-	prev = ft_last_cmd(s->c);
-	if (prev->command != NULL)
-	{
-		//check_pipe(); checking the existence of a pipe and creating a new cmd in case the pipe exists
-		next = create_cmd(s, tok, i);
-		next->previouspipe = prev;
-		prev->nextpipe = next;
-		next->nextpipe = NULL;
-	}
-	else
-	{
-		s->c = create_cmd(s, tok, i);
-		s->c->previouspipe = NULL;
-		s->c->nextpipe = NULL;
-	}
-}
-
-t_command	*create_cmd(t_mother *s, t_token *tok, int *i)
-{
-	t_command	*new;
-
-	(void)i;
-	(void)s;
-	new = ft_malloc(&new, sizeof(t_command));
-	new->command = ft_strdup(tok->token);
-	new->line = ft_strdup(tok->token);
-	new->retvalue = 0;
-	new->nbarg = 1;
-	new->arg = ft_malloc(&new->arg, sizeof(char *) * 2);
-	new->arg[0] = ft_strdup(tok->token);
-	new->arg[1] = NULL;
-	new->cmd_status = tok->type - 97;
-	s->nbcmd++;
-	return (new);
-}
-
-t_command	*ft_last_cmd(t_command *first)
-{
-	t_command	*temp;
-
-	temp = first;
-	while (temp->nextpipe != NULL)
-		temp = temp->nextpipe;
-	return (temp);
-}
-
-void	ft_wrong_input(t_mother *s)
-{
-	free_t_token(s);
-	free_t_cmd(s);
-	free_t_lexer(s);
-	//printf("INPUT NON VALIDE\n"); // METTRE FT_ERROR ICI
 }

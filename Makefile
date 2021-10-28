@@ -26,6 +26,9 @@ SRC = srcs/main.c \
 srcs/main_utils.c \
 srcs/parser/parse.c \
 srcs/parser/miniparser.c \
+srcs/parser/parser_utils.c \
+srcs/parser/parser_utils_2.c \
+srcs/parser/parser_utils_3.c \
 srcs/parser/redir_parsing.c \
 srcs/parser/arg_checking.c \
 srcs/parser/post_parsing.c \
@@ -48,6 +51,8 @@ srcs/env/env_expanding_utils.c \
 srcs/lexer/minilexer.c \
 srcs/lexer/lexer_lst_utils.c \
 srcs/lexer/assign_types.c \
+srcs/lexer/assign_utils.c \
+srcs/lexer/assign_utils_2.c \
 srcs/lexer/type_utils.c \
 srcs/lexer/mini_lexer_rules.c \
 srcs/lexer/mini_lexer_rules_2.c \
