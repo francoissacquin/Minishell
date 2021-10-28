@@ -200,6 +200,7 @@ char		*ft_return_env_value(t_mother *s, char *var, int type);
 void		minilexer(t_mother *s);
 void		minilexer_inner_loop(t_mother *s, int *i, int *j);
 t_token		*create_token(t_mother *s, int i, int j, char c);
+void		create_first_token(t_mother *s, int i, int j, t_token *new);
 void		link_chain_elem(t_mother *s, int *i, int *j, char c);
 
 // lexer rules extension for norm problems
@@ -218,15 +219,19 @@ void		dollar_tokeniser(t_mother *s, int *i, int *j);
 
 // assign types functions
 void		assign_types(t_mother *s);
+void		assign_type_conveyor_belt(t_mother *s, t_token *temp);
 void		ft_type_flag(t_token *tok);
 void		ft_type_env(t_token *tok);
+void		ft_check_env_value(t_token *tok, int *i);
 int			ft_env_char_check(char c);
 void		ft_env_tok_overflow(t_token *tok, int limiter);
+void		finish_env_tok_over(t_token *tok);
 void		ft_type_built(t_token *tok);
 void		ft_type_pipe(t_token *tok);
 void		ft_type_op(t_token *tok);
 int			ft_is_op_redir(char *str);
 void		ft_type_path(t_mother *s, t_token *tok);
+void		expanding_home(t_mother *s, t_token *tok, int i);
 void		ft_type_cmd(t_mother *s, t_token *tok);
 int			ft_stat_check(char *path, t_token *tok);
 
@@ -254,6 +259,9 @@ void		pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok);
 
 // filling c
 void		fill_first_command(t_mother *s, t_token *tok);
+void		ft_redir_in(t_mother *s, t_token *tok, int *i, t_command *last);
+void		ft_redir_out(t_mother *s, t_token *tok, int *i, t_command *last);
+void		ft_redir_5(t_mother *s, t_token *tok, int *i, t_command *last);
 void		plug_redir_5(t_mother *s, t_command *last);
 void		fill_next_command(t_mother *s, t_command *last, t_token *tok,
 				int *i);
