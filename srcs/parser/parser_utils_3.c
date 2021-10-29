@@ -35,3 +35,25 @@ void	fill_first_command(t_mother *s, t_token *tok)
 	s->c->cmd_status = tok->type - 97;
 	s->nbcmd++;
 }
+
+int	ft_strnstr_index(char *haystack, char *needle, int len)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	if (!needle || needle[i] == '\0')
+		return (-1);
+	while (haystack[i])
+	{
+		j = 0;
+		while (i + j < len && needle[j] == haystack[i + j])
+		{
+			if (needle[j + 1] == '\0')
+				return (i);
+			j++;
+		}
+		i++;
+	}
+	return (-1);
+}

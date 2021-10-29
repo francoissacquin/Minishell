@@ -43,7 +43,8 @@
 // 		{
 // 			testpath = ft_strjoin(testpath, minipath[i][j]);
 // 			testpath = ft_strjoin(testpath, "/");
-// 			addcmd = ft_strjoin(testpath, "ls"); //replace by s->c->command after parse
+// 			addcmd = ft_strjoin(testpath, "ls"); 
+//			//replace by s->c->command after parse
 // 			if(ft_fileexits(addcmd) == 0)
 // 				pathfound = 1;
 // 			j++;
@@ -104,7 +105,6 @@
 // void	ft_execfind(t_mother *s)
 // {
 // 	s->c->command = "l";
-	
 // 	//builtins
 // 	if (ft_strcmp("cd", s->c->command) == 0)
 // 		ft_cd(s);
@@ -127,5 +127,5 @@
 int	ft_parse(t_mother *s)
 {
 	(void)s;
-	return(1);
+	return (1);
 }
