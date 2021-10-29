@@ -16,6 +16,7 @@
 // w = word
 // b = built-in
 // c = command
+// C = command mais en path absolu
 // p = path (relative or absolute)
 // r = redirection
 // o = operator
@@ -106,7 +107,16 @@ t_token	*create_token(t_mother *s, int i, int j, char c)
 
 	new = NULL;
 	if (s->lex->token_nb == 0)
-		create_first_token(s, i, j, new);
+	{
+		new = s->lex->first_token;
+		if (j <= i)
+		{
+			new->token = NULL;
+			new->type = '\0';
+		}
+		else
+			new->token = ft_substr(s->line, i, j - i);
+	}
 	else if (j <= i)
 	{
 		new = ft_malloc(&new, sizeof(t_token));
@@ -138,5 +148,7 @@ void	create_first_token(t_mother *s, int i, int j, t_token *new)
 		new->type = '\0';
 	}
 	else
+	{
 		new->token = ft_substr(s->line, i, j - i);
+	}
 }

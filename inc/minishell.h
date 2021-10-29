@@ -89,6 +89,7 @@ typedef struct s_mother
 	char		*line;
 	t_lexer		*lex;
 	char		**env;
+	int			*idx;
 	int			nbcmd;
 	int			pipe;
 	int			ret;
@@ -97,6 +98,9 @@ typedef struct s_mother
 	char		*path;
 	t_command	*c;
 }				t_mother;
+
+//a enlever pour la norme apres les tests
+//void		ft_print_parsing_results(t_mother *s);
 
 //general
 pid_t		*ft_return_global_pid(void);
@@ -129,6 +133,7 @@ void		free_one_cmd(t_mother *s, t_command *temp);
 int			ft_echo(t_mother *s, t_command *c);
 int			ft_skip_spaces(char *str, int i);
 int			ft_find_equal_sign(char *str);
+void		echo_space_loop(t_mother *s, t_command *c);
 
 int			ft_cd(t_mother *s);
 
@@ -140,6 +145,7 @@ int			ft_export(t_mother *s, t_command *cmd);
 int			ft_word_is_exportable(char *str);
 
 int			ft_unset(t_mother *s, t_command *c);
+int			ft_search_and_destroy(t_mother *s, t_command *c, int j);
 
 int			ft_exit(t_mother *s, t_command *c);
 int			ft_check_exit_arg(char *str);
@@ -236,6 +242,7 @@ void		ft_type_path(t_mother *s, t_token *tok);
 void		expanding_home(t_mother *s, t_token *tok, int i);
 void		ft_type_cmd(t_mother *s, t_token *tok);
 int			ft_stat_check(char *path, t_token *tok);
+int			ft_stat_check_path(char *str);
 
 // << redirection interception for input
 void		redir_input_handler(t_mother *s);
@@ -250,7 +257,7 @@ int			miniparser(t_mother *s);
 int			ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
 void		ft_cmd_blt(t_mother *s, t_token *tok, int *i);
 int			ft_add_args(t_mother *s, t_token *tok, int *i);
-void		ft_arg_conveyor_belt(t_mother *s, t_token *t, t_command *last);
+void		ft_arg_conveyor_belt(t_token *t, t_command *last);
 void		check_echo_flag(t_mother *s, t_token *tok);
 void		ft_add_arg_array(t_command *last, char *str, int type);
 int			ft_add_operator(t_mother *s, t_token *tok, int *i);

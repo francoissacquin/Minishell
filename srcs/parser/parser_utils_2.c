@@ -51,7 +51,10 @@ t_command	*create_cmd(t_mother *s, t_token *tok, int *i)
 	new->arg = ft_malloc(&new->arg, sizeof(char *) * 2);
 	new->arg[0] = ft_strdup(tok->token);
 	new->arg[1] = NULL;
-	new->cmd_status = tok->type - 97;
+	if (tok->type == 67)
+		new->cmd_status = 3;
+	else
+		new->cmd_status = tok->type - 97;
 	s->nbcmd++;
 	return (new);
 }

@@ -24,16 +24,7 @@ HEADER = /inc/minishell.h
 
 SRC = srcs/main.c \
 srcs/main_utils.c \
-srcs/parser/parse.c \
-srcs/parser/miniparser.c \
-srcs/parser/parser_utils.c \
-srcs/parser/parser_utils_2.c \
-srcs/parser/parser_utils_3.c \
-srcs/parser/redir_parsing.c \
-srcs/parser/arg_checking.c \
-srcs/parser/post_parsing.c \
-srcs/structure/utils.c \
-srcs/structure/mem_utils.c \
+srcs/signals.c \
 srcs/history_handler.c \
 srcs/builtins/cd.c \
 srcs/builtins/echo.c \
@@ -46,8 +37,12 @@ srcs/builtins/built_utils.c \
 srcs/builtins/built_utils_2.c \
 srcs/env/env_manager.c \
 srcs/env/env_utils.c \
+srcs/env/env_utils_2.c \
 srcs/env/env_expanding.c \
 srcs/env/env_expanding_utils.c \
+srcs/executor/exec.c \
+srcs/executor/pipes.c \
+srcs/executor/redirect.c \
 srcs/lexer/minilexer.c \
 srcs/lexer/lexer_lst_utils.c \
 srcs/lexer/assign_types.c \
@@ -56,10 +51,16 @@ srcs/lexer/assign_utils_2.c \
 srcs/lexer/type_utils.c \
 srcs/lexer/mini_lexer_rules.c \
 srcs/lexer/mini_lexer_rules_2.c \
-srcs/executor/exec.c \
-srcs/executor/pipes.c \
-srcs/executor/redirect.c \
-srcs/signals.c \
+srcs/parser/parse.c \
+srcs/parser/miniparser.c \
+srcs/parser/parser_utils.c \
+srcs/parser/parser_utils_2.c \
+srcs/parser/parser_utils_3.c \
+srcs/parser/redir_parsing.c \
+srcs/parser/arg_checking.c \
+srcs/parser/post_parsing.c \
+srcs/structure/utils.c \
+srcs/structure/mem_utils.c \
 #srcs/executor/pipesredir.c \
 #srcs/executor/redirectwithpipes.c \
 
