@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:00:09 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/21 20:15:40 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/10/28 17:56:05 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_fileexits(char *testpath)
 	return (ret);
 }
 
-char	*ft_pathtester(t_mother *s, t_command *c, char ***minipath, int minisize)
+char	*ft_pathtester(t_command *c, char ***minipath, int minisize)
 {
 	int			i;
 	int			j;
@@ -33,7 +33,6 @@ char	*ft_pathtester(t_mother *s, t_command *c, char ***minipath, int minisize)
 	char		*addcmd;
 	int			pathfound;
 
-	(void)s;
 	pathfound = -1;
 	pathsize = 0;
 	i = 0;
@@ -65,10 +64,8 @@ char	*ft_pathtester(t_mother *s, t_command *c, char ***minipath, int minisize)
 	return (addcmd);
 }
 
-char	*ft_pathfinder(t_mother *s, t_command *c)
+int	ft_pathfinder2(t_mother *s, char **path)
 {
-	char		*rightpath;
-	char		**path;
 	char		***minipath;
 	int			i;
 	int			minipathsize;
@@ -76,7 +73,6 @@ char	*ft_pathfinder(t_mother *s, t_command *c)
 	minipathsize = 0;
 	i = 0;
 	minipath = NULL;
-	path = ft_split(s->path, ':');
 	while (path[i])
 		i++;
 	while (s->path[i])
@@ -86,6 +82,19 @@ char	*ft_pathfinder(t_mother *s, t_command *c)
 		i++;
 	}
 	minipathsize++;
+	return (minipathsize);
+}
+
+char	*ft_pathfinder(t_mother *s, t_command *c)
+{
+	char		*rightpath;
+	char		**path;
+	char		***minipath;
+	int			i;
+	int			minipathsize;
+
+	path = ft_split(s->path, ':');
+	minipathsize = ft_pathfinder2(s, path);
 	minipath = ft_malloc(&minipath, sizeof(char **) * minipathsize);
 	i = 0;
 	while (i < minipathsize)
@@ -93,7 +102,7 @@ char	*ft_pathfinder(t_mother *s, t_command *c)
 		minipath[i] = ft_split(path[i], '/');
 		i++;
 	}
-	rightpath = ft_pathtester(s, c, minipath, minipathsize);
+	rightpath = ft_pathtester(c, minipath, minipathsize);
 	i = 0;
 	while (i < minipathsize)
 	{
