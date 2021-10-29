@@ -247,6 +247,7 @@ int			miniparser(t_mother *s);
 int			ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
 void		ft_cmd_blt(t_mother *s, t_token *tok, int *i);
 int			ft_add_args(t_mother *s, t_token *tok, int *i);
+void		ft_arg_conveyor_belt(t_mother *s, t_token *t, t_command *last);
 void		check_echo_flag(t_mother *s, t_token *tok);
 void		ft_add_arg_array(t_command *last, char *str, int type);
 int			ft_add_operator(t_mother *s, t_token *tok, int *i);
@@ -254,13 +255,14 @@ void		add_cmd_elem(t_mother *s, t_token *tok, int *i);
 t_command	*create_cmd(t_mother *s, t_token *tok, int *i);
 t_command	*ft_last_cmd(t_command *first);
 void		ft_wrong_input(t_mother *s);
+int			ft_parse_error_detect(t_mother *s, int i);
 void		assign_redirect(t_mother *s, t_token *tok, int *i);
 void		pre_exec_arg_checking(t_mother *s, t_command *cmd, t_token *tok);
 
 // filling c
 void		fill_first_command(t_mother *s, t_token *tok);
-void		ft_redir_in(t_mother *s, t_token *tok, int *i, t_command *last);
-void		ft_redir_out(t_mother *s, t_token *tok, int *i, t_command *last);
+void		ft_redir_in(t_mother *s, t_token *tok, t_command *last);
+void		ft_redir_out(t_mother *s, t_token *tok, t_command *last);
 void		ft_redir_5(t_mother *s, t_token *tok, int *i, t_command *last);
 void		plug_redir_5(t_mother *s, t_command *last);
 void		fill_next_command(t_mother *s, t_command *last, t_token *tok,

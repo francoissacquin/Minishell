@@ -8,7 +8,7 @@ int	miniparser(t_mother *s)
 
 	tok = s->lex->first_token;
 	i = 0;
-	while (tok->next != NULL)
+	while (tok->token != NULL)
 	{
 		res = ft_tok_conveyor_belt(s, tok, &i);
 		if (res)
@@ -18,15 +18,6 @@ int	miniparser(t_mother *s)
 		}
 		tok = tok->next;
 		i++;
-	}
-	if (tok->token != NULL)
-	{
-		res = ft_tok_conveyor_belt(s, tok, &i);
-		if (res)
-		{
-			ft_wrong_input(s);
-			return (1);
-		}
 	}
 	return (0);
 }
@@ -38,28 +29,13 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	err = 0;
 	if (*i == 0 && ft_strchr("Pfo", tok->type)
 		&& ft_strcmp(tok->token, "<<") != 0 && s->lex->delimiter == NULL)
-	{
-		write(2, "Error, pipe or operator with no command\n", 40);
-		s->ret = 1;
-		err = 1;
-	}
+		err = ft_parse_error_detect(s, 1);
 	else if (ft_strcmp(tok->token, "<<") == 0 && s->lex->delimiter == NULL)
-	{
-		s->ret = 2;
-		err = 1;
-	}
+		err = ft_parse_error_detect(s, 2);
 	else if (tok->type == 'p' && (*i == 0 || tok->prev->type == 'P'))
-	{
-		write(2, "Minishell: commande introuvable\n", 32);
-		s->ret = 127;
-		err = 1;
-	}
+		err = ft_parse_error_detect(s, 3);
 	else if (*i == 0 && tok->type == 'w')
-	{
-		write(2, "Error, weird input\n", 19);
-		s->ret = 127;
-		err = 1;
-	}
+		err = ft_parse_error_detect(s, 4);
 	else if (ft_strchr("cb", tok->type))
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
@@ -74,8 +50,6 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 int	ft_add_args(t_mother *s, t_token *tok, int *i)
 {
 	t_command	*last;
-	char		*temp;
-	char		*temp_line;
 
 	(void)i;
 	last = ft_last_cmd(s->c);
@@ -91,31 +65,38 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 				write(2, "AUCUN FLAG AUTORISE POUR LES BUILT-INS\n", 39);
 		}
 		last->nbarg++;
-		if (tok->pre_space == 0 && tok->type == 'p'
-			&& ft_strchr("pe", tok->prev->type))
-			ft_add_arg_array(last, tok->token, 1);
-		else if (last->command != NULL && tok->pre_space == 0
-			&& !(ft_strcmp(last->command, "export")))
-			ft_add_arg_array(last, tok->token, 1);
-		else
-			ft_add_arg_array(last, tok->token, 0);
-		if (last->line == NULL)
-			last->line = ft_strdup(tok->token);
-		else
-		{
-			if (last->command != NULL && !(ft_strcmp(last->command, "export"))
-				&& tok->pre_space == 0)
-				temp = ft_strdup(tok->token);
-			else
-				temp = ft_strjoin(" ", tok->token);
-			temp_line = ft_strdup(last->line);
-			free(last->line);
-			last->line = ft_strjoin(temp_line, temp);
-			free(temp);
-			free(temp_line);
-		}
+		ft_arg_conveyor_belt(s, tok, last);
 	}
 	return (0);
+}
+
+void	ft_arg_conveyor_belt(t_mother *s, t_token *t, t_command *last)
+{
+	char	*temp;
+	char	*temp_line;
+
+	if (t->pre_space == 0 && t->type == 'p' && ft_strchr("pe", t->prev->type))
+		ft_add_arg_array(last, t->token, 1);
+	else if (last->command != NULL && t->pre_space == 0
+		&& !(ft_strcmp(last->command, "export")))
+		ft_add_arg_array(last, t->token, 1);
+	else
+		ft_add_arg_array(last, t->token, 0);
+	if (last->line == NULL)
+		last->line = ft_strdup(t->token);
+	else
+	{
+		if (last->command != NULL && !(ft_strcmp(last->command, "export"))
+			&& t->pre_space == 0)
+			temp = ft_strdup(t->token);
+		else
+			temp = ft_strjoin(" ", t->token);
+		temp_line = ft_strdup(last->line);
+		free(last->line);
+		last->line = ft_strjoin(temp_line, temp);
+		free(temp);
+		free(temp_line);
+	}
 }
 
 void	ft_add_arg_array(t_command *last, char *str, int type)
@@ -153,57 +134,4 @@ void	ft_add_arg_array(t_command *last, char *str, int type)
 	temp[i] = NULL;
 	ft_free_array(last->arg);
 	last->arg = temp;
-}
-
-int	ft_add_operator(t_mother *s, t_token *tok, int *i)
-{
-	t_command	*last;
-
-	last = ft_last_cmd(s->c);
-	if (tok->type == 'P')
-	{
-		if (last->line == NULL || last->command == NULL || last->arg == NULL)
-		{
-			write(2, "wrong pipe here, last command does not exist\n", 45);
-			s->ret = 1;
-			return (1);
-		}
-		if (tok->next != NULL)
-		{
-			if (ft_strchr("bc", tok->next->type))
-				return (0);
-			else
-			{
-				write(2, "pipe leads to non valid command\n", 32);
-				s->ret = 1;
-				return (1);
-			}
-		}
-		else
-		{
-			write(2, "pipe is last token???\n", 22);
-			s->ret = 1;
-			return (1);
-		}
-	}
-	else if (tok->type == 'o')
-	{
-		if (tok->next != NULL)
-		{
-			if (ft_strchr("bcwep", tok->next->type))
-				assign_redirect(s, tok, i);
-			else
-			{
-				write(2, "Error, operator cannot take this argument\n", 42);
-				s->ret = 1;
-				return (1);
-			}
-		}
-		if (tok->prev != NULL)
-		{
-			if (last->line != NULL && ft_strrchr("bcwefpq", tok->prev->type))
-				assign_redirect(s, tok, i);
-		}
-	}
-	return (0);
 }

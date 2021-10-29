@@ -52,15 +52,14 @@ int	ft_echo(t_mother *s, t_command *c)
 		i++;
 		if (c->arg[i] != NULL)
 		{
-			// j = ft_strstr_index(s->line, "echo");
-			// j = j + 4;
-			// j = ft_skip_spaces(s->line, j);
-			// increment_spaces = 1;
-			// space_switch = 0;
+			j = ft_strstr_index(s->line, "echo");
+			j = j + 4;
+			j = ft_skip_spaces(s->line, j);
+			increment_spaces = 1;
+			space_switch = 0;
 			while (increment_spaces < i)
 			{
 				quote_switch = 0;
-				//printf("while i = %i, j = %i, space_switch = %i, increment_spaces = %i\n", i, j, space_switch, increment_spaces);
 				if (s->line[j] == '\'' || s->line[j] == '\"')
 					j = ft_skip_quote_marks(s->line, j, ft_strlen(s->line));
 				else
@@ -75,7 +74,6 @@ int	ft_echo(t_mother *s, t_command *c)
 					quote_switch = 1;
 				increment_spaces++;
 			}
-			//printf("i = %i, j = %i, space_switch = %i, increment_spaces = %i\n", i, j, space_switch, increment_spaces);
 			if (c->arg[i][0] == '\0' && quote_switch == 0)
 				space_switch = 0;
 			if (space_switch == 1)
@@ -89,18 +87,17 @@ int	ft_echo(t_mother *s, t_command *c)
 	return(ret);
 }
 
-int		echo_space_loop(t_mother *s, int *i,)
-{
-	int		quote_switch;
-	int		increment_spaces;
-	int		space_switch;
-	int		j;
+// int		echo_space_loop(t_mother *s, int *i)
+// {
+// 	int		quote_switch;
+// 	int		increment_spaces;
+// 	int		space_switch;
+// 	int		j;
 
-	j = ft_strstr_index(s->line, "echo");
-	j = j + 4;
-	j = ft_skip_spaces(s->line, j);
-	increment_spaces = 1;
-	space_switch = 0;
+// 	j = ft_strstr_index(s->line, "echo");
+// 	j = j + 4;
+// 	j = ft_skip_spaces(s->line, j);
+// 	increment_spaces = 1;
+// 	space_switch = 0;
 	
-
-}
+// }
