@@ -14,9 +14,9 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		else if (s->redirect_mem == 5)
 			plug_redir_5(s, last);
 		else if (s->redirect_mem == 2)
-			ft_redir_in(s, tok, i, last);
+			ft_redir_in(s, tok, last);
 		else if (s->redirect_mem == 3 || s->redirect_mem == 4)
-			ft_redir_out(s, tok, i, last);
+			ft_redir_out(s, tok, last);
 		else
 		{
 			tok->type = 'w';
@@ -27,7 +27,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		fill_first_command(s, tok);
 }
 
-void	ft_redir_in(t_mother *s, t_token *tok, int *i, t_command *last)
+void	ft_redir_in(t_mother *s, t_token *tok, t_command *last)
 {
 	last->isinputfile = 1;
 	if (last->inputfile != NULL)
@@ -63,7 +63,7 @@ void	ft_redir_5(t_mother *s, t_token *tok, int *i, t_command *last)
 	}
 }
 
-void	ft_redir_out(t_mother *s, t_token *tok, int *i, t_command *last)
+void	ft_redir_out(t_mother *s, t_token *tok, t_command *last)
 {
 	int		fd;
 

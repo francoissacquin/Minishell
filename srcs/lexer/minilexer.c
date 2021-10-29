@@ -104,6 +104,7 @@ t_token	*create_token(t_mother *s, int i, int j, char c)
 {
 	t_token	*new;
 
+	new = NULL;
 	if (s->lex->token_nb == 0)
 		create_first_token(s, i, j, new);
 	else if (j <= i)

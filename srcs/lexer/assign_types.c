@@ -54,7 +54,7 @@ void	ft_type_env(t_token *tok)
 	else
 	{
 		i = 0;
-		check_env_value(tok, &i);
+		ft_check_env_value(tok, &i);
 	}
 }
 
