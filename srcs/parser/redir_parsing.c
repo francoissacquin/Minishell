@@ -7,11 +7,10 @@ void	redir_input_handler(t_mother *s)
 	int			ctrl;
 
 	tok = s->lex->first_token;
-	while(tok->next != NULL)
+	while (tok != NULL)
 	{
 		if (!(ft_strcmp(tok->token, "<<")) && tok->type == 'o')
 		{
-			//LANCER LE READLINE EN BOUCLE
 			res = ft_redir_error_check(s, tok);
 			if (res)
 				return ;
@@ -21,17 +20,6 @@ void	redir_input_handler(t_mother *s)
 				write(2, "Warning, using EOF as delimiter is not advised\n", 47);
 		}
 		tok = tok->next;
-	}
-	if (!(ft_strcmp(tok->token, "<<")) && tok->type == 'o')
-	{
-		//LANCER LE READLINE EN BOUCLE
-		res = ft_redir_error_check(s, tok);
-		if (res)
-			return ;
-		ft_finding_delimiter(s, tok);
-		ctrl = ft_redir_input_activator(s);
-		if (ctrl)
-			write(2, "Warning, using EOF as delimiter is not advised\n", 47);
 	}
 }
 
@@ -44,7 +32,7 @@ void	ft_finding_delimiter(t_mother *s, t_token *tok)
 
 	i = ft_strnstr_index(s->line, tok->token, ft_strlen(s->line));
 	if (i == -1)
-		printf("error, << not found in original string but << token exists\n"); //METTRE FT_ERROR ICI
+		printf("error, << not found in original string but << token exists\n");
 	i = i + 2;
 	while (s->line[i] && s->line[i] == ' ')
 		i++;
@@ -75,29 +63,22 @@ int	ft_redir_error_check(t_mother *s, t_token *tok)
 	return (0);
 }
 
-int		ft_redir_input_activator(t_mother *s)
+int	ft_redir_input_activator(t_mother *s)
 {
 	char	*temp;
 	char	*redir;
 
-	if (s->lex->std_input_redir != NULL)
+	if (s->lex->input_redir != NULL)
 	{
-		free(s->lex->std_input_redir);
-		s->lex->std_input_redir = NULL;
+		free(s->lex->input_redir);
+		s->lex->input_redir = NULL;
 	}
 	temp = readline("> ");
 	if (temp == NULL)
 		return (1);
 	while (ft_strcmp(temp, s->lex->delimiter))
 	{
-		if (s->lex->std_input_redir == NULL)
-			s->lex->std_input_redir = ft_strdup(temp);
-		else
-		{
-			redir = ft_strjoin("\n", temp);
-			s->lex->std_input_redir = ft_strjoin_env(s->lex->std_input_redir, redir);
-			free(redir);
-		}
+		ft_redir_input_loop_check(s, &temp, &redir);
 		free(temp);
 		temp = readline("> ");
 		if (temp == NULL)
@@ -107,24 +88,14 @@ int		ft_redir_input_activator(t_mother *s)
 	return (0);
 }
 
-int		ft_strnstr_index(char *haystack, char *needle, int len)
+void	ft_redir_input_loop_check(t_mother *s, char **temp, char **redir)
 {
-	int		i;
-	int		j;
-
-	i = 0;
-	if (!needle || needle[i] == '\0')
-		return (-1);
-	while (haystack[i])
+	if (s->lex->input_redir == NULL)
+		s->lex->input_redir = ft_strdup(*temp);
+	else
 	{
-		j = 0;
-		while (i + j < len && needle[j] == haystack[i + j])
-		{
-			if (needle[j + 1] == '\0')
-				return (i);
-			j++;
-		}
-		i++;
+		*redir = ft_strjoin("\n", *temp);
+		s->lex->input_redir = ft_strjoin_env(s->lex->input_redir, *redir);
+		free(*redir);
 	}
-	return (-1);
 }

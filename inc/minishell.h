@@ -81,7 +81,7 @@ typedef struct s_lexer
 	int			quote;
 	int			token_nb;
 	char		*delimiter;
-	char		*std_input_redir;
+	char		*input_redir;
 }				t_lexer;
 
 typedef struct s_mother
@@ -242,6 +242,7 @@ void		redir_input_handler(t_mother *s);
 void		ft_finding_delimiter(t_mother *s, t_token *tok);
 int			ft_redir_error_check(t_mother *s, t_token *tok);
 int			ft_redir_input_activator(t_mother *s);
+void		ft_redir_input_loop_check(t_mother *s, char **temp, char **redir);
 int			ft_strnstr_index(char *haystack, char *needle, int len);
 
 // parser functions

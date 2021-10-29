@@ -100,7 +100,7 @@ void	plug_redir_5(t_mother *s, t_command *last)
 	fd = open("redir_input.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
 	if (fd < 0)
 		s->ret = 1;
-	write(fd, s->lex->std_input_redir, ft_strlen(s->lex->std_input_redir));
+	write(fd, s->lex->input_redir, ft_strlen(s->lex->input_redir));
 	close(fd);
 	last->isinputfile = 1;
 	temp = getenv("PWD");

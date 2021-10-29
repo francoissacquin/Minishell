@@ -1,12 +1,12 @@
 #include "../../inc/minishell.h"
 
-void    var_init(t_mother *s)
+void	var_init(t_mother *s)
 {
-    int     i;
+	int	 i;
 
-    i = 0;
-    s->var = ft_malloc(&s->var, 1 * sizeof(char *));
-    s->var[0] = NULL;
+	i = 0;
+	s->var = ft_malloc(&s->var, 1 * sizeof(char *));
+	s->var[0] = NULL;
 }
 
 void	create_var(t_mother *s, char *str)
@@ -32,10 +32,10 @@ void	create_var(t_mother *s, char *str)
 
 void	change_var(t_mother *s, char *str, int pos)
 {
-	char **temp;
+	char	**temp;
 	int		i;
 	int		len;
-	
+
 	len = ft_strlen_array(s->var);
 	temp = ft_malloc(&temp, (len + 1) * sizeof(char *));
 	i = 0;
@@ -54,10 +54,10 @@ void	change_var(t_mother *s, char *str, int pos)
 
 void	add_var(t_mother *s, char *str)
 {
-	char **temp;
+	char	**temp;
 	int		i;
 	int		len;
-	
+
 	len = ft_strlen_array(s->var);
 	temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
 	i = 0;
