@@ -8,7 +8,7 @@ int	miniparser(t_mother *s)
 
 	tok = s->lex->first_token;
 	i = 0;
-	while (tok->token != NULL)
+	while (tok->next != NULL)
 	{
 		res = ft_tok_conveyor_belt(s, tok, &i);
 		if (res)
@@ -18,6 +18,15 @@ int	miniparser(t_mother *s)
 		}
 		tok = tok->next;
 		i++;
+	}
+	if (tok->token != NULL)
+	{
+		res = ft_tok_conveyor_belt(s, tok, &i);
+		if (res)
+		{
+			ft_wrong_input(s);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -36,7 +45,7 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 		err = ft_parse_error_detect(s, 3);
 	else if (*i == 0 && tok->type == 'w')
 		err = ft_parse_error_detect(s, 4);
-	else if (ft_strchr("cb", tok->type))
+	else if (ft_strchr("cCbp", tok->type))
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
 		err = ft_add_operator(s, tok, i);
@@ -65,12 +74,12 @@ int	ft_add_args(t_mother *s, t_token *tok, int *i)
 				write(2, "AUCUN FLAG AUTORISE POUR LES BUILT-INS\n", 39);
 		}
 		last->nbarg++;
-		ft_arg_conveyor_belt(s, tok, last);
+		ft_arg_conveyor_belt(tok, last);
 	}
 	return (0);
 }
 
-void	ft_arg_conveyor_belt(t_mother *s, t_token *t, t_command *last)
+void	ft_arg_conveyor_belt(t_token *t, t_command *last)
 {
 	char	*temp;
 	char	*temp_line;

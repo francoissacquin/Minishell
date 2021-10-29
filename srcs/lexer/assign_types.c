@@ -91,8 +91,13 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 	i = -1;
 	if (tok->type == 'p')
 	{
-		ft_free_array(array);
-		return ;
+		exist = ft_stat_check_path(tok->token);
+		if (exist == 0)
+		{
+			tok->type = 'C';
+			ft_free_array(array);
+			return;
+		}
 	}
 	while (array[++i] != NULL)
 	{

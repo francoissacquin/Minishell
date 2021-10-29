@@ -59,7 +59,10 @@ void	fill_first_command(t_mother *s, t_token *tok)
 	s->c->arg = ft_malloc(&s->c->arg, sizeof(char *) * 2);
 	s->c->arg[0] = ft_strdup(tok->token);
 	s->c->arg[1] = NULL;
-	s->c->cmd_status = tok->type - 97;
+	if (tok->type == 67)
+		s->c->cmd_status = 3;
+	else
+		s->c->cmd_status = tok->type - 97;
 	s->nbcmd++;
 }
 
@@ -114,7 +117,8 @@ int	ft_add_operator(t_mother *s, t_token *tok, int *i)
 		}
 	}
 	return (0);
-=======
+}
+
 int	ft_strnstr_index(char *haystack, char *needle, int len)
 {
 	int		i;

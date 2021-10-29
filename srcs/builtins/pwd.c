@@ -15,17 +15,15 @@
 int	ft_pwd(t_mother *s)
 {
 	char	temp[1000];
-	int ret = 1;
-	
+	int		ret;
+
 	(void)s;
+	ret = 1;
 	if (getcwd(temp, sizeof(temp)) == NULL)
 	{
 		perror("pwd");
 		return (-1);
 	}
-	else
-		// ft_putstr_fd(temp, 0);
 	printf("%s\n", temp);
-
 	return (ret);
 }

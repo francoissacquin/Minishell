@@ -66,7 +66,6 @@ int	main(int argc, char **argv, char **envp)
 	g_pid = 0;
 	signal(SIGINT, signalhandler);
 	signal(SIGQUIT, signalhandler);
-	signal(SIGUSR1, signalhandler);
 	if (argc == 3)
 	{
 		if (!ft_strncmp(argv[1], "-c", 3))

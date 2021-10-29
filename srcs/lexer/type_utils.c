@@ -15,3 +15,12 @@ int	ft_is_op_redir(char *str)
 	}
 	return (1);
 }
+
+int	ft_stat_check_path(char *str)
+{
+	int			i;
+	struct stat	sb;
+
+	i = stat(str, &sb);
+	return (i);
+}

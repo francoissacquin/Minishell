@@ -19,85 +19,83 @@ int	ft_skip_spaces(char *str, int i)
 	return (i);
 }
 
+// This is about to get absolutely bonkers so hold on tight :
+// Because the c norm at 42 forbids more than 5 variables per function,
+// We are using an int table to represent several variables in one.
+// Here is the breakdown :
+// idx[0]		i;
+// idx[1]		j;
+// idx[2]		increment_spaces;
+// idx[3]		space_switch;
+// idx[4]		flag_n_switch;
+// idx[5]		quote_switch;
+
 int	ft_echo(t_mother *s, t_command *c)
 {
-	int		i;
-	int		j;
-	int		increment_spaces;
-	int		space_switch;
-	int		flag_n_switch;
-	int		quote_switch;
-	int ret = 1;
+	int		ret;
 
-	i = 1;
-	flag_n_switch = 0;
+	s->idx = ft_malloc(&s->idx, sizeof(int) * 6);
+	s->idx[0] = 1;
+	ret = 1;
+	s->idx[4] = 0;
 	if(c->arg[1] == NULL)
 		ret = 0;
-	if (c->arg[i] == NULL)
+	if (c->arg[s->idx[0]] == NULL)
 	{
 		write(1, "\n", 1);
 		return (ret) ;
 	}
-	while (c->arg[i] && !(ft_strcmp("-n", c->arg[i])))
+	while (c->arg[s->idx[0]] && !(ft_strcmp("-n", c->arg[s->idx[0]])))
 	{
-		flag_n_switch = 1;
-		i++;
+		s->idx[4] = 1;
+		s->idx[0] = s->idx[0] + 1;
 	}
-	while (c->arg[i])
+	while (c->arg[s->idx[0]])
 	{
-		if (!(ft_strcmp(c->arg[i], "$?")))
+		if (!(ft_strcmp(c->arg[s->idx[0]], "$?")))
 			ft_putnbr_fd(s->ret, 1);
 		else
-			ft_putstr_fd(c->arg[i], 1);
-		i++;
-		if (c->arg[i] != NULL)
+			ft_putstr_fd(c->arg[s->idx[0]], 1);
+		s->idx[0] = s->idx[0] + 1;
+		if (c->arg[s->idx[0]] != NULL)
 		{
-			j = ft_strstr_index(s->line, "echo");
-			j = j + 4;
-			j = ft_skip_spaces(s->line, j);
-			increment_spaces = 1;
-			space_switch = 0;
-			while (increment_spaces < i)
-			{
-				quote_switch = 0;
-				if (s->line[j] == '\'' || s->line[j] == '\"')
-					j = ft_skip_quote_marks(s->line, j, ft_strlen(s->line));
-				else
-				{
-					while (s->line[j] && s->line[j] != ' ' && s->line[j] != '\"' && s->line[j] != '\'')
-						j++;
-				}
-				if (s->line[j] == ' ' && increment_spaces + 1 == i)
-					space_switch = 1;
-				j = ft_skip_spaces(s->line, j);
-				if (s->line[j] == '\'' || s->line[j] == '\"')
-					quote_switch = 1;
-				increment_spaces++;
-			}
-			if (c->arg[i][0] == '\0' && quote_switch == 0)
-				space_switch = 0;
-			if (space_switch == 1)
-				ft_putstr_fd(" ", 1);
-			space_switch = 0;
+			echo_space_loop(s, c);
 		}
 	}
-	if (flag_n_switch == 0)
+	if (s->idx[4] == 0)
 		write(1, "\n", 1);
 	ret = 0;
+	free(s->idx);
 	return(ret);
 }
 
-// int		echo_space_loop(t_mother *s, int *i)
-// {
-// 	int		quote_switch;
-// 	int		increment_spaces;
-// 	int		space_switch;
-// 	int		j;
-
-// 	j = ft_strstr_index(s->line, "echo");
-// 	j = j + 4;
-// 	j = ft_skip_spaces(s->line, j);
-// 	increment_spaces = 1;
-// 	space_switch = 0;
-	
-// }
+void	echo_space_loop(t_mother *s, t_command *c)
+{
+	s->idx[1] = ft_strstr_index(s->line, "echo");
+	s->idx[1] = s->idx[1] + 4;
+	s->idx[1] = ft_skip_spaces(s->line, s->idx[1]);
+	s->idx[2] = 1;
+	s->idx[3] = 0;
+	while (s->idx[2] < s->idx[0])
+	{
+		s->idx[5] = 0;
+		if (s->line[s->idx[1]] == '\'' || s->line[s->idx[1]] == '\"')
+			s->idx[1] = ft_skip_quote_marks(s->line, s->idx[1], ft_strlen(s->line));
+		else
+		{
+			while (s->line[s->idx[1]] && s->line[s->idx[1]] != ' ' && s->line[s->idx[1]] != '\"' && s->line[s->idx[1]] != '\'')
+				s->idx[1] = s->idx[1] + 1;
+		}
+		if (s->line[s->idx[1]] == ' ' && s->idx[2] + 1 == s->idx[0])
+			s->idx[3] = 1;
+		s->idx[1] = ft_skip_spaces(s->line, s->idx[1]);
+		if (s->line[s->idx[1]] == '\'' || s->line[s->idx[1]] == '\"')
+			s->idx[5] = 1;
+		s->idx[2] = s->idx[2] + 1;
+	}
+	if (c->arg[s->idx[0]][0] == '\0' && s->idx[5] == 0)
+		s->idx[3] = 0;
+	if (s->idx[3] == 1)
+		ft_putstr_fd(" ", 1);
+	s->idx[3] = 0;
+}

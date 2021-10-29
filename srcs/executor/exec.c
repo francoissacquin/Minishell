@@ -119,7 +119,10 @@ int	ft_execnotbuiltin(t_mother *s, t_command *c)
 	int		error;
 	char	*path;
 
-	path = ft_pathfinder(s, c);
+	if (c->cmd_status == 3)
+		path = c->command;
+	else
+		path = ft_pathfinder(s, c);
 	error = 0;
 	error = execve(path, c->arg, s->env);
 	free(path);
