@@ -76,28 +76,26 @@ int	ft_env_cmp_arg(char *env1, char *var)
 char	*ft_return_env_value(t_mother *s, char *var, int type)
 {
 	int		i;
-	int		index;
+	int		idx;
 	char	*res;
 
-	i = 0;
-	index = 0;
-	while (s->env[i] != NULL)
+	i = -1;
+	idx = 0;
+	while (s->env[++i] != NULL)
 	{
 		if (type == 1)
 		{
-			index = ft_env_cmp_arg(s->env[i], var);
-			if (index != 0)
-				return (ft_substr(s->env[i], index + 1, ft_strlen(s->env[i])
-						- index));
+			idx = ft_env_cmp_arg(s->env[i], var);
+			if (idx != 0)
+				return (ft_substr(s->env[i], idx + 1, ft_strlen(s->env[i])
+						- idx));
 		}
 		else if (type == 2)
 		{
-			index = ft_env_cmp(s->env[i], var);
-			if (index != 0)
-				return (ft_substr(s->env[i], index, ft_strlen(s->env[i])
-						- index));
+			idx = ft_env_cmp(s->env[i], var);
+			if (idx != 0)
+				return (ft_substr(s->env[i], idx, ft_strlen(s->env[i]) - idx));
 		}
-		i++;
 	}
 	res = ft_malloc(&res, sizeof(char));
 	res[0] = '\0';

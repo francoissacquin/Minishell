@@ -2,7 +2,7 @@
 
 void	var_init(t_mother *s)
 {
-	int	 i;
+	int	i;
 
 	i = 0;
 	s->var = ft_malloc(&s->var, 1 * sizeof(char *));

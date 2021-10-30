@@ -21,8 +21,8 @@ void	env_init(t_mother *s, char **envp)
 
 	len = ft_strlen_array(envp);
 	s->env = malloc((len + 1) * sizeof(char *));
-	i = 0;
-	while (i < len)
+	i = -1;
+	while (++i < len)
 	{
 		if (ft_env_cmp_arg(envp[i], "PATH"))
 			s->path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
@@ -31,22 +31,18 @@ void	env_init(t_mother *s, char **envp)
 			temp = getenv("SHLVL");
 			shlvl = ft_atoi(temp);
 			shlvl++;
-			if (shlvl > 999)
-				shlvl = 1;
 			temp = ft_itoa(shlvl);
 			s->env[i] = ft_strjoin("SHLVL=", temp);
 			free(temp);
 		}
 		else
 			s->env[i] = ft_strdup(envp[i]);
-		// if (ft_env_cmp_arg(envp[i], "_"))
-		// 	printf("%s\n", s->env[i]);
-		i++;
 	}
 	s->env[i] = NULL;
 }
 
-//Ajout d'une variable d'environement a env en regardant si la variable existe deja
+//Ajout d'une variable d'environement a env en regardant
+//si la variable existe deja
 void	create_env(t_mother *s, char *str)
 {
 	int		i;
@@ -70,10 +66,10 @@ void	create_env(t_mother *s, char *str)
 
 void	change_env(t_mother *s, char *str, int pos)
 {
-	char **temp;
+	char	**temp;
 	int		i;
 	int		len;
-	
+
 	len = ft_strlen_array(s->env);
 	temp = ft_malloc(&temp, (len + 1) * sizeof(char *));
 	i = 0;
@@ -93,10 +89,10 @@ void	change_env(t_mother *s, char *str, int pos)
 // permet d'ajouter une variable str a la liste des env
 void	add_env(t_mother *s, char *str)
 {
-	char **temp;
+	char	**temp;
 	int		i;
 	int		len;
-	
+
 	len = ft_strlen_array(s->env);
 	temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
 	i = 0;
@@ -111,7 +107,8 @@ void	add_env(t_mother *s, char *str)
 	s->env = temp;
 }
 
-// permet de retirer une variable str a la liste des env en comparant str avec la liste des varaibles existentes
+// permet de retirer une variable str a la liste des env en comparant str
+// avec la liste des varaibles existentes
 void	rm_env(t_mother *s, char *str)
 {
 	char	**temp;

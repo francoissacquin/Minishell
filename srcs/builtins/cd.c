@@ -12,15 +12,15 @@
 
 #include "../../inc/minishell.h"
 
-
 //cd $home check avec parsing
-// cd with deleted . directory //normalement onpeut pas le supp sur linux mais a verifiier chez toi
+// cd with deleted . directory //normalement on peut pas le supp
+// sur linux mais a verifiier chez toi
 // replace pwd
 // max size of filename is 255 bytes
 // cd - et cd ~
 //proteger contre trop d arguments
 
-int ft_updatepwd(t_mother *s, char *new_path, char *old_path)
+int	ft_updatepwd(t_mother *s, char *new_path, char *old_path)
 {
 	char	*temp;
 
@@ -33,19 +33,15 @@ int ft_updatepwd(t_mother *s, char *new_path, char *old_path)
 	return (0);
 }
 
-int		ft_cd(t_mother *s)
+int	ft_cd(t_mother *s)
 {
-	// char *arg = "../minishell/srcs"; //received as argument after parsing
-	char *path;
-	char *targetpath;
-	int		r = 0;
-	char *pathhome = NULL;
-	char *previouspath = NULL; // a mettre dans la strcuture
-	
-	path = NULL;
-	path = ft_malloc(&path, 400 * sizeof(char));
-	targetpath = NULL;
-	targetpath = ft_malloc(&targetpath, 400 * sizeof(char));
+	char	path[1000];
+	char	targetpath[1000];
+	int		r;
+	char	*pathhome;
+	char	*previouspath;
+
+	r = 0;
 	ft_memset(path, 0, sizeof(path));
 	ft_memset(targetpath, 0, sizeof(targetpath));
 	getcwd(path, sizeof(path));
@@ -59,38 +55,28 @@ int		ft_cd(t_mother *s)
 			r = chdir(pathhome);
 			ft_updatepwd(s, pathhome, path);
 		}
-		free(path);
-		free(targetpath);
-		return(0);
+		return (0);
 	}
 	else if (ft_strcmp("-", s->c->arg[1]) == 0)
 	{
 		previouspath = ft_return_env_value(s, "OLDPWD", 1);
 		r = chdir(previouspath);
-		//ft_updatepwd();
 	}
 	else if (ft_strcmp("--", s->c->arg[1]) == 0)
 	{
 		r = chdir(previouspath);
 		previouspath = path;
-		//ft_updatepwd();
 	}
 	else
-		r = chdir(s->c->arg[1]); //update oldpwd et pwd ici aussi
+		r = chdir(s->c->arg[1]);
 	if (r == -1)
 	{
-		free(path);
-		free(targetpath);
 		write(2, "bash: line 0: cd: No such file or directory\n", 44);
-		return(1);
+		return (1);
 	}
 	getcwd(targetpath, sizeof(targetpath));
 	if (ft_strcmp("-", s->c->arg[1]) == 0)
 		printf("%s\n", targetpath);
 	ft_updatepwd(s, targetpath, path);
-	free(path);
-	free(targetpath);
-	// ft_pwd(s);
-	//printf("%s r = %d", targetpath, r);
-	return(0);
+	return (0);
 }

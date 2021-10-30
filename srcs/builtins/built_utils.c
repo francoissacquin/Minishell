@@ -84,3 +84,10 @@ int	ft_strstr_index(char *haystack, char *needle)
 	}
 	return (i);
 }
+
+int	ft_skip_spaces(char *str, int i)
+{
+	while (str[i] == ' ')
+		i++;
+	return (i);
+}
