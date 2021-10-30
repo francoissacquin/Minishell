@@ -132,8 +132,11 @@ void		free_one_cmd(t_mother *s, t_command *temp);
 //builtins
 int			ft_echo(t_mother *s, t_command *c);
 int			ft_skip_spaces(char *str, int i);
+void		echo_flag_skip(t_mother *s, t_command *c);
 int			ft_find_equal_sign(char *str);
-void		echo_space_loop(t_mother *s, t_command *c);
+void		echo_space_mega_loop(t_mother *s, t_command *c);
+void		echo_space_medium_loop(t_mother *s, t_command *c);
+void		echo_space_inner_loop(t_mother *s, t_command *c);
 
 int			ft_cd(t_mother *s);
 
@@ -192,8 +195,12 @@ void		change_env(t_mother *s, char *str, int pos);
 void		add_env(t_mother *s, char *str);
 void		rm_env(t_mother *s, char *str);
 void		expanding_env(t_mother *s, t_token *tok);
+void		expanding_env_plus(t_mother *s, t_token *tok, int *index);
 void		quote_env_replacing(t_mother *s, t_token *tok, int start, int end);
+void		quote_env_replacing_plus(t_mother *s, t_token *tok, int start, int end);
 void		env_replacing(t_mother *s, t_token *tok);
+void		env_replacing_equal_sign(t_mother *s, t_token *tok);
+void		env_replacing_rest(t_mother *s, t_token *tok, int i);
 int			quote_env_finder(t_token *tok);
 char		*ft_strjoin_env(char *str1, char *str2);
 
