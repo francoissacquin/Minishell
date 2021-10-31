@@ -139,12 +139,19 @@ void		echo_space_medium_loop(t_mother *s, t_command *c);
 void		echo_space_inner_loop(t_mother *s, t_command *c);
 
 int			ft_cd(t_mother *s);
+void		ft_cd_init(t_mother *s, char *path, char *targetpath,
+				char *pathhome);
+int			ft_cd_conveyor_belt(t_mother *s, char *path, char *pathhome, int i);
+int			ft_updatepwd(t_mother *s, char *new_path, char *old_path);
+void		ft_update_cd(t_mother *s, char *path, char *targetpath);
 
 int			ft_pwd(t_mother *s);
 
 int			ft_env(t_mother *s);
 
 int			ft_export(t_mother *s, t_command *cmd);
+void		ft_export_no_arg(t_mother *s, t_command *cmd, int *i);
+void		ft_export_with_arg(t_mother *s, t_command *cmd, int *i, int *ret);
 int			ft_word_is_exportable(char *str);
 
 int			ft_unset(t_mother *s, t_command *c);
@@ -177,7 +184,6 @@ int			ft_pipe(t_command *c, t_mother *s);
 int			ft_waitpid(t_mother *s, t_command *c, int status);
 int			ft_child(t_command *c, t_mother *s);
 
-
 //signaux
 void		signalhandler(int c); //for ctrl-c ctrl-v
 void		quithandler(void);
@@ -197,7 +203,8 @@ void		rm_env(t_mother *s, char *str);
 void		expanding_env(t_mother *s, t_token *tok);
 void		expanding_env_plus(t_mother *s, t_token *tok, int *index);
 void		quote_env_replacing(t_mother *s, t_token *tok, int start, int end);
-void		quote_env_replacing_plus(t_mother *s, t_token *tok, int start, int end);
+void		quote_env_replacing_plus(t_mother *s, t_token *tok, int start,
+				int end);
 void		env_replacing(t_mother *s, t_token *tok);
 void		env_replacing_equal_sign(t_mother *s, t_token *tok);
 void		env_replacing_rest(t_mother *s, t_token *tok, int i);
