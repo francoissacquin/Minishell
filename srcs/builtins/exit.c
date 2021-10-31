@@ -12,10 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-//missing 
-//find how to make the return of a command to a number
-// export to superior level of shell so it's accessible after being exited with echo $?
-
 long	ft_atol(char *str)
 {
 	int				i;
@@ -35,11 +31,10 @@ long	ft_atol(char *str)
 	temp_ulong = 0;
 	while (str[i])
 	{
-		temp_ulong = temp_ulong * 10 + (str[i] - '0');
-		i++;
+		temp_ulong = temp_ulong * 10 + (str[i++] - '0');
 		if (temp_ulong > 9223372036854775807 && count_sign == 1)
 			return (2);
-		else if (temp_ulong > 9223372036854775807 && count_sign  == -1)
+		else if (temp_ulong > 9223372036854775807 && count_sign == -1)
 			return (2);
 	}
 	final = count_sign * temp_ulong;
@@ -64,18 +59,10 @@ int	ft_check_exit_arg(char *str)
 	return (0);
 }
 
-int ft_exit(t_mother *s, t_command *c)
+int	ft_exit(t_mother *s, t_command *c)
 {
 	long	temp;
-	// if (s->c->isprecededbypipe != 0 && s->c->isfollowedbypipe == 0)
-	// {
-	// 	signal(SIGINT, signalhandler);
-	// }
-	// else if(s->c->isprecededbypipe != 0 && s->c->isfollowedbypipe != 0)
-	// {
-	// 	s->c = s->c->nextpipe;
-	// 	multicommands(s);
-	// }
+
 	if (ft_strlen_array(c->arg) > 2)
 		ft_linking_args(s, c);
 	if (ft_strlen_array(s->c->arg) > 2)
@@ -89,33 +76,43 @@ int ft_exit(t_mother *s, t_command *c)
 	else if (ft_strlen_array(s->c->arg) == 2)
 	{
 		if (ft_check_exit_arg(s->c->arg[1]))
-		{
-			write(2, "minishell : exit : argument numerique necessaire\n", 49);
-			s->ret = 2;
-		}
+			they_will_never_take(s, 2);
 		else
-		{
-			temp  = ft_atol(s->c->arg[1]);
-			if (temp < 0)
-				temp = temp + (((temp / 256) + 1) * 256);
-			else if (temp > 255)
-				temp = temp - ((temp / 256) * 256);
-			s->ret = temp;
-		}
-		free_t_token(s);
-		free_t_cmd(s);
-		free_t_mother(s);
-		ft_clear_history();
-		exit(s->ret);
+			ft_exit_long_process(s);
+		they_will_never_take(s, 0);
 	}
 	else if (ft_strlen_array(s->c->arg) == 1)
+		they_will_never_take(s, 1);
+	return (s->ret);
+}
+
+void	ft_exit_long_process(t_mother *s)
+{
+	long	temp;
+
+	temp = ft_atol(s->c->arg[1]);
+	if (temp < 0)
+		temp = temp + (((temp / 256) + 1) * 256);
+	else if (temp > 255)
+		temp = temp - ((temp / 256) * 256);
+	s->ret = temp;
+}
+
+void	they_will_never_take(t_mother *s, int i)
+{
+	if (i == 2)
+	{
+		write(2, "minishell : exit : argument numerique necessaire\n", 49);
+		s->ret = 2;
+	}
+	else
 	{
 		free_t_token(s);
 		free_t_cmd(s);
 		free_t_mother(s);
 		ft_clear_history();
+		if (i == 1)
+			write(2, "exit\n", 5);
 		exit(s->ret);
 	}
-	// write(2, "exit\n", 5);
-	return (s->ret);
 }

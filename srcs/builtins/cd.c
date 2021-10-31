@@ -39,14 +39,52 @@ int	ft_cd(t_mother *s)
 	char	targetpath[1000];
 	int		r;
 	char	*pathhome;
-	char	*previouspath;
 
 	r = 0;
+	ft_cd_init(s, path, targetpath, pathhome);
+	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
+	{
+		r = ft_cd_conveyor_belt(s, path, pathhome, 1);
+		return (0);
+	}
+	else if (ft_strcmp("-", s->c->arg[1]) == 0)
+		r = ft_cd_conveyor_belt(s, path, pathhome, 2);
+	else if (ft_strcmp("--", s->c->arg[1]) == 0)
+		r = ft_cd_conveyor_belt(s, path, pathhome, 3);
+	else
+		r = chdir(s->c->arg[1]);
+	if (r == -1)
+	{
+		write(2, "bash: line 0: cd: No such file or directory\n", 44);
+		return (1);
+	}
+	ft_update_cd(s, path, targetpath);
+	return (0);
+}
+
+void	ft_cd_init(t_mother *s, char *path, char *targetpath, char *pathhome)
+{
 	ft_memset(path, 0, sizeof(path));
 	ft_memset(targetpath, 0, sizeof(targetpath));
 	getcwd(path, sizeof(path));
 	pathhome = getenv("HOME");
-	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
+}
+
+void	ft_update_cd(t_mother *s, char *path, char *targetpath)
+{
+	getcwd(targetpath, sizeof(targetpath));
+	if (ft_strcmp("-", s->c->arg[1]) == 0)
+		printf("%s\n", targetpath);
+	ft_updatepwd(s, targetpath, path);
+}
+
+int	ft_cd_conveyor_belt(t_mother *s, char *path, char *pathhome, int i)
+{
+	char	*previouspath;
+	int		r;
+
+	r = 0;
+	if (i == 1)
 	{
 		if (pathhome == NULL)
 			ft_error(s, "cd: HOME not set", -1);
@@ -55,28 +93,16 @@ int	ft_cd(t_mother *s)
 			r = chdir(pathhome);
 			ft_updatepwd(s, pathhome, path);
 		}
-		return (0);
 	}
-	else if (ft_strcmp("-", s->c->arg[1]) == 0)
+	else if (i == 2)
 	{
 		previouspath = ft_return_env_value(s, "OLDPWD", 1);
 		r = chdir(previouspath);
 	}
-	else if (ft_strcmp("--", s->c->arg[1]) == 0)
+	else if (i == 3)
 	{
 		r = chdir(previouspath);
 		previouspath = path;
 	}
-	else
-		r = chdir(s->c->arg[1]);
-	if (r == -1)
-	{
-		write(2, "bash: line 0: cd: No such file or directory\n", 44);
-		return (1);
-	}
-	getcwd(targetpath, sizeof(targetpath));
-	if (ft_strcmp("-", s->c->arg[1]) == 0)
-		printf("%s\n", targetpath);
-	ft_updatepwd(s, targetpath, path);
-	return (0);
+	return (r);
 }

@@ -12,60 +12,66 @@
 
 #include "../../inc/minishell.h"
 
-int ft_export(t_mother *s, t_command *cmd)
+int	ft_export(t_mother *s, t_command *cmd)
 {
-	int 	ret;
+	int		ret;
 	int		i;
-	int		j;
-	char	*temp;
-	char	*value;
-	t_token	temp_tok;
 
 	ret = 0;
-	// printf("%s\n", cmd->line);
-	// printf("%zu\n",ft_strlen_array(cmd->arg));
 	if (ft_strlen_array(cmd->arg) == 1)
 	{
 		i = 0;
 		while (s->env[i] != NULL)
-		{
-			write(1, "declare -x ", 11);
-			j = 0;
-			while(s->env[i][j] != '=')
-				j++;
-			temp = ft_substr(s->env[i], 0, j);
-			write(1, temp, ft_strlen(temp));
-			write(1, "=\"", 2);
-			value = ft_return_env_value(s, temp, 1);
-			write(1, value, ft_strlen(value));
-			write(1, "\"\n", 2);
-			free(temp);
-			free(value);
-			i++;
-		}
+			ft_export_no_arg(s, cmd, &i);
 	}
 	else
 	{
 		i = 1;
 		while (cmd->arg[i] != NULL)
-		{
-			temp_tok.token = cmd->arg[i];
-			ft_type_env(&temp_tok);
-			if (temp_tok.type == 'E')
-				create_env(s, cmd->arg[i]);
-			else if (cmd->arg[i][0] == '-')
-				ret = 2;
-			else if (ft_word_is_exportable(cmd->arg[i]))
-				ret = 0;
-			else
-				ret = 1;
-			i++;
-		}
+			ft_export_with_arg(s, cmd, &i, &ret);
 	}
-	return(ret);
+	return (ret);
 }
 
-int		ft_word_is_exportable(char *str)
+void	ft_export_with_arg(t_mother *s, t_command *cmd, int *i, int *ret)
+{
+	t_token	temp_tok;
+
+	temp_tok.token = cmd->arg[*i];
+	ft_type_env(&temp_tok);
+	if (temp_tok.type == 'E')
+		create_env(s, cmd->arg[i]);
+	else if (cmd->arg[*i][0] == '-')
+		*ret = 2;
+	else if (ft_word_is_exportable(cmd->arg[*i]))
+		*ret = 0;
+	else
+		*ret = 1;
+	*i = *i + 1;
+}
+
+void	ft_export_no_arg(t_mother *s, t_command *cmd, int *i)
+{
+	char	*temp;
+	char	*value;
+	int		j;
+
+	write(1, "declare -x ", 11);
+	j = 0;
+	while (s->env[i][j] != '=')
+		j++;
+	temp = ft_substr(s->env[*i], 0, j);
+	write(1, temp, ft_strlen(temp));
+	write(1, "=\"", 2);
+	value = ft_return_env_value(s, temp, 1);
+	write(1, value, ft_strlen(value));
+	write(1, "\"\n", 2);
+	free(temp);
+	free(value);
+	*i = *i + 1;
+}
+
+int	ft_word_is_exportable(char *str)
 {
 	int		i;
 
