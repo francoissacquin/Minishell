@@ -7,17 +7,15 @@ void	resolve_exit_spaces(t_command *cmd, char *built_in, int nb_args)
 	char	*temp2;
 
 	i = 1;
-	temp = NULL;
+	temp = exit_join_args_one(cmd, &i, &nb_args);
 	temp2 = NULL;
 	while (nb_args > 1)
 	{
-		if (i == 1)
-			temp = exit_join_args_one(cmd, &i, &nb_args);
-		else if (temp == NULL)
+		if (temp == NULL)
 		{
 			exit_join_arg_temp(&temp, &temp2, cmd, &i);
 			nb_args--;
-			i--;
+			i++;
 		}
 		else if (temp2 == NULL)
 		{
@@ -35,7 +33,7 @@ char	*exit_join_args_one(t_command *cmd, int *i, int *nb_args)
 
 	str = ft_strjoin(cmd->arg[*i], cmd->arg[*i + 1]);
 	*nb_args = *nb_args - 1;
-	*i = *i - 1;
+	*i = *i + 1;
 	return (str);
 }
 

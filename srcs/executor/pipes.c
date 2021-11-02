@@ -152,5 +152,4 @@ void	multicommands(t_mother *s)
 		i++;
 	}
 	pid = ft_return_global_pid();
-	*pid = 0;
 }

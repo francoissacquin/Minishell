@@ -4,14 +4,12 @@ int	miniparser(t_mother *s)
 {
 	t_token	*tok;
 	int		i;
-	int		res;
 
 	tok = s->lex->first_token;
 	i = 0;
 	while (tok->next != NULL)
 	{
-		res = ft_tok_conveyor_belt(s, tok, &i);
-		if (res)
+		if (ft_tok_conveyor_belt(s, tok, &i) == 1)
 		{
 			ft_wrong_input(s);
 			return (1);
@@ -21,8 +19,7 @@ int	miniparser(t_mother *s)
 	}
 	if (tok->token != NULL)
 	{
-		res = ft_tok_conveyor_belt(s, tok, &i);
-		if (res)
+		if (ft_tok_conveyor_belt(s, tok, &i) == 1)
 		{
 			ft_wrong_input(s);
 			return (1);
@@ -50,17 +47,16 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 	else if (ft_strchr("Po", tok->type))
 		err = ft_add_operator(s, tok, i);
 	else if (ft_strchr("wpfdEeq", tok->type) && s->redirect_mem == 0)
-		ft_add_args(s, tok, i);
+		ft_add_args(s, tok);
 	else if (ft_strchr("wpeq", tok->type) && s->redirect_mem != 0)
 		ft_cmd_blt(s, tok, i);
 	return (err);
 }
 
-int	ft_add_args(t_mother *s, t_token *tok, int *i)
+int	ft_add_args(t_mother *s, t_token *tok)
 {
 	t_command	*last;
 
-	(void)i;
 	last = ft_last_cmd(s->c);
 	pre_exec_arg_checking(s, last, tok);
 	if (ft_strchr("pwfqeE", tok->type))
@@ -120,27 +116,19 @@ void	ft_add_arg_array(t_command *last, char *str, int type)
 		temp = ft_malloc(&temp, (len + 2) * sizeof(char *));
 	else if (type == 1)
 		temp = ft_malloc(&temp, (len + 1) * sizeof(char *));
-	i = 0;
-	while (i < len)
-	{
+	i = -1;
+	while (++i < len)
 		temp[i] = ft_strdup(last->arg[i]);
-		i++;
-	}
 	if (type == 0)
-	{
 		temp[i] = ft_strdup(str);
-		i++;
-	}
 	else if (type == 1)
 	{
-		i--;
-		append_temp = ft_strdup(temp[i]);
+		append_temp = ft_strdup(temp[--i]);
 		free(temp[i]);
 		temp[i] = ft_strjoin(append_temp, str);
 		free(append_temp);
-		i++;
 	}
-	temp[i] = NULL;
+	temp[++i] = NULL;
 	ft_free_array(last->arg);
 	last->arg = temp;
 }

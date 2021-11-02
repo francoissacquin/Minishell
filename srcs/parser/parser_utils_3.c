@@ -1,32 +1,5 @@
 #include "../../inc/minishell.h"
 
-int	ft_parse_error_detect(t_mother *s, int i)
-{
-	int		err;
-
-	if (i == 1)
-	{
-		write(2, "Error, pipe or operator with no command\n", 40);
-		s->ret = 1;
-	}
-	else if (i == 2)
-	{
-		s->ret = 2;
-	}
-	else if (i == 3)
-	{
-		write(2, "Minishell: commande introuvable\n", 32);
-		s->ret = 127;
-	}
-	else if (i == 4)
-	{
-		write(2, "Error, weird input\n", 19);
-		s->ret = 127;
-	}
-	err = 1;
-	return (err);
-}
-
 void	fill_next_command(t_mother *s, t_command *last, t_token *tok, int *i)
 {
 	t_command	*next;
@@ -72,31 +45,7 @@ int	ft_add_operator(t_mother *s, t_token *tok, int *i)
 
 	last = ft_last_cmd(s->c);
 	if (tok->type == 'P')
-	{
-		if (last->line == NULL || last->command == NULL || last->arg == NULL)
-		{
-			write(2, "wrong pipe here, last command does not exist\n", 45);
-			s->ret = 1;
-			return (1);
-		}
-		if (tok->next != NULL)
-		{
-			if (ft_strchr("bc", tok->next->type))
-				return (0);
-			else
-			{
-				write(2, "pipe leads to non valid command\n", 32);
-				s->ret = 1;
-				return (1);
-			}
-		}
-		else
-		{
-			write(2, "pipe is last token???\n", 22);
-			s->ret = 1;
-			return (1);
-		}
-	}
+		return (ft_add_sub_operator(s, tok, last));
 	else if (tok->type == 'o')
 	{
 		if (tok->next != NULL)
@@ -115,6 +64,34 @@ int	ft_add_operator(t_mother *s, t_token *tok, int *i)
 			if (last->line != NULL && ft_strrchr("bcwefpq", tok->prev->type))
 				assign_redirect(s, tok, i);
 		}
+	}
+	return (0);
+}
+
+int	ft_add_sub_operator(t_mother *s, t_token *tok, t_command *last)
+{
+	if (last->line == NULL || last->command == NULL || last->arg == NULL)
+	{
+		write(2, "wrong pipe here, last command does not exist\n", 45);
+		s->ret = 1;
+		return (1);
+	}
+	if (tok->next != NULL)
+	{
+		if (ft_strchr("bc", tok->next->type))
+			return (0);
+		else
+		{
+			write(2, "pipe leads to non valid command\n", 32);
+			s->ret = 1;
+			return (1);
+		}
+	}
+	else
+	{
+		write(2, "pipe is last token???\n", 22);
+		s->ret = 1;
+		return (1);
 	}
 	return (0);
 }

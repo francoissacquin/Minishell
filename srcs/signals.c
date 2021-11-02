@@ -30,6 +30,7 @@ void	quithandler(void)
 	{
 		kill(*pid, SIGQUIT);
 		write(1, "Minishell quit, core dumped\n", 28);
+		*pid = -1;
 	}
 }
 

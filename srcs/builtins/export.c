@@ -22,7 +22,7 @@ int	ft_export(t_mother *s, t_command *cmd)
 	{
 		i = 0;
 		while (s->env[i] != NULL)
-			ft_export_no_arg(s, cmd, &i);
+			ft_export_no_arg(s, &i);
 	}
 	else
 	{
@@ -40,7 +40,7 @@ void	ft_export_with_arg(t_mother *s, t_command *cmd, int *i, int *ret)
 	temp_tok.token = cmd->arg[*i];
 	ft_type_env(&temp_tok);
 	if (temp_tok.type == 'E')
-		create_env(s, cmd->arg[i]);
+		create_env(s, cmd->arg[*i]);
 	else if (cmd->arg[*i][0] == '-')
 		*ret = 2;
 	else if (ft_word_is_exportable(cmd->arg[*i]))
@@ -50,7 +50,7 @@ void	ft_export_with_arg(t_mother *s, t_command *cmd, int *i, int *ret)
 	*i = *i + 1;
 }
 
-void	ft_export_no_arg(t_mother *s, t_command *cmd, int *i)
+void	ft_export_no_arg(t_mother *s, int *i)
 {
 	char	*temp;
 	char	*value;
@@ -58,7 +58,7 @@ void	ft_export_no_arg(t_mother *s, t_command *cmd, int *i)
 
 	write(1, "declare -x ", 11);
 	j = 0;
-	while (s->env[i][j] != '=')
+	while (s->env[*i][j] != '=')
 		j++;
 	temp = ft_substr(s->env[*i], 0, j);
 	write(1, temp, ft_strlen(temp));
