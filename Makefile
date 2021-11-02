@@ -40,6 +40,7 @@ srcs/env/env_utils.c \
 srcs/env/env_utils_2.c \
 srcs/env/env_expanding.c \
 srcs/env/env_expanding_utils.c \
+srcs/executor/exec_utils.c \
 srcs/executor/exec.c \
 srcs/executor/pipes.c \
 srcs/executor/redirect.c \

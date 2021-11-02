@@ -96,6 +96,7 @@ typedef struct s_mother
 	int			redirect_mem;
 	int			exitret;
 	char		*path;
+	char		**cd_mem;
 	t_command	*c;
 }				t_mother;
 
@@ -139,18 +140,17 @@ void		echo_space_medium_loop(t_mother *s, t_command *c);
 void		echo_space_inner_loop(t_mother *s, t_command *c);
 
 int			ft_cd(t_mother *s);
-void		ft_cd_init(t_mother *s, char *path, char *targetpath,
-				char *pathhome);
-int			ft_cd_conveyor_belt(t_mother *s, char *path, char *pathhome, int i);
+void		ft_cd_init(t_mother *s, char **pathhome);
+int			ft_cd_conveyor_belt(t_mother *s, char *pathhome, int i);
 int			ft_updatepwd(t_mother *s, char *new_path, char *old_path);
-void		ft_update_cd(t_mother *s, char *path, char *targetpath);
+void		ft_update_cd(t_mother *s);
 
 int			ft_pwd(t_mother *s);
 
 int			ft_env(t_mother *s);
 
 int			ft_export(t_mother *s, t_command *cmd);
-void		ft_export_no_arg(t_mother *s, t_command *cmd, int *i);
+void		ft_export_no_arg(t_mother *s, int *i);
 void		ft_export_with_arg(t_mother *s, t_command *cmd, int *i, int *ret);
 int			ft_word_is_exportable(char *str);
 
@@ -163,6 +163,7 @@ void		ft_linking_args(t_mother *s, t_command *cmd);
 int			ft_skip_quote_marks(char *str, int i, int end);
 int			ft_strstr_index(char *haystack, char *needle);
 int			ft_exit_arg_spaces(t_mother *s, int i, int end);
+void		ft_exit_long_process(t_mother *s);
 void		resolve_exit_spaces(t_command *cmd, char *built_in, int nb_args);
 char		*exit_join_args_one(t_command *cmd, int *i, int *nb_args);
 void		exit_join_arg_temp(char **temp, char **temp2, t_command *cmd,
@@ -171,6 +172,7 @@ void		exit_join_arg_temp2(char **temp, char **temp2, t_command *cmd,
 				int *i);
 void		exit_join_args(t_command *cmd, char *built_in, char *temp, char
 				*temp2);
+void		they_will_never_take(t_mother *s, int i);
 
 //exec
 int			ft_execfind(t_mother *s, t_command *c);
@@ -178,6 +180,9 @@ int			ft_execnotbuiltin(t_mother *s, t_command *c);
 char		*ft_pathfinder(t_mother *s, t_command *c);
 char		*ft_pathtester(t_command *c, char ***minipath,
 				int minisize);
+char		*ft_path_sub(t_command *c, char *str, char **testpath,
+				int *pathfound);
+int			*ft_path_idx_init(void);
 int			ft_redirect(t_command *c, t_mother *s);
 void		multicommands(t_mother *s);
 int			ft_pipe(t_command *c, t_mother *s);
@@ -223,6 +228,7 @@ void		minilexer(t_mother *s);
 void		minilexer_inner_loop(t_mother *s, int *i, int *j);
 t_token		*create_token(t_mother *s, int i, int j, char c);
 void		create_first_token(t_mother *s, int i, int j, t_token *new);
+void		create_token_extender(t_mother *s, int i, char c, t_token *new);
 void		link_chain_elem(t_mother *s, int *i, int *j, char c);
 
 // lexer rules extension for norm problems
@@ -255,6 +261,7 @@ int			ft_is_op_redir(char *str);
 void		ft_type_path(t_mother *s, t_token *tok);
 void		expanding_home(t_mother *s, t_token *tok, int i);
 void		ft_type_cmd(t_mother *s, t_token *tok);
+int			ft_type_abs_cmd(t_token *tok);
 int			ft_stat_check(char *path, t_token *tok);
 int			ft_stat_check_path(char *str);
 
@@ -270,11 +277,12 @@ int			ft_strnstr_index(char *haystack, char *needle, int len);
 int			miniparser(t_mother *s);
 int			ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i);
 void		ft_cmd_blt(t_mother *s, t_token *tok, int *i);
-int			ft_add_args(t_mother *s, t_token *tok, int *i);
+int			ft_add_args(t_mother *s, t_token *tok);
 void		ft_arg_conveyor_belt(t_token *t, t_command *last);
 void		check_echo_flag(t_mother *s, t_token *tok);
 void		ft_add_arg_array(t_command *last, char *str, int type);
 int			ft_add_operator(t_mother *s, t_token *tok, int *i);
+int			ft_add_sub_operator(t_mother *s, t_token *tok, t_command *last);
 void		add_cmd_elem(t_mother *s, t_token *tok, int *i);
 t_command	*create_cmd(t_mother *s, t_token *tok, int *i);
 t_command	*ft_last_cmd(t_command *first);

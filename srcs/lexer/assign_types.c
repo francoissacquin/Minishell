@@ -89,15 +89,10 @@ void	ft_type_cmd(t_mother *s, t_token *tok)
 	array = ft_split(temp, ':');
 	free(temp);
 	i = -1;
-	if (tok->type == 'p')
+	if (ft_type_abs_cmd(tok) == 1)
 	{
-		exist = ft_stat_check_path(tok->token);
-		if (exist == 0)
-		{
-			tok->type = 'C';
-			ft_free_array(array);
-			return;
-		}
+		ft_free_array(array);
+		return ;
 	}
 	while (array[++i] != NULL)
 	{

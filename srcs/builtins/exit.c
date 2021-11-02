@@ -61,8 +61,6 @@ int	ft_check_exit_arg(char *str)
 
 int	ft_exit(t_mother *s, t_command *c)
 {
-	long	temp;
-
 	if (ft_strlen_array(c->arg) > 2)
 		ft_linking_args(s, c);
 	if (ft_strlen_array(s->c->arg) > 2)

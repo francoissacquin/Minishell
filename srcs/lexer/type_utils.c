@@ -24,3 +24,19 @@ int	ft_stat_check_path(char *str)
 	i = stat(str, &sb);
 	return (i);
 }
+
+int	ft_type_abs_cmd(t_token *tok)
+{
+	int		exist;
+
+	if (tok->type == 'p')
+	{
+		exist = ft_stat_check_path(tok->token);
+		if (exist == 0)
+		{
+			tok->type = 'C';
+			return (1);
+		}
+	}
+	return (0);
+}

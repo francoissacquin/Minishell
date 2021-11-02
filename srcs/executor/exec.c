@@ -12,58 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-int	ft_fileexits(char *testpath)
-{
-	struct stat	s_buf;
-	int			ret;
-
-	ret = -1;
-	if (stat(testpath, &s_buf) == 0)
-		ret = 0;
-	return (ret);
-}
-
-char	*ft_pathtester(t_command *c, char ***minipath, int minisize)
-{
-	int			i;
-	int			j;
-	char		*testpath;
-	char		*testpath2;
-	int			pathsize;
-	char		*addcmd;
-	int			pathfound;
-
-	pathfound = -1;
-	pathsize = 0;
-	i = 0;
-	while (i < minisize && pathfound == -1)
-	{
-		while (minipath[i][pathsize])
-			pathsize++;
-		testpath = ft_strjoin("", "/");
-		j = 0;
-		while (j < pathsize && pathfound == -1)
-		{
-			testpath2 = ft_strjoin(testpath, minipath[i][j]);
-			free(testpath);
-			testpath = ft_strjoin(testpath2, "/");
-			free(testpath2);
-			addcmd = ft_strjoin(testpath, c->command);
-			if (ft_fileexits(addcmd) == 0)
-				pathfound = 1;
-			j++;
-			if (j < pathsize && pathfound == -1)
-				free(addcmd);
-		}
-		free(testpath);
-		i++;
-		if (i < minisize && pathfound == -1)
-			free(addcmd);
-		pathsize = 0;
-	}
-	return (addcmd);
-}
-
 int	ft_pathfinder2(t_mother *s, char **path)
 {
 	char		***minipath;

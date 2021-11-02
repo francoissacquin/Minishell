@@ -37,7 +37,10 @@ void	exec_and_repeat(t_mother *s)
 	pid_t	*pid;
 
 	pid = ft_return_global_pid();
+	*pid = 0;
 	multicommands(s);
+	if (*pid == -1)
+		s->ret = 130;
 	*pid = 0;
 	free_t_loop(s);
 	free(s->line);

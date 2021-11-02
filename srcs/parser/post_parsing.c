@@ -70,3 +70,30 @@ void	output_corrector(t_mother *s, t_command *cmd)
 		cmd->nextpipe = NULL;
 	}
 }
+
+int	ft_parse_error_detect(t_mother *s, int i)
+{
+	int		err;
+
+	if (i == 1)
+	{
+		write(2, "Error, pipe or operator with no command\n", 40);
+		s->ret = 1;
+	}
+	else if (i == 2)
+	{
+		s->ret = 2;
+	}
+	else if (i == 3)
+	{
+		write(2, "Minishell: commande introuvable\n", 32);
+		s->ret = 127;
+	}
+	else if (i == 4)
+	{
+		write(2, "Error, weird input\n", 19);
+		s->ret = 127;
+	}
+	err = 1;
+	return (err);
+}

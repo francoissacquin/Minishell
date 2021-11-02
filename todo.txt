@@ -79,6 +79,6 @@ ctrl z kills
 // 	printf(" with infile = %s and outile = %s\n", cmd->inputfile, cmd->outfile);
 // 	printf("-----------------------------------------\n");
 // 	printf("  ||\n  ||AFTER = %i or %i or %i\n  ||\n", cmd->isfollowedbypipe, cmd->isfollowedbyche, cmd->isfollowedbydoubleche);
-// 	if (s->lex->std_input_redir != NULL)
-// 		printf("<< input was :\n%s\n", s->lex->std_input_redir);
+// 	if (s->lex->input_redir != NULL)
+// 		printf("<< input was :\n%s\n", s->lex->input_redir);
 // }

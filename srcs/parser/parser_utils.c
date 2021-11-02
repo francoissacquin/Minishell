@@ -20,7 +20,7 @@ void	ft_cmd_blt(t_mother *s, t_token *tok, int *i)
 		else
 		{
 			tok->type = 'w';
-			ft_add_args(s, tok, i);
+			ft_add_args(s, tok);
 		}
 	}
 	else

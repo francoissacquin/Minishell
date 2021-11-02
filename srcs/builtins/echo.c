@@ -65,7 +65,7 @@ void	echo_space_mega_loop(t_mother *s, t_command *c)
 		ft_putstr_fd(c->arg[s->idx[0]], 1);
 	s->idx[0] = s->idx[0] + 1;
 	if (c->arg[s->idx[0]] != NULL)
-		echo_space_loop(s, c);
+		echo_space_medium_loop(s, c);
 }
 
 void	echo_space_medium_loop(t_mother *s, t_command *c)
@@ -77,7 +77,7 @@ void	echo_space_medium_loop(t_mother *s, t_command *c)
 	s->idx[3] = 0;
 	while (s->idx[2] < s->idx[0])
 	{
-		echo_space_inner_loop(s, tok);
+		echo_space_inner_loop(s, c);
 		s->idx[2] = s->idx[2] + 1;
 	}
 	if (c->arg[s->idx[0]][0] == '\0' && s->idx[5] == 0)
@@ -89,6 +89,7 @@ void	echo_space_medium_loop(t_mother *s, t_command *c)
 
 void	echo_space_inner_loop(t_mother *s, t_command *c)
 {
+	(void)c;
 	s->idx[5] = 0;
 	if (s->line[s->idx[1]] == '\'' || s->line[s->idx[1]] == '\"')
 		s->idx[1] = ft_skip_quote_marks(s->line, s->idx[1], ft_strlen(s->line));

@@ -3,7 +3,6 @@
 void	expanding_env(t_mother *s, t_token *tok)
 {
 	int		index;
-	int		end;
 	char	*temp;
 
 	index = quote_env_finder(tok);
@@ -43,7 +42,6 @@ void	expanding_env_plus(t_mother *s, t_token *tok, int *index)
 
 void	quote_env_replacing(t_mother *s, t_token *tok, int start, int end)
 {
-	int		len;
 	char	*temp;
 	char	*value;
 
@@ -89,7 +87,6 @@ void	quote_env_replacing_plus(t_mother *s, t_token *tok, int start, int end)
 void	env_replacing(t_mother *s, t_token *tok)
 {
 	char	*temp;
-	int		equal_sign;
 
 	if (ft_isdigit(tok->token[1]))
 	{
