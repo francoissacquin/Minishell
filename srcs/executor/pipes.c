@@ -78,7 +78,11 @@ int	ft_pipe(t_command *c, t_mother *s)
 
 	err = 0;
 	ret = 1;
-	if (c->isfollowedbypipe <= 1 || c->isprecededbypipe <= 1)
+	if ((c->isfollowedbypipe <= 1 || c->isprecededbypipe <= 1)
+		&& !(c->cmd_status == 1))
+		err = pipe(c->pipes);
+	else if (((c->isfollowedbypipe == 1 || c->isprecededbypipe == 1)
+			&& c->cmd_status == 1))
 		err = pipe(c->pipes);
 	if (err != 0)
 		ft_error(s, "pipe", -1);
@@ -112,10 +116,7 @@ void	multicommandsbuiltins(t_mother *s, t_command *cmd)
 			cmd->retvalue = ft_export(s, cmd);
 	}
 	else if (ft_strcmp("echo", cmd->command) == 0)
-	{
-		//cmd->retvalue = ft_echo(s, cmd);
 		cmd->retvalue = ft_pipe(cmd, s);
-	}
 	else if (ft_strcmp("unset", cmd->command) == 0)
 	{
 		ft_pipe(cmd, s);
