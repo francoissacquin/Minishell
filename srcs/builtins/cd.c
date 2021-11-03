@@ -39,6 +39,11 @@ int	ft_cd(t_mother *s)
 	char	*pathhome;
 
 	pathhome = NULL;
+	if (ft_strlen_array(s->c->arg) > 2)
+	{
+		write(2, "Minishell : cd too many argument\n", 33);
+		return (1);
+	}
 	ft_cd_init(s, &pathhome);
 	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
 	{

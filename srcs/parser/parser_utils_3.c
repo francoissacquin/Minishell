@@ -78,7 +78,8 @@ int	ft_add_sub_operator(t_mother *s, t_token *tok, t_command *last)
 	}
 	if (tok->next != NULL)
 	{
-		if (ft_strchr("bc", tok->next->type))
+		if (ft_strchr("bc", tok->next->type)
+			|| ft_strcmp(tok->next->token, "<<") == 0)
 			return (0);
 		else
 		{

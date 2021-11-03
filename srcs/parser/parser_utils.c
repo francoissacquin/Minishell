@@ -43,13 +43,13 @@ void	ft_redir_in(t_mother *s, t_token *tok, t_command *last)
 void	ft_redir_5(t_mother *s, t_token *tok, int *i, t_command *last)
 {
 	if (tok->next != NULL && ft_strchr("bc", tok->next->type)
-		&& last == s->c)
+		&& s->nbcmd == 0)
 	{
 		fill_first_command(s, tok->next);
 		plug_redir_5(s, s->c);
 	}
 	else if (tok->next != NULL && ft_strchr("bc", tok->next->type)
-		&& last != s->c)
+		&& s->nbcmd > 0)
 	{
 		fill_next_command(s, last, tok->next, i);
 		last = ft_last_cmd(s->c);
@@ -91,12 +91,15 @@ void	ft_redir_out(t_mother *s, t_token *tok, t_command *last)
 
 void	plug_redir_5(t_mother *s, t_command *last)
 {
-	char	*temp;
-	int		fd;
+	char			*temp;
+	int				fd;
+	struct stat		s_buf;
 
 	if (last->inputfile != NULL)
 		free(last->inputfile);
 	last->isprecededbyche = 0;
+	if (stat("./redir_input.txt", &s_buf) == 0)
+		unlink("redir_input.txt");
 	fd = open("redir_input.txt", O_CREAT | O_RDWR | O_APPEND, 0666);
 	if (fd < 0)
 		s->ret = 1;
