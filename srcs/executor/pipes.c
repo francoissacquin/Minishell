@@ -112,7 +112,10 @@ void	multicommandsbuiltins(t_mother *s, t_command *cmd)
 			cmd->retvalue = ft_export(s, cmd);
 	}
 	else if (ft_strcmp("echo", cmd->command) == 0)
+	{
+		//cmd->retvalue = ft_echo(s, cmd);
 		cmd->retvalue = ft_pipe(cmd, s);
+	}
 	else if (ft_strcmp("unset", cmd->command) == 0)
 	{
 		ft_pipe(cmd, s);

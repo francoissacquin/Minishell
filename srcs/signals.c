@@ -15,10 +15,14 @@
 // TUER LES ENFANTS ICI
 void	sighandl(void)
 {
+	pid_t	*pid;
+
+	pid = ft_return_global_pid();
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay();
+	if (*pid == 0)
+		rl_redisplay();
 }
 
 void	quithandler(void)

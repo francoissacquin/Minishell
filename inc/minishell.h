@@ -89,6 +89,7 @@ typedef struct s_mother
 	char		*line;
 	t_lexer		*lex;
 	char		**env;
+	char		**env_exp;
 	int			*idx;
 	int			nbcmd;
 	int			pipe;
@@ -101,7 +102,7 @@ typedef struct s_mother
 }				t_mother;
 
 //a enlever pour la norme apres les tests
-//void		ft_print_parsing_results(t_mother *s);
+void		ft_print_parsing_results(t_mother *s);
 
 //general
 pid_t		*ft_return_global_pid(void);
@@ -151,6 +152,8 @@ int			ft_env(t_mother *s);
 
 int			ft_export(t_mother *s, t_command *cmd);
 void		ft_export_no_arg(t_mother *s, int *i);
+void		ft_sort_env(t_mother *s);
+void		ft_bubble_sort(t_mother *s, int len);
 void		ft_export_with_arg(t_mother *s, t_command *cmd, int *i, int *ret);
 int			ft_word_is_exportable(char *str);
 

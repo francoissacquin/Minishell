@@ -88,6 +88,8 @@ void	ft_childnorm(t_command *c, t_mother *s)
 	if (c->isfollowedbypipe == 1 )
 	{
 		err = dup2(c->pipes[1], 1);
+		close(c->pipes[1]);
+		close(c->pipes[0]);
 		if (err < 0)
 			ft_error(s, "pipe in grep dup2", -1);
 	}
@@ -118,6 +120,9 @@ int	ft_child(t_command *c, t_mother *s)
 	ft_childnorm(c, s);
 	if (!(c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1))
 		ret = ft_execfind(s, c);
+	// close(0);
+	// close(1);
+	// close(2);
 	exit(ret);
 }
 
