@@ -6,11 +6,39 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 12:18:17 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/28 16:08:04 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/11/03 21:09:27 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int	ft_return(t_command *c, t_mother *s)
+{
+	int	i;
+	int	ex;
+	int	ret;
+	int	status;
+
+	ret = 0;
+	i = 0;
+	ex = 0;
+	status = 0;
+	if (c->nextpipe == NULL)
+	{
+		while (i < s->nbcmd)
+		{
+			waitpid(s->pidtab[i], &status, 0);
+			if (c->isfollowedbypipe == 0)
+			{
+				ex = WIFEXITED(status);
+				if (ex > -1)
+					ret = WEXITSTATUS(status);
+			}
+			i++;
+		}
+	}
+	return (ret);
+}
 
 // on ferme le pipe d'avant : close(c->previouspipe->pipes[0]);
 // si suivi ou apres par un pipe on close write side : close(c->pipes[1])
@@ -21,13 +49,11 @@
 // on attends la fin du child pour etre sur d'avoir tte la sortie 
 //: waitpid(pid, &status, 0);
 // get return value of child process : ex = WIFEXITED(status);
-
-int	ft_parent(t_command *c, t_mother *s )
+int	ft_parent(t_command *c, t_mother *s)
 {
 	int	ret;
 	int	fd;
 
-	(void)s;
 	ret = 0;
 	if (c->isprecededbypipe == 1)
 		close(c->previouspipe->pipes[0]);
@@ -42,18 +68,7 @@ int	ft_parent(t_command *c, t_mother *s )
 			close(c->pipes[0]);
 		}
 	}
-
-	int i = 0;
-	int status = 0;
-	if (c->nextpipe == NULL)
-	{
-		while (i < 3)
-		{
-		 	waitpid(s->pidtab[i], &status, 0);
-			i++;
-		}
-	}
-	
+	ret = ft_return(c, s);
 	return (ret);
 }
 
@@ -62,33 +77,12 @@ int	ft_parent(t_command *c, t_mother *s )
 //exec child
 //exec parent
 
-int	ft_return(t_command *c, t_mother *s, pid_t *pid, int ret)
-{
-	int		ex;
-	int		status;
-
-	status = 0;
-	ex = 0;
-	if (c->isfollowedbypipe == 0 && s->nbcmd > 1)
-		ret = ft_waitpid(s, c, status);
-	if (s->nbcmd == 1 || c->isfollowedbyche == 1
-		|| c->isfollowedbydoubleche == 1)
-	{
-		waitpid(*pid, &status, 0);
-		ex = WIFEXITED(status);
-		if (ex > 0)
-			ret = WEXITSTATUS(status);
-	}
-	return (ret);
-}
-
 int	ft_pipe(t_command *c, t_mother *s, int i)
 {
 	int		err;
 	int		ret;
 	pid_t	*pid;
 
-	
 	err = 0;
 	ret = 1;
 	if ((c->isfollowedbypipe <= 1 || c->isprecededbypipe <= 1)
@@ -109,7 +103,6 @@ int	ft_pipe(t_command *c, t_mother *s, int i)
 		ret = ft_child(c, s);
 	else
 		ret = ft_parent(c, s);
-	ret = ft_return(c, s, pid, ret);
 	return (ret);
 }
 
@@ -160,6 +153,7 @@ void	multicommands(t_mother *s)
 		cmd->retvalue = 127;
 		s->ret = cmd->retvalue;
 	}
+	s->pidtab = ft_malloc(&s->pidtab, (sizeof(pid_t) * s->nbcmd));
 	while (i < s->nbcmd)
 	{
 		multicommandsbuiltins(s, cmd, i);
@@ -169,5 +163,6 @@ void	multicommands(t_mother *s)
 		cmd = cmd->nextpipe;
 		i++;
 	}
+	free(s->pidtab);
 	pid = ft_return_global_pid();
 }
