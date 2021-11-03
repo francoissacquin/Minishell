@@ -85,7 +85,7 @@ void	ft_childnorm(t_command *c, t_mother *s)
 	err = 0;
 	if (s->c->isprecededbydoubleche)
 		err = ft_redirect(c, s);
-	if (c->isfollowedbypipe == 1 )
+	if (c->isfollowedbypipe == 1)
 	{
 		err = dup2(c->pipes[1], 1);
 		close(c->pipes[1]);
@@ -120,9 +120,6 @@ int	ft_child(t_command *c, t_mother *s)
 	ft_childnorm(c, s);
 	if (!(c->isfollowedbyche == 1 || c->isfollowedbydoubleche == 1))
 		ret = ft_execfind(s, c);
-	// close(0);
-	// close(1);
-	// close(2);
 	exit(ret);
 }
 

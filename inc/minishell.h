@@ -102,7 +102,7 @@ typedef struct s_mother
 }				t_mother;
 
 //a enlever pour la norme apres les tests
-void		ft_print_parsing_results(t_mother *s);
+//void		ft_print_parsing_results(t_mother *s);
 
 //general
 pid_t		*ft_return_global_pid(void);
