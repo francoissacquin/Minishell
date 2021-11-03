@@ -52,11 +52,10 @@ void	ft_finding_delimiter(t_mother *s, t_token *tok)
 		j++;
 	temp = ft_malloc(&temp, (j - i + 1) * sizeof(char));
 	k = 0;
-	while (i < j)
+	while (i + k < j)
 	{
-		if (!(s->line[i] == '\"' || s->line[i] == '\''))
-			temp[k] = s->line[i];
-		i++;
+		if (!(s->line[i + k] == '\"' || s->line[i + k] == '\''))
+			temp[k] = s->line[i + k];
 		k++;
 	}
 	temp[k] = '\0';
