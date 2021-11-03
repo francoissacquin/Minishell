@@ -21,8 +21,10 @@ int	ft_export(t_mother *s, t_command *cmd)
 	if (ft_strlen_array(cmd->arg) == 1)
 	{
 		i = 0;
+		ft_sort_env(s);
 		while (s->env[i] != NULL)
 			ft_export_no_arg(s, &i);
+		ft_free_array(s->env_exp);
 	}
 	else
 	{
@@ -31,6 +33,50 @@ int	ft_export(t_mother *s, t_command *cmd)
 			ft_export_with_arg(s, cmd, &i, &ret);
 	}
 	return (ret);
+}
+
+void	ft_sort_env(t_mother *s)
+{
+	int		len;
+	int		i;
+
+	len = ft_strlen_array(s->env);
+	s->env_exp = ft_malloc(&s->env_exp, (len + 1) * sizeof(char *));
+	i = 0;
+	while (s->env[i])
+	{
+		s->env_exp[i] = strdup(s->env[i]);
+		i++;
+	}
+	s->env_exp[i] = NULL;
+	ft_bubble_sort(s, len);
+}
+
+void	ft_bubble_sort(t_mother *s, int len)
+{
+	int		i;
+	int		j;
+	char	*temp;
+
+	i = 0;
+	while (i < len)
+	{
+		j = 0;
+		while (j < len -1 - i)
+		{
+			if (ft_strcmp(s->env_exp[j], s->env_exp[j + 1]) > 0)
+			{
+				temp = ft_strdup(s->env_exp[j]);
+				free(s->env_exp[j]);
+				s->env_exp[j] = ft_strdup(s->env_exp[j + 1]);
+				free(s->env_exp[j + 1]);
+				s->env_exp[j + 1] = ft_strdup(temp);
+				free(temp);
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
 void	ft_export_with_arg(t_mother *s, t_command *cmd, int *i, int *ret)
@@ -58,9 +104,9 @@ void	ft_export_no_arg(t_mother *s, int *i)
 
 	write(1, "declare -x ", 11);
 	j = 0;
-	while (s->env[*i][j] != '=')
+	while (s->env_exp[*i][j] != '=')
 		j++;
-	temp = ft_substr(s->env[*i], 0, j);
+	temp = ft_substr(s->env_exp[*i], 0, j);
 	write(1, temp, ft_strlen(temp));
 	write(1, "=\"", 2);
 	value = ft_return_env_value(s, temp, 1);
