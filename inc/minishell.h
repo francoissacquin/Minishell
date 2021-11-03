@@ -98,6 +98,8 @@ typedef struct s_mother
 	int			exitret;
 	char		*path;
 	char		**cd_mem;
+	pid_t		pidtab[3];
+
 	t_command	*c;
 }				t_mother;
 
@@ -188,7 +190,7 @@ char		*ft_path_sub(t_command *c, char *str, char **testpath,
 int			*ft_path_idx_init(void);
 int			ft_redirect(t_command *c, t_mother *s);
 void		multicommands(t_mother *s);
-int			ft_pipe(t_command *c, t_mother *s);
+int			ft_pipe(t_command *c, t_mother *s, int i);
 int			ft_waitpid(t_mother *s, t_command *c, int status);
 int			ft_child(t_command *c, t_mother *s);
 

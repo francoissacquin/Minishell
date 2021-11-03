@@ -22,7 +22,7 @@
 //: waitpid(pid, &status, 0);
 // get return value of child process : ex = WIFEXITED(status);
 
-int	ft_parent(t_command *c, t_mother *s)
+int	ft_parent(t_command *c, t_mother *s )
 {
 	int	ret;
 	int	fd;
@@ -42,6 +42,18 @@ int	ft_parent(t_command *c, t_mother *s)
 			close(c->pipes[0]);
 		}
 	}
+
+	int i = 0;
+	int status = 0;
+	if (c->nextpipe == NULL)
+	{
+		while (i < 3)
+		{
+		 	waitpid(s->pidtab[i], &status, 0);
+			i++;
+		}
+	}
+	
 	return (ret);
 }
 
@@ -70,12 +82,13 @@ int	ft_return(t_command *c, t_mother *s, pid_t *pid, int ret)
 	return (ret);
 }
 
-int	ft_pipe(t_command *c, t_mother *s)
+int	ft_pipe(t_command *c, t_mother *s, int i)
 {
 	int		err;
 	int		ret;
 	pid_t	*pid;
 
+	
 	err = 0;
 	ret = 1;
 	if ((c->isfollowedbypipe <= 1 || c->isprecededbypipe <= 1)
@@ -88,6 +101,7 @@ int	ft_pipe(t_command *c, t_mother *s)
 		ft_error(s, "pipe", -1);
 	pid = ft_return_global_pid();
 	*pid = fork();
+	s->pidtab[i] = *pid;
 	c->cpid = *pid;
 	if (*pid < 0)
 		ft_error(s, "fork", -1);
@@ -99,33 +113,33 @@ int	ft_pipe(t_command *c, t_mother *s)
 	return (ret);
 }
 
-void	multicommandsbuiltins(t_mother *s, t_command *cmd)
+void	multicommandsbuiltins(t_mother *s, t_command *cmd, int i)
 {
 	if (ft_strcmp("exit", cmd->command) == 0)
 		cmd->retvalue = ft_exit(s, cmd);
 	else if (ft_strcmp("cd", cmd->command) == 0)
 	{
 		if (s->nbcmd > 1)
-			ft_pipe(cmd, s);
+			ft_pipe(cmd, s, i);
 		cmd->retvalue = ft_cd(s);
 	}
 	else if (ft_strcmp("export", cmd->command) == 0 && cmd->nbarg > 1)
 	{
-		ft_pipe(cmd, s);
+		ft_pipe(cmd, s, i);
 		if (cmd->nbarg > 0)
 			cmd->retvalue = ft_export(s, cmd);
 	}
 	else if (ft_strcmp("echo", cmd->command) == 0)
-		cmd->retvalue = ft_pipe(cmd, s);
+		cmd->retvalue = ft_pipe(cmd, s, i);
 	else if (ft_strcmp("unset", cmd->command) == 0)
 	{
-		ft_pipe(cmd, s);
+		ft_pipe(cmd, s, i);
 		cmd->retvalue = ft_unset(s, cmd);
 	}
 	else if (cmd->command == NULL)
 		cmd->retvalue = 127;
 	else if (!(ft_strcmp("cd", cmd->command) == 0))
-		cmd->retvalue = ft_pipe(cmd, s);
+		cmd->retvalue = ft_pipe(cmd, s, i);
 }
 
 //sends to different functions if its a pipe redirect etc
@@ -148,7 +162,7 @@ void	multicommands(t_mother *s)
 	}
 	while (i < s->nbcmd)
 	{
-		multicommandsbuiltins(s, cmd);
+		multicommandsbuiltins(s, cmd, i);
 		s->ret = cmd->retvalue;
 		if (!cmd->nextpipe)
 			break ;
