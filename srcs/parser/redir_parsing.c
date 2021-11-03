@@ -73,14 +73,14 @@ int	ft_redir_input_activator(t_mother *s)
 		free(s->lex->input_redir);
 		s->lex->input_redir = NULL;
 	}
-	temp = readline("> ");
+	temp = readline("\033[1;32m> \033[0m");
 	if (temp == NULL)
 		return (1);
 	while (ft_strcmp(temp, s->lex->delimiter))
 	{
 		ft_redir_input_loop_check(s, &temp, &redir);
 		free(temp);
-		temp = readline("> ");
+		temp = readline("\033[1;32m> \033[0m");
 		if (temp == NULL)
 			return (1);
 	}

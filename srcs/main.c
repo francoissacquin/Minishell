@@ -32,7 +32,7 @@ int	mainaftersignal(t_mother *s, char *str)
 	ft_structinit(s);
 	if (str == NULL)
 	{
-		s->line = readline("Minishell> ");
+		s->line = readline("\033[1;32mMinishell> \033[0m");
 		ft_add_history(s);
 	}
 	else
