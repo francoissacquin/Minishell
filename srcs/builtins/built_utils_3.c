@@ -55,3 +55,16 @@ void	ft_bubble_sort(t_mother *s, int len)
 		i++;
 	}
 }
+
+int	ft_updatepwd(t_mother *s, char *new_path, char *old_path)
+{
+	char	*temp;
+
+	temp = ft_strjoin("PWD=", new_path);
+	create_env(s, temp);
+	free(temp);
+	temp = ft_strjoin("OLDPWD=", old_path);
+	create_env(s, temp);
+	free(temp);
+	return (0);
+}

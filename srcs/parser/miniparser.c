@@ -80,7 +80,7 @@ int	ft_add_args(t_mother *s, t_token *tok)
 			if (ft_strchr("fq", tok->type)
 				&& !(ft_strcmp(last->command, "echo")))
 				check_echo_flag(s, tok);
-			else if (tok->type == 'f')
+			else if (tok->type == 'f' && ft_strcmp(tok->token, "-") != 0)
 				write(2, "AUCUN FLAG AUTORISE POUR LES BUILT-INS\n", 39);
 		}
 		last->nbarg++;

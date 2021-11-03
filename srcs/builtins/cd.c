@@ -20,19 +20,6 @@
 // cd - et cd ~
 //proteger contre trop d arguments
 
-int	ft_updatepwd(t_mother *s, char *new_path, char *old_path)
-{
-	char	*temp;
-
-	temp = ft_strjoin("PWD=", new_path);
-	create_env(s, temp);
-	free(temp);
-	temp = ft_strjoin("OLDPWD=", old_path);
-	create_env(s, temp);
-	free(temp);
-	return (0);
-}
-
 int	ft_cd(t_mother *s)
 {
 	int		r;
@@ -45,18 +32,9 @@ int	ft_cd(t_mother *s)
 		return (1);
 	}
 	ft_cd_init(s, &pathhome);
-	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
-	{
-		r = ft_cd_conveyor_belt(s, pathhome, 1);
-		ft_free_array(s->cd_mem);
+	r = ft_cd_sub(s, pathhome);
+	if (r == -2)
 		return (0);
-	}
-	else if (ft_strcmp("-", s->c->arg[1]) == 0)
-		r = ft_cd_conveyor_belt(s, pathhome, 2);
-	else if (ft_strcmp("--", s->c->arg[1]) == 0)
-		r = ft_cd_conveyor_belt(s, pathhome, 3);
-	else
-		r = chdir(s->c->arg[1]);
 	if (r == -1)
 	{
 		write(2, "bash: line 0: cd: No such file or directory\n", 44);
@@ -65,6 +43,25 @@ int	ft_cd(t_mother *s)
 	}
 	ft_update_cd(s);
 	return (0);
+}
+
+int	ft_cd_sub(t_mother *s, char *pathhome)
+{
+	int		r;
+
+	if (s->c->arg[1] == NULL || ft_strcmp("~", s->c->arg[1]) == 0)
+	{
+		r = ft_cd_conveyor_belt(s, pathhome, 1);
+		ft_free_array(s->cd_mem);
+		return (-2);
+	}
+	else if (ft_strcmp("-", s->c->arg[1]) == 0)
+		r = ft_cd_conveyor_belt(s, pathhome, 2);
+	else if (ft_strcmp("--", s->c->arg[1]) == 0)
+		r = ft_cd_conveyor_belt(s, pathhome, 3);
+	else
+		r = chdir(s->c->arg[1]);
+	return (r);
 }
 
 void	ft_cd_init(t_mother *s, char **pathhome)
@@ -108,11 +105,9 @@ int	ft_cd_conveyor_belt(t_mother *s, char *pathhome, int i)
 	{
 		previouspath = ft_return_env_value(s, "OLDPWD", 1);
 		r = chdir(previouspath);
+		free(previouspath);
 	}
 	else if (i == 3)
-	{
-		r = chdir(previouspath);
-		previouspath = s->cd_mem[0];
-	}
+		write(2, "Not implemented, sorry\n", 23);
 	return (r);
 }

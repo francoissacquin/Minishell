@@ -143,6 +143,7 @@ void		echo_space_medium_loop(t_mother *s, t_command *c);
 void		echo_space_inner_loop(t_mother *s, t_command *c);
 
 int			ft_cd(t_mother *s);
+int			ft_cd_sub(t_mother *s, char *pathhome);
 void		ft_cd_init(t_mother *s, char **pathhome);
 int			ft_cd_conveyor_belt(t_mother *s, char *pathhome, int i);
 int			ft_updatepwd(t_mother *s, char *new_path, char *old_path);
