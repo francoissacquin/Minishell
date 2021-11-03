@@ -6,7 +6,7 @@
 /*   By: ogenser <ogenser@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:59:22 by ogenser           #+#    #+#             */
-/*   Updated: 2021/10/28 17:40:38 by ogenser          ###   ########.fr       */
+/*   Updated: 2021/11/03 20:28:19 by ogenser          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_mother
 	int			exitret;
 	char		*path;
 	char		**cd_mem;
-	pid_t		pidtab[3];
+	pid_t		*pidtab;
 
 	t_command	*c;
 }				t_mother;
