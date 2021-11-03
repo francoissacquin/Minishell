@@ -40,7 +40,6 @@ void	input_corrector(t_mother *s, t_command *cmd)
 	t_command	*temp;
 	t_command	*next;
 
-	printf("input corrected\n");
 	if (cmd->isprecededbypipe && (cmd->isprecededbyche
 			|| cmd->isprecededbydoubleche))
 	{

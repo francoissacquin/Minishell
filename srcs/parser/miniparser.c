@@ -56,7 +56,7 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 		err = ft_parse_error_detect(s, 3);
 	else if (*i == 0 && tok->type == 'w')
 		err = ft_parse_error_detect(s, 4);
-	else if (ft_strchr("cCbp", tok->type))
+	else if (ft_strchr("cCb", tok->type))
 		ft_cmd_blt(s, tok, i);
 	else if (ft_strchr("Po", tok->type))
 		err = ft_add_operator(s, tok, i);

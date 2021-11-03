@@ -42,10 +42,9 @@ void	ft_finding_delimiter(t_mother *s, t_token *tok)
 	int		j;
 	int		k;
 
-	i = ft_strnstr_index(s->line, tok->token, ft_strlen(s->line));
+	i = ft_strnstr_index(s->line, tok->next->token, ft_strlen(s->line));
 	if (i == -1)
 		printf("error, << not found in original string but << token exists\n");
-	i = i + 2;
 	while (s->line[i] && s->line[i] == ' ')
 		i++;
 	j = i;
@@ -61,6 +60,8 @@ void	ft_finding_delimiter(t_mother *s, t_token *tok)
 		k++;
 	}
 	temp[k] = '\0';
+	if (s->lex->delimiter != NULL)
+		free(s->lex->delimiter);
 	s->lex->delimiter = temp;
 }
 
