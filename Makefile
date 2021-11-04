@@ -63,8 +63,6 @@ srcs/parser/arg_checking.c \
 srcs/parser/post_parsing.c \
 srcs/structure/utils.c \
 srcs/structure/mem_utils.c \
-#srcs/executor/pipesredir.c \
-#srcs/executor/redirectwithpipes.c \
 
 
 

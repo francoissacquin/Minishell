@@ -34,6 +34,11 @@ void	check_echo_flag(t_mother *s, t_token *tok)
 	i = 1;
 	if (tok->token[0] != '-')
 		return ;
+	if (tok->next != NULL && ft_strchr("qwp", tok->next->type)
+		&& tok->next->pre_space == 0)
+	{
+		check_echo_flag_plus(s, tok);
+	}
 	while (tok->token[i])
 	{
 		if (tok->token[i] != 'n')
@@ -48,4 +53,26 @@ void	check_echo_flag(t_mother *s, t_token *tok)
 		free(tok->token);
 		tok->token = ft_strdup("-n");
 	}
+}
+
+void	check_echo_flag_plus(t_mother *s, t_token *tok)
+{
+	char	*temp;
+
+	(void)s;
+	temp = ft_strdup(tok->next->token);
+	tok->token = ft_strjoin_env(tok->token, temp);
+	free(temp);
+	free(tok->next->token);
+	if (tok->next->next != NULL && tok->next->next->pre_space == 1)
+	{
+		tok->next->token = ft_strdup("");
+		temp = ft_strdup(tok->token);
+		free(tok->token);
+		tok->token = ft_strjoin(temp, " ");
+		free(temp);
+	}
+	else
+		tok->next->token = ft_strdup("");
+	tok->next->type = 'q';
 }
