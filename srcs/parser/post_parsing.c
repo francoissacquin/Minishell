@@ -37,49 +37,14 @@ void	input_output_checker(t_mother *s)
 
 void	input_corrector(t_mother *s, t_command *cmd)
 {
-	t_command	*temp;
-	t_command	*next;
-
-	if (cmd->isprecededbypipe && (cmd->isprecededbyche
-			|| cmd->isprecededbydoubleche))
-	{
-		temp = s->c;
-		next = NULL;
-		while (temp != cmd)
-		{
-			if (temp->nextpipe != NULL)
-				next = temp->nextpipe;
-			free_one_cmd(s, temp);
-			temp = next;
-		}
-		cmd->isprecededbypipe = 0;
-		cmd->previouspipe = NULL;
-		s->c = cmd;
-	}
+	(void)s;
+	(void)cmd;
 }
 
 void	output_corrector(t_mother *s, t_command *cmd)
 {
-	t_command	*temp;
-	t_command	*next;
-
-	printf("ouptput corrected\n");
-	if (cmd->isfollowedbypipe && (cmd->isfollowedbyche
-			|| cmd->isfollowedbydoubleche))
-	{
-		temp = cmd->nextpipe;
-		next = NULL;
-		while (temp->nextpipe != NULL)
-		{
-			if (temp->nextpipe != NULL)
-				next = temp->nextpipe;
-			free_one_cmd(s, temp);
-			temp = next;
-		}
-		free_one_cmd(s, temp);
-		cmd->isfollowedbypipe = 0;
-		cmd->nextpipe = NULL;
-	}
+	(void)s;
+	(void)cmd;
 }
 
 int	ft_parse_error_detect(t_mother *s, int i)
@@ -107,4 +72,14 @@ int	ft_parse_error_detect(t_mother *s, int i)
 	}
 	err = 1;
 	return (err);
+}
+
+void	ft_exp_echo_args(t_token *tok, int *err)
+{
+	if (tok->pre_space == 1 && tok->next != NULL)
+	{
+		if (tok->prev != NULL && ft_strcmp(tok->prev->token, "export") == 0)
+			tok->next->pre_space = 1;
+	}
+	*err = 0;
 }

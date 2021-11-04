@@ -46,7 +46,7 @@ int	ft_tok_conveyor_belt(t_mother *s, t_token *tok, int *i)
 
 	err = 0;
 	if (strcmp(tok->token, "") == 0)
-		err = 0;
+		ft_exp_echo_args(tok, &err);
 	else if (*i == 0 && ft_strchr("Pfo", tok->type)
 		&& ft_strcmp(tok->token, "<<") != 0 && s->lex->delimiter == NULL)
 		err = ft_parse_error_detect(s, 1);

@@ -103,9 +103,6 @@ typedef struct s_mother
 	t_command	*c;
 }				t_mother;
 
-//a enlever pour la norme apres les tests
-//void		ft_print_parsing_results(t_mother *s);
-
 //general
 pid_t		*ft_return_global_pid(void);
 int			ft_parse(t_mother *s);
@@ -286,8 +283,10 @@ void		ft_cmd_blt(t_mother *s, t_token *tok, int *i);
 int			ft_add_args(t_mother *s, t_token *tok);
 void		ft_arg_conveyor_belt(t_token *t, t_command *last);
 void		check_echo_flag(t_mother *s, t_token *tok);
+void		check_echo_flag_plus(t_mother *s, t_token *tok);
 void		ft_add_arg_array(t_command *last, char *str, int type);
 int			ft_add_operator(t_mother *s, t_token *tok, int *i);
+void		ft_exp_echo_args(t_token *tok, int *err);
 int			ft_add_sub_operator(t_mother *s, t_token *tok, t_command *last);
 void		add_cmd_elem(t_mother *s, t_token *tok, int *i);
 t_command	*create_cmd(t_mother *s, t_token *tok, int *i);

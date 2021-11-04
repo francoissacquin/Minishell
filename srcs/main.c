@@ -61,6 +61,9 @@ int	main(int argc, char **argv, char **envp)
 	int			exit_status;
 
 	s.env = NULL;
+	if (envp == NULL)
+		write(2, "Warning, environment is missing, proceed at \
+			your own risk\n", 58);
 	env_init(&s, envp);
 	s.ret = 0;
 	g_pid = 0;
